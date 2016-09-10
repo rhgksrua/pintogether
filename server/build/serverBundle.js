@@ -54,6 +54,8 @@
 
 	var _path2 = _interopRequireDefault(_path);
 
+	__webpack_require__(3);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var app = (0, _express2.default)();
@@ -67,6 +69,7 @@
 	var port = 3000 || process.env.PORT;
 
 	app.get('/', function (req, res) {
+	  console.log(p);
 	  return res.render('index');
 	});
 
@@ -85,6 +88,54 @@
 /***/ function(module, exports) {
 
 	module.exports = require("path");
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _passport = __webpack_require__(4);
+
+	var _passport2 = _interopRequireDefault(_passport);
+
+	var _passportGithub = __webpack_require__(5);
+
+	var _passportGithub2 = _interopRequireDefault(_passportGithub);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var GitHubStrategy = _passportGithub2.default.Strategy;
+
+	_passport2.default.serializeUser(function (user, done) {
+	  done(null, user);
+	});
+
+	_passport2.default.deserializeUser(function (obj, done) {
+	  done(null, obj);
+	});
+
+	_passport2.default.user(new GitHubStrategy({
+	  clientId: process.env.GITHUB_CLIENT_ID,
+	  clientSecret: process.env.GITHUB_CLIENT_SECRET,
+	  callbackURL: process.env.CALLBACK_URL
+	}, function (accessToken, refreshToken, profile, done) {
+	  process.nextTick(function () {
+	    return done(null, profile);
+	  });
+	}));
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	module.exports = require("passport");
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	module.exports = require("passport-github2");
 
 /***/ }
 /******/ ]);

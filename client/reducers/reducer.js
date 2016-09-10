@@ -1,6 +1,8 @@
 'use strict';
 
 import { combineReducers } from 'redux';
+import { modelReducer, formReducer } from 'react-redux-form';
+
 import * as types from './actionTypes';
 
 function reducer(state = {}, action) {
@@ -12,12 +14,13 @@ function reducer(state = {}, action) {
   }
 }
 
-/**
- *
- * reducers will mostlikely have more than one reducer to store
- * state.
- *
- */
+const initialUserState = {
+  firstName: '',
+  lastName: '',
+};
+
 export default combineReducers({
   reducer,
+  user: modelReducer('user', initialUserState),
+  userForm: formReducer('user', initialUserState),
 });

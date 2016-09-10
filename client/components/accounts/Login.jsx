@@ -2,17 +2,14 @@
 
 import React, { Component } from 'react';
 
-// Components
-import LogIn from './accounts/Login';
-
-class App extends Component {
+class LogIn extends Component {
   render() {
     return (
       <div>
-        <LogIn />
+        <a href='auth/github'>Log in with Github</a>
       </div>
     );
   }
 }
 
-export default App;
+export default LogIn;
