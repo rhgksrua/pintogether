@@ -1,5 +1,3 @@
 # Pintogether
 
 FCC pinterest clone
-
-
