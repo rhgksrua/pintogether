@@ -1,6 +1,7 @@
 'use strict';
 
 import passportGitHub from 'passport-github2';
+import User from '../models/User';
 
 const GitHubStrategy = passportGitHub.Strategy;
 
@@ -20,7 +21,27 @@ const gitHub = (passport) => {
     },
     function(accessToken, refreshToken, profile, done) {
       process.nextTick(function () {
-        return done(null, profile);
+        // Add user info to db.
+        const userInfo = {
+          username: profile.username,
+          email: profile._json.email
+        };
+        const query = { 'github.username': profile.username };
+        User.findOne(query, (err, user) => {
+          if (err) return done(err);
+          if (!user) {
+            const newUser = new User();
+            newUser.github.username = profile.username;
+            newUser.github.email = profile._json.email;
+            newUser.save((err) => {
+              if (err) return done(err, null);
+              return done(null, userInfo);
+            });
+          } else {
+            // user exists return user
+            return done(null, userInfo);
+          }
+        });
       });
     }
   ));

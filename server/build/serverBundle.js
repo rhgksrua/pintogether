@@ -50,19 +50,19 @@
 
 	var _express2 = _interopRequireDefault(_express);
 
-	var _passport = __webpack_require__(6);
+	var _passport = __webpack_require__(2);
 
 	var _passport2 = _interopRequireDefault(_passport);
 
-	var _path = __webpack_require__(2);
+	var _path = __webpack_require__(3);
 
 	var _path2 = _interopRequireDefault(_path);
 
-	var _expressSession = __webpack_require__(3);
+	var _expressSession = __webpack_require__(4);
 
 	var _expressSession2 = _interopRequireDefault(_expressSession);
 
-	var _passportGitHub = __webpack_require__(4);
+	var _passportGitHub = __webpack_require__(5);
 
 	var _passportGitHub2 = _interopRequireDefault(_passportGitHub);
 
@@ -70,11 +70,37 @@
 
 	var _dotenv2 = _interopRequireDefault(_dotenv);
 
+	var _mongoose = __webpack_require__(8);
+
+	var _mongoose2 = _interopRequireDefault(_mongoose);
+
+	var _connectMongo = __webpack_require__(9);
+
+	var _connectMongo2 = _interopRequireDefault(_connectMongo);
+
+	var _bluebird = __webpack_require__(11);
+
+	var _bluebird2 = _interopRequireDefault(_bluebird);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	_dotenv2.default.config({ silent: true });
+	var MongoStore = (0, _connectMongo2.default)(_expressSession2.default);
+	var MONGO_URI = process.env.MONGO_URI || 'localhost:27017/pintogether';
+
+	_mongoose2.default.connect(MONGO_URI);
 
 	var app = (0, _express2.default)();
+
+	app.use((0, _expressSession2.default)({
+	  secret: 'super secret session',
+	  resave: false,
+	  saveUninitialized: false,
+	  cookie: { maxAge: 60 * 60 * 24 * 365 * 1000 },
+	  store: new MongoStore({
+	    mongooseConnection: _mongoose2.default.connection
+	  })
+	}));
 
 	(0, _passportGitHub2.default)(_passport2.default);
 	app.use((0, _expressSession2.default)({ secret: 'super_secret', resave: false, saveUninitialized: false }));
@@ -98,8 +124,7 @@
 	});
 
 	app.get('/auth/github/callback', _passport2.default.authenticate('github', { failureRedirect: '/' }), function (req, res) {
-	  console.log(req.user);
-	  res.send('login success');
+	  res.json(req.user);
 	});
 
 	app.listen(port, function () {
@@ -116,16 +141,22 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	module.exports = require("path");
+	module.exports = require("passport");
 
 /***/ },
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = require("express-session");
+	module.exports = require("path");
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	module.exports = require("express-session");
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -134,9 +165,13 @@
 	  value: true
 	});
 
-	var _passportGithub = __webpack_require__(5);
+	var _passportGithub = __webpack_require__(6);
 
 	var _passportGithub2 = _interopRequireDefault(_passportGithub);
+
+	var _User = __webpack_require__(10);
+
+	var _User2 = _interopRequireDefault(_User);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -157,7 +192,27 @@
 	    callbackURL: process.env.CALLBACK_URL
 	  }, function (accessToken, refreshToken, profile, done) {
 	    process.nextTick(function () {
-	      return done(null, profile);
+	      // Add user info to db.
+	      var userInfo = {
+	        username: profile.username,
+	        email: profile._json.email
+	      };
+	      var query = { 'github.username': profile.username };
+	      _User2.default.findOne(query, function (err, user) {
+	        if (err) return done(err);
+	        if (!user) {
+	          var newUser = new _User2.default();
+	          newUser.github.username = profile.username;
+	          newUser.github.email = profile._json.email;
+	          newUser.save(function (err) {
+	            if (err) return done(err, null);
+	            return done(null, userInfo);
+	          });
+	        } else {
+	          // user exists return user
+	          return done(null, userInfo);
+	        }
+	      });
 	    });
 	  }));
 	};
@@ -165,22 +220,59 @@
 	exports.default = gitHub;
 
 /***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	module.exports = require("passport-github2");
-
-/***/ },
 /* 6 */
 /***/ function(module, exports) {
 
-	module.exports = require("passport");
+	module.exports = require("passport-github2");
 
 /***/ },
 /* 7 */
 /***/ function(module, exports) {
 
 	module.exports = require("dotenv");
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	module.exports = require("mongoose");
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	module.exports = require("connect-mongo");
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _mongoose = __webpack_require__(8);
+
+	var _mongoose2 = _interopRequireDefault(_mongoose);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var userSchema = _mongoose2.default.Schema({
+	  github: {
+	    email: String,
+	    username: String
+	  }
+	});
+
+	exports.default = _mongoose2.default.model('User', userSchema);
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	module.exports = require("bluebird");
 
 /***/ }
 /******/ ]);
