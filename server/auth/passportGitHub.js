@@ -30,6 +30,7 @@ const gitHub = (passport) => {
         User.findOne(query, (err, user) => {
           if (err) return done(err);
           if (!user) {
+            // Save new user with github profile.
             const newUser = new User();
             newUser.github.username = profile.username;
             newUser.github.email = profile._json.email;
@@ -38,7 +39,7 @@ const gitHub = (passport) => {
               return done(null, userInfo);
             });
           } else {
-            // user exists return user
+            // User already signed up.
             return done(null, userInfo);
           }
         });

@@ -2,14 +2,15 @@
 
 import React, { Component } from 'react';
 
-class LogIn extends Component {
+class Home extends Component {
   render() {
     return (
       <div>
-        <a href='auth/github'>Log in with Github</a>
+        Home
       </div>
     );
   }
 }
 
-export default LogIn;
+export default Home;
+

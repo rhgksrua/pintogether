@@ -4,17 +4,21 @@ import express from 'express';
 import passport from 'passport';
 import path from 'path';
 import session from 'express-session';
-import passportGitHub from './auth/passportGitHub';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import connectMongo from 'connect-mongo';
 import bluebird from 'bluebird';
+
+import passportGitHub from './auth/passportGitHub';
+import authRoutes from './routes/authRoutes';
 
 dotenv.config({silent: true});
 const MongoStore = connectMongo(session);
 const MONGO_URI = process.env.MONGO_URI || 'localhost:27017/pintogether';
 
 mongoose.connect(MONGO_URI);
+
+passport.zzzzz = 'test';
 
 const app = express();
 
@@ -39,22 +43,15 @@ app.set('views', './server/views');
 
 app.use(express.static('build'));
 
-const port = 3000 || process.env.PORT;
 
 app.get('/', (req, res) => {
   return res.render('index');
 });
 
-app.get('/auth/github', passport.authenticate('github', {scope: ['user:email']}), 
-  (req, res) => {
-    // passport handles redirects.
-});
+app.use('/auth', authRoutes);
 
-app.get('/auth/github/callback', passport.authenticate('github', {failureRedirect: '/'}),
-  (req, res) => {
-    res.json(req.user);
-});
+//app.listen(port, () => {
+//  console.log(`localhost://${port}`);
+//});
 
-app.listen(port, () => {
-  console.log(`localhost://${port}`);
-});
+export default app;

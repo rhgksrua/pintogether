@@ -46,41 +46,67 @@
 
 	'use strict';
 
-	var _express = __webpack_require__(1);
+	var _server = __webpack_require__(1);
+
+	var _server2 = _interopRequireDefault(_server);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var port = 3000 || process.env.PORT;
+
+	_server2.default.listen(port, function () {
+	  console.log('localhost://' + port);
+	});
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _express = __webpack_require__(2);
 
 	var _express2 = _interopRequireDefault(_express);
 
-	var _passport = __webpack_require__(2);
+	var _passport = __webpack_require__(3);
 
 	var _passport2 = _interopRequireDefault(_passport);
 
-	var _path = __webpack_require__(3);
+	var _path = __webpack_require__(4);
 
 	var _path2 = _interopRequireDefault(_path);
 
-	var _expressSession = __webpack_require__(4);
+	var _expressSession = __webpack_require__(5);
 
 	var _expressSession2 = _interopRequireDefault(_expressSession);
 
-	var _passportGitHub = __webpack_require__(5);
-
-	var _passportGitHub2 = _interopRequireDefault(_passportGitHub);
-
-	var _dotenv = __webpack_require__(7);
+	var _dotenv = __webpack_require__(6);
 
 	var _dotenv2 = _interopRequireDefault(_dotenv);
 
-	var _mongoose = __webpack_require__(8);
+	var _mongoose = __webpack_require__(7);
 
 	var _mongoose2 = _interopRequireDefault(_mongoose);
 
-	var _connectMongo = __webpack_require__(9);
+	var _connectMongo = __webpack_require__(8);
 
 	var _connectMongo2 = _interopRequireDefault(_connectMongo);
 
-	var _bluebird = __webpack_require__(11);
+	var _bluebird = __webpack_require__(9);
 
 	var _bluebird2 = _interopRequireDefault(_bluebird);
+
+	var _passportGitHub = __webpack_require__(10);
+
+	var _passportGitHub2 = _interopRequireDefault(_passportGitHub);
+
+	var _authRoutes = __webpack_require__(13);
+
+	var _authRoutes2 = _interopRequireDefault(_authRoutes);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -89,6 +115,8 @@
 	var MONGO_URI = process.env.MONGO_URI || 'localhost:27017/pintogether';
 
 	_mongoose2.default.connect(MONGO_URI);
+
+	_passport2.default.zzzzz = 'test';
 
 	var app = (0, _express2.default)();
 
@@ -113,50 +141,68 @@
 
 	app.use(_express2.default.static('build'));
 
-	var port = 3000 || process.env.PORT;
-
 	app.get('/', function (req, res) {
 	  return res.render('index');
 	});
 
-	app.get('/auth/github', _passport2.default.authenticate('github', { scope: ['user:email'] }), function (req, res) {
-	  // passport handles redirects.
-	});
+	app.use('/auth', _authRoutes2.default);
 
-	app.get('/auth/github/callback', _passport2.default.authenticate('github', { failureRedirect: '/' }), function (req, res) {
-	  res.json(req.user);
-	});
+	//app.listen(port, () => {
+	//  console.log(`localhost://${port}`);
+	//});
 
-	app.listen(port, function () {
-	  console.log('localhost://' + port);
-	});
-
-/***/ },
-/* 1 */
-/***/ function(module, exports) {
-
-	module.exports = require("express");
+	exports.default = app;
 
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
 
-	module.exports = require("passport");
+	module.exports = require("express");
 
 /***/ },
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = require("path");
+	module.exports = require("passport");
 
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = require("express-session");
+	module.exports = require("path");
 
 /***/ },
 /* 5 */
+/***/ function(module, exports) {
+
+	module.exports = require("express-session");
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = require("dotenv");
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	module.exports = require("mongoose");
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	module.exports = require("connect-mongo");
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	module.exports = require("bluebird");
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -165,11 +211,11 @@
 	  value: true
 	});
 
-	var _passportGithub = __webpack_require__(6);
+	var _passportGithub = __webpack_require__(11);
 
 	var _passportGithub2 = _interopRequireDefault(_passportGithub);
 
-	var _User = __webpack_require__(10);
+	var _User = __webpack_require__(12);
 
 	var _User2 = _interopRequireDefault(_User);
 
@@ -201,6 +247,7 @@
 	      _User2.default.findOne(query, function (err, user) {
 	        if (err) return done(err);
 	        if (!user) {
+	          // Save new user with github profile.
 	          var newUser = new _User2.default();
 	          newUser.github.username = profile.username;
 	          newUser.github.email = profile._json.email;
@@ -209,7 +256,7 @@
 	            return done(null, userInfo);
 	          });
 	        } else {
-	          // user exists return user
+	          // User already signed up.
 	          return done(null, userInfo);
 	        }
 	      });
@@ -220,31 +267,13 @@
 	exports.default = gitHub;
 
 /***/ },
-/* 6 */
+/* 11 */
 /***/ function(module, exports) {
 
 	module.exports = require("passport-github2");
 
 /***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	module.exports = require("dotenv");
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	module.exports = require("mongoose");
-
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
-
-	module.exports = require("connect-mongo");
-
-/***/ },
-/* 10 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -253,7 +282,7 @@
 	  value: true
 	});
 
-	var _mongoose = __webpack_require__(8);
+	var _mongoose = __webpack_require__(7);
 
 	var _mongoose2 = _interopRequireDefault(_mongoose);
 
@@ -269,10 +298,59 @@
 	exports.default = _mongoose2.default.model('User', userSchema);
 
 /***/ },
-/* 11 */
-/***/ function(module, exports) {
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("bluebird");
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _express = __webpack_require__(2);
+
+	var _express2 = _interopRequireDefault(_express);
+
+	var _passport = __webpack_require__(3);
+
+	var _passport2 = _interopRequireDefault(_passport);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var router = _express2.default.Router();
+
+	/**
+	 * Uses passport-github2 stragety to log in users.
+	 * Checkout passport package for more information.
+	 */
+
+	/**
+	 * Redirects user to github for login.
+	 *
+	 * @returns {undefined}
+	 */
+	router.get('/github', _passport2.default.authenticate('github', { scope: ['user:email'] }), function (req, res) {
+	  // passport handles redirects.
+	});
+
+	/**
+	 * Callback url from github.
+	 *
+	 * @returns {undefined}
+	 */
+	router.get('/github/callback', _passport2.default.authenticate('github', { failureRedirect: '/' }), function (req, res) {
+	  res.render('loggedIn', { username: req.user.username });
+	});
+
+	/**
+	 * Almost impossible to get failed log in process unless there is a problem
+	 * with github.  If users have a valid github account, this will never see light of day.
+	 */
+	router.get('/failed', function (req, res) {
+	  res.render('authFailure');
+	});
+
+	exports.default = router;
 
 /***/ }
 /******/ ]);

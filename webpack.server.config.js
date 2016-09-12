@@ -12,7 +12,7 @@ fs.readdirSync(path.resolve(__dirname, 'node_modules'))
 module.exports = {
   name: 'server',
   target: 'node',
-  entry: './server/server.js',
+  entry: './server/index.js',
   output: {
     path: './server/build/',
     filename: 'serverBundle.js',
