@@ -35810,7 +35810,7 @@
 	        _react2.default.createElement(
 	          'a',
 	          { href: 'auth/github' },
-	          'Log in with Github'
+	          'Log in with GitHub'
 	        )
 	      );
 	    }

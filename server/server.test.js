@@ -1,5 +1,5 @@
 import request from 'supertest';
-import server from '../server/server';
+import server from './server';
 
 describe('Server routes from expressjs', function () {
   let serverInstance;

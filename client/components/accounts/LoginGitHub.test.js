@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 
-import LoginGitHub from '../client/components/accounts/LoginGitHub';
+import LoginGitHub from './LoginGitHub';
 
 describe('<LoginGitHub />', () => {
   it('renders login button', () => {
