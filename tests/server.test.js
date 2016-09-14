@@ -1,7 +1,7 @@
 import request from 'supertest';
-import server from './server';
+import server from '../server/server';
 
-describe('loading express from spec', function () {
+describe('Server routes from expressjs', function () {
   let serverInstance;
   beforeEach(function () {
     serverInstance = server.listen(3001, () => {
