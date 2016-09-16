@@ -11,20 +11,11 @@ import NavItem from './NavItem';
 class Nav extends Component {
   render() {
     return (
-      <nav>
-        <NavItem to='/me' itemName='meme' />
-        <div>
-          <h1>PinTogether</h1>
-        </div>
-        <div>
-          <LogInGitHub />
-        </div>
-        <p>
-          <Link to='/me'>Me</Link>
-        </p>
-        <p>
-          <Link to='/u/username'>username</Link>
-        </p>
+      <nav className='nav-container'>
+        <NavItem to='/' itemName='PinTogether' />
+        <NavItem to='/all' itemName='All' />
+        <NavItem to='/me' itemName='Me' />
+        <LogInGitHub />
       </nav>
     );
   }

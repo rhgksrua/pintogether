@@ -10,8 +10,8 @@ import React, { Component } from 'react';
 class LogInGitHub extends Component {
   render() {
     return (
-      <div>
-        <a href='auth/github'>Log in with GitHub</a>
+      <div className='nav-item'>
+        <a href='auth/github'>GitHub</a>
       </div>
     );
   }

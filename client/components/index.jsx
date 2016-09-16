@@ -4,6 +4,8 @@ import ReactDom from 'react-dom';
 import Store from './Store';
 import Routes from './Routes';
 
+import '../styles/reset.css';
+
 ReactDom.render((
   <Store>
     <Routes />

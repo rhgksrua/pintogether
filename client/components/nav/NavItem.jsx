@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-// make each nav item a component
+import '../../styles/nav.scss';
 
 class NavItem extends Component {
   render() {
@@ -13,7 +13,7 @@ class NavItem extends Component {
       <Link to={to}>{itemName}</Link> : 
       <p>{itemName}</p>; 
     return (
-      <div>
+      <div className='nav-item'>
         {navElement}
       </div>
     );
