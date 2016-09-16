@@ -44,7 +44,7 @@ app.set('views', './server/views');
 app.use(express.static('build'));
 
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   return res.render('index');
 });
 

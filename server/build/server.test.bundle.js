@@ -67,8 +67,8 @@
 	  it('responds to /', function testSlash(done) {
 	    (0, _supertest2.default)(_server2.default).get('/').expect(200, done);
 	  });
-	  it('returns 404 for invalid routes', function test404(done) {
-	    (0, _supertest2.default)(_server2.default).get('/foo/bar').expect(404, done);
+	  it('lets client to handle 404', function test404(done) {
+	    (0, _supertest2.default)(_server2.default).get('/foo/bar').expect(200, done);
 	  });
 	});
 
@@ -155,7 +155,7 @@
 
 	app.use(_express2.default.static('build'));
 
-	app.get('/', function (req, res) {
+	app.get('*', function (req, res) {
 	  return res.render('index');
 	});
 

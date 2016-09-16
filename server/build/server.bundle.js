@@ -141,7 +141,7 @@
 
 	app.use(_express2.default.static('build'));
 
-	app.get('/', function (req, res) {
+	app.get('*', function (req, res) {
 	  return res.render('index');
 	});
 

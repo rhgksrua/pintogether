@@ -15,9 +15,9 @@ describe('Server routes from expressjs', function () {
       .get('/')
       .expect(200, done);
   });
-  it('returns 404 for invalid routes', function test404(done) {
+  it('lets client to handle 404', function test404(done) {
     request(server)
       .get('/foo/bar')
-      .expect(404, done);
+      .expect(200, done);
   });
 });

@@ -1,17 +1,15 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 
 // Components
-import LogInGitHub from './accounts/LoginGitHub';
+import Nav from './nav/Nav';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <LogInGitHub />
-        <Link to='/me'>Me</Link>
+        <Nav />
         {this.props.children}
       </div>
     );
