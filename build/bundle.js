@@ -64,6 +64,8 @@
 
 	__webpack_require__(441);
 
+	__webpack_require__(443);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	_reactDom2.default.render(_react2.default.createElement(
@@ -30165,6 +30167,10 @@
 
 	var _AllPins2 = _interopRequireDefault(_AllPins);
 
+	var _CreatePin = __webpack_require__(445);
+
+	var _CreatePin2 = _interopRequireDefault(_CreatePin);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30193,6 +30199,7 @@
 	          { path: '/', component: _App2.default },
 	          _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/me', component: _UserPins2.default }),
+	          _react2.default.createElement(_reactRouter.Route, { path: '/create', component: _CreatePin2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/all', component: _AllPins2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/u/:userId', component: _UserPins2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '*', component: _NoMatch2.default })
@@ -35822,6 +35829,7 @@
 	        _react2.default.createElement(_NavItem2.default, { to: '/', itemName: 'PinTogether' }),
 	        _react2.default.createElement(_NavItem2.default, { to: '/all', itemName: 'All' }),
 	        _react2.default.createElement(_NavItem2.default, { to: '/me', itemName: 'Me' }),
+	        _react2.default.createElement(_NavItem2.default, { to: '/create', itemName: 'Create' }),
 	        _react2.default.createElement(_LoginGitHub2.default, null)
 	      );
 	    }
@@ -35994,7 +36002,7 @@
 
 
 	// module
-	exports.push([module.id, ".nav-container {\n  height: 50px;\n  background-color: #EBEBEB;\n  margin: 0; }\n  .nav-container .nav-item {\n    display: inline-block;\n    width: 100px;\n    text-align: center; }\n", ""]);
+	exports.push([module.id, ".nav-container {\n  height: 50px;\n  background-color: #EBEBEB; }\n  .nav-container .nav-item {\n    position: relative;\n    top: 50%;\n    display: inline-block;\n    padding: 0 20px;\n    transform: translateY(-50%);\n    text-align: center; }\n", ""]);
 
 	// exports
 
@@ -36616,6 +36624,101 @@
 
 	// exports
 
+
+/***/ },
+/* 443 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(444);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(435)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./index.scss", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./index.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 444 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(434)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "body {\n  font-family: 'Lato', sans-serif; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 445 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CreatePin = function (_Component) {
+	  _inherits(CreatePin, _Component);
+
+	  function CreatePin() {
+	    _classCallCheck(this, CreatePin);
+
+	    return _possibleConstructorReturn(this, (CreatePin.__proto__ || Object.getPrototypeOf(CreatePin)).apply(this, arguments));
+	  }
+
+	  _createClass(CreatePin, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: '' },
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          'Create Pins'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return CreatePin;
+	}(_react.Component);
+
+	CreatePin.propTypes = {};
+
+	exports.default = CreatePin;
 
 /***/ }
 /******/ ]);

@@ -25,8 +25,5 @@ NavItem.propTypes = {
   to: PropTypes.string,
 };
 
-
 export default NavItem;
-
-
 

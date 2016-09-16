@@ -1,11 +1,14 @@
+$nav-bg-color: #EBEBEB;
 
 .nav-container {
   height: 50px;
-  background-color: #EBEBEB;
-  margin: 0;
+  background-color: $nav-bg-color;
   .nav-item {
+    position: relative;
+    top: 50%;
     display: inline-block;
-    width: 100px;
+    padding: 0 20px;
+    transform: translateY(-50%);
     text-align: center;
   }
 }

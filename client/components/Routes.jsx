@@ -9,6 +9,7 @@ import Home from './Home';
 import Me from './accounts/Me';
 import UserPins from './accounts/UserPins';
 import AllPins from './AllPins';
+import CreatePin from './pins/CreatePin.jsx';
 
 class RouterComponent extends Component {
   render() {
@@ -17,6 +18,7 @@ class RouterComponent extends Component {
         <Route path='/' component={App}>
           <IndexRoute component={Home} />
           <Route path='/me' component={UserPins} />
+          <Route path='/create' component={CreatePin} />
           <Route path='/all' component={AllPins} />
           <Route path='/u/:userId' component={UserPins} />
           <Route path='*' component={NoMatch} />

@@ -15,6 +15,7 @@ class Nav extends Component {
         <NavItem to='/' itemName='PinTogether' />
         <NavItem to='/all' itemName='All' />
         <NavItem to='/me' itemName='Me' />
+        <NavItem to='/create' itemName='Create' />
         <LogInGitHub />
       </nav>
     );
