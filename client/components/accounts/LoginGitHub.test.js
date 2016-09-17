@@ -7,6 +7,6 @@ import LoginGitHub from './LoginGitHub';
 describe('<LoginGitHub />', () => {
   it('renders login button', () => {
     const wrapper = shallow(<LoginGitHub />);
-    expect(wrapper.text()).to.contain('Log in with GitHub');
+    expect(wrapper.text()).to.contain('GitHub');
   });
 });

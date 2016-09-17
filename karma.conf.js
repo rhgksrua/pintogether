@@ -1,15 +1,18 @@
 var webpack = require('webpack');
+var configIDE = require('./config/config')();
 
 module.exports = function(config) {
   config.set({
     frameworks: ['mocha'],
     reporters: ['mocha'],
-    port: 9876,
+    port: configIDE.port,
     colors: true,
     logLevel: config.LOG_WARN,
     autoWatch: true,
     singleRun: false,
-    browsers: ['Chrome'],
+    //browsers: ['Chrome'],
+    browsers: configIDE.browsers,
+    hostname: configIDE.hostname,
     concurrency: Infinity,
     files: [
       {pattern: 'client/**/*.test.js', watched: true},
@@ -36,6 +39,10 @@ module.exports = function(config) {
             test: /\.json$/,
             loader: 'json'
           },
+          {
+            test: /\.s?css$/,
+            loaders: ['style', 'css', 'sass']
+          }
         ]
       },
       externals: {
