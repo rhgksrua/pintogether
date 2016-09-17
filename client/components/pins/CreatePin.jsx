@@ -5,7 +5,7 @@ import React, { Component, PropTypes } from 'react';
 class CreatePin extends Component {
   render() {
     return (
-      <div className=''>
+      <div className='create-container'>
         <p>Create Pins</p>
       </div>
     );
