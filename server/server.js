@@ -43,15 +43,10 @@ app.set('views', './server/views');
 
 app.use(express.static('build'));
 
+app.use('/auth', authRoutes);
 
 app.get('*', (req, res) => {
   return res.render('index');
 });
-
-app.use('/auth', authRoutes);
-
-//app.listen(port, () => {
-//  console.log(`localhost://${port}`);
-//});
 
 export default app;

@@ -11,7 +11,7 @@ class LogInGitHub extends Component {
   render() {
     return (
       <div className='nav-item'>
-        <a href='auth/github'>GitHub</a>
+        <a href='/auth/github'>GitHub</a>
       </div>
     );
   }

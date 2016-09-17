@@ -1,7 +1,7 @@
 'use strict';
 
 import { combineReducers } from 'redux';
-import { modelReducer, formReducer } from 'react-redux-form';
+import { reducer as formReducer } from 'redux-form';
 
 import * as types from './actionTypes';
 
@@ -21,6 +21,5 @@ const initialUserState = {
 
 export default combineReducers({
   reducer,
-  user: modelReducer('user', initialUserState),
-  userForm: formReducer('user', initialUserState),
+  form: formReducer,
 });

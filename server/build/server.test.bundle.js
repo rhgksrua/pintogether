@@ -155,15 +155,11 @@
 
 	app.use(_express2.default.static('build'));
 
+	app.use('/auth', _authRoutes2.default);
+
 	app.get('*', function (req, res) {
 	  return res.render('index');
 	});
-
-	app.use('/auth', _authRoutes2.default);
-
-	//app.listen(port, () => {
-	//  console.log(`localhost://${port}`);
-	//});
 
 	exports.default = app;
 
