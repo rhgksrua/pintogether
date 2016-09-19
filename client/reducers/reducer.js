@@ -24,10 +24,11 @@ function reducer(state = {}, action) {
   }
 }
 
-function imageReducer(state = { isInvalidURL: false, isLoading: false }, action) {
+function imageReducer(state = { url: 'http://placehold.it/350x150', isInvalidURL: false, isLoading: false }, action) {
   switch(action.type) {
     case types.CHECK_IMAGE_PENDING:
       return {
+        isInvalidURL: true,
         isLoading: true,
         url: 'loading image'
       };
@@ -41,7 +42,7 @@ function imageReducer(state = { isInvalidURL: false, isLoading: false }, action)
       return {
         isLoading: false,
         isInvalidURL: true,
-        url: action.payload
+        url: 'http://placehold.it/350x150'
       };
     default:
       return state;

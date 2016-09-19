@@ -12,13 +12,14 @@ export const checkImage = (url) => {
   };
 };
 
-
-
 const checkImagePromise = (url) => {
   const options = {
     mode: 'no-cors'
   };
   return new Promise((resolve, reject) => {
+    if (!/\.gif$|\.jpg$|\.png$/.test(url)) {
+      return reject('not an image ext');
+    }
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {

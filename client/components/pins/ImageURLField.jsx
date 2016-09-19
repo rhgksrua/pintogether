@@ -22,17 +22,15 @@ class ImageURLField extends Component {
   }
   handleImage(e) {
     e.persist();
-    // loading gif.  needs to be replaced after image loads
     this.delayedHandleImage(e)
   }
   render() {
-    const { isLoading, dispatch, input: { value, onChange } } = this.props;
-    console.log('************ isloading', isLoading);
+    const { isInvalidURL, isLoading, url, dispatch, input: { value, onChange } } = this.props;
     return (
       <div>
         <FontAwesome name='rocket' /> 
         <div>
-          {isLoading &
+          {isLoading &&
           <p>LOADING</p>
           }
         </div>
@@ -40,7 +38,7 @@ class ImageURLField extends Component {
           {isLoading ?
             <FontAwesome name='rocket' /> 
             :
-            <img src={value} />
+            <img src={isInvalidURL ? url : value} />
           }
         </div>
         <div>

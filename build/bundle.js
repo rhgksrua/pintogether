@@ -62,9 +62,9 @@
 
 	var _Routes2 = _interopRequireDefault(_Routes);
 
-	__webpack_require__(455);
+	__webpack_require__(459);
 
-	__webpack_require__(457);
+	__webpack_require__(461);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23602,12 +23602,13 @@
 	}
 
 	function imageReducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? { isInvalidURL: false, isLoading: false } : arguments[0];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? { url: 'http://placehold.it/350x150', isInvalidURL: false, isLoading: false } : arguments[0];
 	  var action = arguments[1];
 
 	  switch (action.type) {
 	    case types.CHECK_IMAGE_PENDING:
 	      return {
+	        isInvalidURL: true,
 	        isLoading: true,
 	        url: 'loading image'
 	      };
@@ -23621,7 +23622,7 @@
 	      return {
 	        isLoading: false,
 	        isInvalidURL: true,
-	        url: action.payload
+	        url: 'http://placehold.it/350x150'
 	      };
 	    default:
 	      return state;
@@ -38925,7 +38926,7 @@
 
 	var _actions = __webpack_require__(454);
 
-	var _ImageURLField = __webpack_require__(459);
+	var _ImageURLField = __webpack_require__(457);
 
 	var _ImageURLField2 = _interopRequireDefault(_ImageURLField);
 
@@ -38953,7 +38954,10 @@
 	      var handleSubmit = _props.handleSubmit;
 	      var title = _props.title;
 	      var imageURL = _props.imageURL;
-	      var isLoading = this.props.imageReducer.isLoading;
+	      var _props$imageReducer = this.props.imageReducer;
+	      var isLoading = _props$imageReducer.isLoading;
+	      var url = _props$imageReducer.url;
+	      var isInvalidURL = _props$imageReducer.isInvalidURL;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -38980,7 +38984,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            null,
-	            _react2.default.createElement(_reduxForm.Field, { name: 'imageURLField', component: _ImageURLField2.default, props: { isLoading: isLoading } })
+	            _react2.default.createElement(_reduxForm.Field, { name: 'imageURLField', component: _ImageURLField2.default, props: { isLoading: isLoading, url: url, isInvalidURL: isInvalidURL } })
 	          ),
 	          _react2.default.createElement(
 	            'button',
@@ -40727,7 +40731,7 @@
 	});
 	exports.checkImage = undefined;
 
-	var _bluebird = __webpack_require__(460);
+	var _bluebird = __webpack_require__(455);
 
 	var _bluebird2 = _interopRequireDefault(_bluebird);
 
@@ -40751,6 +40755,9 @@
 	    mode: 'no-cors'
 	  };
 	  return new _bluebird2.default(function (resolve, reject) {
+	    if (!/\.gif$|\.jpg$|\.png$/.test(url)) {
+	      return reject('not an image ext');
+	    }
 	    (0, _isomorphicFetch2.default)(url, options).then(function (response) {
 	      if (response.status >= 400) {
 	        throw new Error(url);
@@ -40768,211 +40775,6 @@
 
 /***/ },
 /* 455 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(456);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(441)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./reset.css", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./reset.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 456 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(440)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "/* http://meyerweb.com/eric/tools/css/reset/ \n * v2.0 | 20110126\n * License: none (public domain)\n **/\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline; }\n\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, menu, nav, section {\n  display: block; }\n\nbody {\n  line-height: 1; }\n\nol, ul {\n  list-style: none; }\n\nblockquote, q {\n  quotes: none; }\n\nblockquote:before, blockquote:after,\nq:before, q:after {\n  content: '';\n  content: none; }\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 457 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(458);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(441)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./index.scss", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./index.scss");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 458 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(440)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "body {\n  font-family: 'Lato', sans-serif; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 459 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reduxForm = __webpack_require__(203);
-
-	var _reactRedux = __webpack_require__(173);
-
-	var _debounce = __webpack_require__(448);
-
-	var _debounce2 = _interopRequireDefault(_debounce);
-
-	var _reactFontawesome = __webpack_require__(462);
-
-	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
-
-	var _actions = __webpack_require__(454);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ImageURLField = function (_Component) {
-	  _inherits(ImageURLField, _Component);
-
-	  function ImageURLField(props) {
-	    _classCallCheck(this, ImageURLField);
-
-	    var _this = _possibleConstructorReturn(this, (ImageURLField.__proto__ || Object.getPrototypeOf(ImageURLField)).call(this));
-
-	    _this.handleImage = _this.handleImage.bind(_this);
-	    _this.delayedHandleImage = (0, _debounce2.default)(_this.delayedHandleImage.bind(_this), 3000);
-	    return _this;
-	  }
-
-	  _createClass(ImageURLField, [{
-	    key: 'delayedHandleImage',
-	    value: function delayedHandleImage(e) {
-	      var _props = this.props;
-	      var dispatch = _props.meta.dispatch;
-	      var _props$input = _props.input;
-	      var value = _props$input.value;
-	      var onChange = _props$input.onChange;
-
-	      var url = e.target.value;
-	      onChange(url);
-	      dispatch((0, _actions.checkImage)(url));
-	    }
-	  }, {
-	    key: 'handleImage',
-	    value: function handleImage(e) {
-	      e.persist();
-	      // loading gif.  needs to be replaced after image loads
-	      this.delayedHandleImage(e);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props2 = this.props;
-	      var isLoading = _props2.isLoading;
-	      var dispatch = _props2.dispatch;
-	      var _props2$input = _props2.input;
-	      var value = _props2$input.value;
-	      var onChange = _props2$input.onChange;
-
-	      console.log('************ isloading', isLoading);
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(_reactFontawesome2.default, { name: 'rocket' }),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          isLoading & _react2.default.createElement(
-	            'p',
-	            null,
-	            'LOADING'
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          isLoading ? _react2.default.createElement(_reactFontawesome2.default, { name: 'rocket' }) : _react2.default.createElement('img', { src: value })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            'current value ',
-	            value
-	          ),
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'imageURL' },
-	            'Image URL'
-	          ),
-	          _react2.default.createElement('input', { type: 'text', onChange: this.handleImage })
-	        )
-	      );
-	    }
-	  }]);
-
-	  return ImageURLField;
-	}(_react.Component);
-
-	exports.default = ImageURLField;
-
-/***/ },
-/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process, global, setImmediate) {/* @preserve
@@ -46573,10 +46375,10 @@
 
 	},{"./es5":13}]},{},[4])(4)
 	});                    ;if (typeof window !== 'undefined' && window !== null) {                               window.P = window.Promise;                                                     } else if (typeof self !== 'undefined' && self !== null) {                             self.P = self.Promise;                                                         }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29), (function() { return this; }()), __webpack_require__(461).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29), (function() { return this; }()), __webpack_require__(456).setImmediate))
 
 /***/ },
-/* 461 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(29).nextTick;
@@ -46655,10 +46457,135 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(461).setImmediate, __webpack_require__(461).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(456).setImmediate, __webpack_require__(456).clearImmediate))
 
 /***/ },
-/* 462 */
+/* 457 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reduxForm = __webpack_require__(203);
+
+	var _reactRedux = __webpack_require__(173);
+
+	var _debounce = __webpack_require__(448);
+
+	var _debounce2 = _interopRequireDefault(_debounce);
+
+	var _reactFontawesome = __webpack_require__(458);
+
+	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
+
+	var _actions = __webpack_require__(454);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ImageURLField = function (_Component) {
+	  _inherits(ImageURLField, _Component);
+
+	  function ImageURLField(props) {
+	    _classCallCheck(this, ImageURLField);
+
+	    var _this = _possibleConstructorReturn(this, (ImageURLField.__proto__ || Object.getPrototypeOf(ImageURLField)).call(this));
+
+	    _this.handleImage = _this.handleImage.bind(_this);
+	    _this.delayedHandleImage = (0, _debounce2.default)(_this.delayedHandleImage.bind(_this), 3000);
+	    return _this;
+	  }
+
+	  _createClass(ImageURLField, [{
+	    key: 'delayedHandleImage',
+	    value: function delayedHandleImage(e) {
+	      var _props = this.props;
+	      var dispatch = _props.meta.dispatch;
+	      var _props$input = _props.input;
+	      var value = _props$input.value;
+	      var onChange = _props$input.onChange;
+
+	      var url = e.target.value;
+	      onChange(url);
+	      dispatch((0, _actions.checkImage)(url));
+	    }
+	  }, {
+	    key: 'handleImage',
+	    value: function handleImage(e) {
+	      e.persist();
+	      this.delayedHandleImage(e);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props2 = this.props;
+	      var isInvalidURL = _props2.isInvalidURL;
+	      var isLoading = _props2.isLoading;
+	      var url = _props2.url;
+	      var dispatch = _props2.dispatch;
+	      var _props2$input = _props2.input;
+	      var value = _props2$input.value;
+	      var onChange = _props2$input.onChange;
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_reactFontawesome2.default, { name: 'rocket' }),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          isLoading && _react2.default.createElement(
+	            'p',
+	            null,
+	            'LOADING'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          isLoading ? _react2.default.createElement(_reactFontawesome2.default, { name: 'rocket' }) : _react2.default.createElement('img', { src: isInvalidURL ? url : value })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            'current value ',
+	            value
+	          ),
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'imageURL' },
+	            'Image URL'
+	          ),
+	          _react2.default.createElement('input', { type: 'text', onChange: this.handleImage })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ImageURLField;
+	}(_react.Component);
+
+	exports.default = ImageURLField;
+
+/***/ },
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46769,6 +46696,86 @@
 	  }
 	});
 	module.exports = exports['default'];
+
+/***/ },
+/* 459 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(460);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(441)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./reset.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./reset.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 460 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(440)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "/* http://meyerweb.com/eric/tools/css/reset/ \n * v2.0 | 20110126\n * License: none (public domain)\n **/\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline; }\n\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, menu, nav, section {\n  display: block; }\n\nbody {\n  line-height: 1; }\n\nol, ul {\n  list-style: none; }\n\nblockquote, q {\n  quotes: none; }\n\nblockquote:before, blockquote:after,\nq:before, q:after {\n  content: '';\n  content: none; }\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 461 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(462);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(441)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./index.scss", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./index.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 462 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(440)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "body {\n  font-family: 'Lato', sans-serif; }\n", ""]);
+
+	// exports
+
 
 /***/ }
 /******/ ]);

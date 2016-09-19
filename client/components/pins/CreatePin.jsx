@@ -16,7 +16,7 @@ class CreatePin extends Component {
   }
   render() {
     const { handleSubmit, title, imageURL } = this.props;
-    const { isLoading } = this.props.imageReducer;
+    const { isLoading, url, isInvalidURL } = this.props.imageReducer;
     return (
       <div className='create-container'>
         <form onSubmit={handleSubmit((...args) => console.log(args))}>
@@ -25,7 +25,7 @@ class CreatePin extends Component {
             <Field name='title' component='input' type='text' />
           </div>
           <div>
-            <Field name='imageURLField' component={ImageURLField} props={{ isLoading }}/>
+            <Field name='imageURLField' component={ImageURLField} props={{ isLoading, url, isInvalidURL }}/>
           </div>
           <button type='submit'>Submit</button>
         </form>
