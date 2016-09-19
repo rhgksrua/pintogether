@@ -45,6 +45,10 @@ app.use(express.static('build'));
 
 app.use('/auth', authRoutes);
 
+app.get('/test', (req, res) => {
+  return res.send(404);
+});
+
 app.get('*', (req, res) => {
   return res.render('index');
 });

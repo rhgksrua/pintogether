@@ -1,3 +1,7 @@
 'use strict';
 
 export const NONE = 'NONE';
+export const CHECK_IMAGE = 'CHECK_IMAGE';
+export const CHECK_IMAGE_PENDING = 'CHECK_IMAGE_PENDING';
+export const CHECK_IMAGE_FULFILLED = 'CHECK_IMAGE_FULFILLED';
+export const CHECK_IMAGE_REJECTED = 'CHECK_IMAGE_REJECTED';

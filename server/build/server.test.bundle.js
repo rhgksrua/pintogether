@@ -157,6 +157,10 @@
 
 	app.use('/auth', _authRoutes2.default);
 
+	app.get('/test', function (req, res) {
+	  return res.send(404);
+	});
+
 	app.get('*', function (req, res) {
 	  return res.render('index');
 	});
