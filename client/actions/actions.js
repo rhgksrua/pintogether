@@ -1,7 +1,6 @@
 'use strict';
 
 import Promise from 'bluebird';
-//import fetch from 'isomorphic-fetch';
 import 'isomorphic-fetch';
 
 export const checkImage = (url) => {
@@ -32,7 +31,6 @@ export const checkImagePromise = (url) => {
         return resolve(url);
       })
       .catch((err) => {
-        //console.log(err.message);
         reject(err);
       });
   });

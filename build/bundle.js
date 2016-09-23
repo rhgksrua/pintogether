@@ -32446,6 +32446,11 @@
 	var ADD_USER_STATUS_FULFILLED = exports.ADD_USER_STATUS_FULFILLED = 'ADD_USER_STATUS_FULFILLED';
 	var ADD_USER_STATUS_REJECTED = exports.ADD_USER_STATUS_REJECTED = 'ADD_USER_STATUS_REJECTED';
 
+	var CREATE_PIN = exports.CREATE_PIN = 'CREATE_PIN';
+	var CREATE_PIN_PENDING = exports.CREATE_PIN_PENDING = 'CREATE_PIN_PENDING';
+	var CREATE_PIN_FULFILLED = exports.CREATE_PIN_FULFILLED = 'CREATE_PIN_FULFILLED';
+	var CREATE_PIN_REJECTED = exports.CREATE_PIN_REJECTED = 'CREATE_PIN_REJECTED';
+
 	var REMOVE_USER_STATUS = exports.REMOVE_USER_STATUS = 'REMOVE_USER_STATUS';
 
 /***/ },
@@ -45232,7 +45237,6 @@
 	  _createClass(CreatePin, [{
 	    key: 'render',
 	    value: function render() {
-	      //const { handleSubmit, title, imageURL } = this.props;
 	      var _props$imageReducer = this.props.imageReducer;
 	      var isLoading = _props$imageReducer.isLoading;
 	      var url = _props$imageReducer.url;
@@ -46547,7 +46551,7 @@
 	    }
 	  };
 	};
-	//import fetch from 'isomorphic-fetch';
+
 	var checkImagePromise = exports.checkImagePromise = function checkImagePromise(url) {
 	  var options = {
 	    mode: 'no-cors'
@@ -46564,7 +46568,6 @@
 	    }).then(function (blob) {
 	      return resolve(url);
 	    }).catch(function (err) {
-	      //console.log(err.message);
 	      reject(err);
 	    });
 	  });
@@ -46579,6 +46582,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.CreatePinFields = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -46598,7 +46602,7 @@
 
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
-	var _actions = __webpack_require__(458);
+	var _createPinActions = __webpack_require__(466);
 
 	var _ImageURLField = __webpack_require__(460);
 
@@ -46612,13 +46616,14 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var CreatePinFields = function (_Component) {
+	var CreatePinFields = exports.CreatePinFields = function (_Component) {
 	  _inherits(CreatePinFields, _Component);
 
-	  function CreatePinFields() {
+	  function CreatePinFields(props) {
 	    _classCallCheck(this, CreatePinFields);
 
-	    return _possibleConstructorReturn(this, (CreatePinFields.__proto__ || Object.getPrototypeOf(CreatePinFields)).call(this));
+	    return _possibleConstructorReturn(this, (CreatePinFields.__proto__ || Object.getPrototypeOf(CreatePinFields)).call(this, props));
+	    //this.handleSubmit = this.handleSubmit.bind(this);
 	  }
 
 	  _createClass(CreatePinFields, [{
@@ -46626,8 +46631,12 @@
 	    value: function render() {
 	      var _props = this.props;
 	      var handleSubmit = _props.handleSubmit;
+	      var myHandleSubmit = _props.myHandleSubmit;
+	      var onSubmit = _props.onSubmit;
 	      var title = _props.title;
 	      var imageURL = _props.imageURL;
+	      var pristine = _props.pristine;
+	      var submitting = _props.submitting;
 	      var _props$imageReducer = this.props.imageReducer;
 	      var isLoading = _props$imageReducer.isLoading;
 	      var url = _props$imageReducer.url;
@@ -46638,13 +46647,7 @@
 	        { className: 'create-container' },
 	        _react2.default.createElement(
 	          'form',
-	          { onSubmit: handleSubmit(function () {
-	              for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	                args[_key] = arguments[_key];
-	              }
-
-	              return console.log(args);
-	            }) },
+	          { onSubmit: handleSubmit(myHandleSubmit) },
 	          _react2.default.createElement(
 	            'div',
 	            null,
@@ -46662,7 +46665,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'button',
-	            { type: 'submit' },
+	            { type: 'submit', disabled: pristine || submitting },
 	            'Submit'
 	          )
 	        )
@@ -46675,7 +46678,7 @@
 
 	CreatePinFields.propTypes = {};
 
-	CreatePinFields = (0, _reduxForm.reduxForm)({
+	exports.CreatePinFields = CreatePinFields = (0, _reduxForm.reduxForm)({
 	  form: 'newPin'
 	})(CreatePinFields);
 
@@ -46697,15 +46700,19 @@
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
-	    checkImage: function checkImage(url) {
-	      dispatch((0, _actions.checkImage)(url));
+	    myHandleSubmit: function myHandleSubmit(formValues) {
+	      console.log('******** formValues', formValues);
+	      var title = formValues.title;
+	      var imageURLField = formValues.imageURLField;
+
+	      dispatch((0, _createPinActions.createPin)(title, imageURLField));
 	    }
 	  };
 	};
 
-	CreatePinFields = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CreatePinFields);
+	var CreatePinFieldsComponent = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CreatePinFields);
 
-	exports.default = CreatePinFields;
+	exports.default = CreatePinFieldsComponent;
 
 /***/ },
 /* 460 */
@@ -46996,6 +47003,65 @@
 
 	// exports
 
+
+/***/ },
+/* 466 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.createPinPromise = exports.createPin = undefined;
+
+	var _bluebird = __webpack_require__(437);
+
+	var _bluebird2 = _interopRequireDefault(_bluebird);
+
+	__webpack_require__(439);
+
+	var _actionTypes = __webpack_require__(371);
+
+	var types = _interopRequireWildcard(_actionTypes);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var createPin = exports.createPin = function createPin(title, url) {
+	  return {
+	    type: types.CREATE_PIN,
+	    payload: {
+	      promise: createPinPromise(title, url)
+	    }
+	  };
+	};
+
+	var createPinPromise = exports.createPinPromise = function createPinPromise(title, url) {
+	  var options = {
+	    headers: {
+	      'Content-Type': 'application/json'
+	    },
+	    method: 'POST',
+	    credentials: 'same-origin',
+	    body: JSON.stringify({ title: title, url: url })
+	  };
+	  var apiUrl = 'pins';
+	  return new _bluebird2.default(function (resolve, reject) {
+	    fetch(apiUrl, options).then(function (res) {
+	      if (res.status >= 400) throw new Error('failed to create pin');
+	      return res.json();
+	    }).then(function (pin) {
+	      console.log('returned pin from server', pin);
+	      // pin should be an object with title and pin and status
+	      if (pin.error) throw new Error('failed to create pin (db)');
+	      return resolve(pin);
+	    }).catch(function (err) {
+	      reject(err);
+	    });
+	  });
+	};
 
 /***/ }
 /******/ ]);

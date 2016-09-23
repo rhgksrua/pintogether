@@ -437,6 +437,7 @@
 	  var title = _req$body.title;
 	  var url = _req$body.url;
 
+	  console.log(req.body);
 	  var newPin = new _Pin2.default();
 	  // need to replace username and id
 	  newPin.username = 'john';
@@ -444,7 +445,10 @@
 	  newPin.pin.title = title;
 	  newPin.pin.url = url;
 	  newPin.save(function (err) {
-	    if (err) return res.json({ error: true, message: 'new pin db error' });
+	    if (err) {
+	      console.log(err.message);
+	      return res.json({ error: true, message: 'new pin db error' });
+	    }
 
 	    return res.json({
 	      completed: true,

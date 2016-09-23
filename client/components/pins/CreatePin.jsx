@@ -16,7 +16,6 @@ export class CreatePin extends Component {
     super();
   }
   render() {
-    //const { handleSubmit, title, imageURL } = this.props;
     const { isLoading, url, isInvalidURL } = this.props.imageReducer;
     return (
       <div className='create-container'>

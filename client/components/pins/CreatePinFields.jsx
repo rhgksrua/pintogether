@@ -6,19 +6,20 @@ import { connect } from 'react-redux';
 import Promise from 'es6-promise';
 import fetch from 'isomorphic-fetch';
 
-import { checkImage } from '../../actions/actions';
+import { createPin } from '../../actions/createPinActions';
 import ImageURLField from './ImageURLField';
 
-class CreatePinFields extends Component {
-  constructor() {
-    super();
+export class CreatePinFields extends Component {
+  constructor(props) {
+    super(props);
+    //this.handleSubmit = this.handleSubmit.bind(this);
   }
   render() {
-    const { handleSubmit, title, imageURL } = this.props;
+    const { handleSubmit, myHandleSubmit, onSubmit, title, imageURL, pristine, submitting } = this.props;
     const { isLoading, url, isInvalidURL } = this.props.imageReducer;
     return (
       <div className='create-container'>
-        <form onSubmit={handleSubmit((...args) => console.log(args))}>
+        <form onSubmit={handleSubmit(myHandleSubmit)}>
           <div>
             <label htmlFor='title'>Title</label>
             <Field name='title' component='input' type='text' />
@@ -26,7 +27,7 @@ class CreatePinFields extends Component {
           <div>
             <Field name='imageURLField' component={ImageURLField} props={{ isLoading, url, isInvalidURL }}/>
           </div>
-          <button type='submit'>Submit</button>
+          <button type='submit' disabled={pristine || submitting}>Submit</button>
         </form>
       </div>
     );
@@ -54,15 +55,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    checkImage: (url) => {
-      dispatch(checkImage(url));
+    myHandleSubmit(formValues) {
+      console.log('******** formValues', formValues);
+      const { title, imageURLField } = formValues;
+      dispatch(createPin(title, imageURLField));
     }
-  }
+  };
 }
 
-CreatePinFields = connect(mapStateToProps, mapDispatchToProps)(CreatePinFields);
+const CreatePinFieldsComponent = connect(mapStateToProps, mapDispatchToProps)(CreatePinFields);
 
-export default CreatePinFields;
+export default CreatePinFieldsComponent;
 
 
 

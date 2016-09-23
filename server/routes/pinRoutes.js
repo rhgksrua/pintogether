@@ -20,6 +20,7 @@ router.get('/', getPins);
  */
 function addPins(req, res) {
   const { title, url } = req.body;
+  console.log(req.body);
   const newPin = new Pin();
   // need to replace username and id
   newPin.username = 'john';
@@ -27,7 +28,10 @@ function addPins(req, res) {
   newPin.pin.title = title;
   newPin.pin.url = url;
   newPin.save(err => {
-    if (err) return res.json({ error: true, message: 'new pin db error' });
+    if (err) {
+      console.log(err.message);
+      return res.json({ error: true, message: 'new pin db error' });
+    }
 
     return res.json({ 
       completed: true,
