@@ -1,7 +1,8 @@
 'use strict';
 
 import Promise from 'bluebird';
-import fetch from 'isomorphic-fetch';
+//import fetch from 'isomorphic-fetch';
+import 'isomorphic-fetch';
 
 export const checkImage = (url) => {
   return {
@@ -12,28 +13,27 @@ export const checkImage = (url) => {
   };
 };
 
-const checkImagePromise = (url) => {
+export const checkImagePromise = (url) => {
   const options = {
     mode: 'no-cors'
   };
   return new Promise((resolve, reject) => {
     if (!/\.gif$|\.jpg$|\.png$/.test(url)) {
-      return reject('not an image ext');
+      return reject(new Error('invalid ext'));
     }
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error(url);
+          throw new Error('url 404');
         }
         return response.blob();
       })
       .then(blob => {
-        console.log('blob type', blob);
         return resolve(url);
       })
       .catch((err) => {
-        console.log(err.message);
-        reject(err.message);
+        //console.log(err.message);
+        reject(err);
       });
   });
 };

@@ -46,6 +46,7 @@ const gitHub = (passport) => {
       });
     }
   ));
+  return passport;
 };
 
 export default gitHub;

@@ -3,14 +3,13 @@ var configIDE = require('./config/config')();
 
 module.exports = function(config) {
   config.set({
-    frameworks: ['mocha'],
+    frameworks: ['mocha', 'sinon'],
     reporters: ['mocha'],
     port: configIDE.port,
     colors: true,
     logLevel: config.LOG_WARN,
     autoWatch: true,
     singleRun: false,
-    //browsers: ['Chrome'],
     browsers: configIDE.browsers,
     hostname: configIDE.hostname,
     concurrency: Infinity,
@@ -27,6 +26,10 @@ module.exports = function(config) {
       },
       module: {
         loaders: [
+          {
+            test: /sinon\/pkg\/sinon/,
+            loader: "imports?define=>false,require=>false"
+          },
           {
             test: /.jsx?$/,
             exclude: /node_modules/,
@@ -58,7 +61,6 @@ module.exports = function(config) {
         })
       ]
     },
-
     webpackMiddleware: {
       stats: {
         chunks: false,

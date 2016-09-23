@@ -1,6 +1,9 @@
 import request from 'supertest';
 import server from './server';
 
+import './routes/pinRoutes.test';
+import './lib/isAuthenticated.test';
+
 describe('Server routes from expressjs', function () {
   let serverInstance;
   beforeEach(function () {

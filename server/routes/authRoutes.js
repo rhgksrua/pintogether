@@ -32,7 +32,7 @@ router.get('/github/callback', passport.authenticate('github', {failureRedirect:
   
 /**
  * Almost impossible to get failed log in process unless there is a problem
- * with github.  If users have a valid github account, this will never see light of day.
+ * with github.  If users have a valid github account, this will never see the light of day.
  */
 router.get('/failed', (req, res) => {
   res.render('authFailure');

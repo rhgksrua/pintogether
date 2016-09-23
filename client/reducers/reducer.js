@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import * as types from './actionTypes';
+import userReducer from './userReducer';
 
 function reducer(state = {}, action) {
   switch(action.type) {
@@ -23,6 +24,8 @@ function reducer(state = {}, action) {
       return state;
   }
 }
+
+
 
 function imageReducer(state = { url: 'http://placehold.it/350x150', isInvalidURL: false, isLoading: false }, action) {
   switch(action.type) {
@@ -45,14 +48,17 @@ function imageReducer(state = { url: 'http://placehold.it/350x150', isInvalidURL
         url: 'http://placehold.it/350x150'
       };
     default:
-      return state;
+      return {
+        isLoading: false,
+        isInvalidURL: true,
+        url: 'http://placehold.it/350x150'
+      };
   }
 }
 
 function createPin(state = {}, action) {
   switch(action.type) {
     case 'CHECK_IMAGE':
-      console.log('reducer CHECK_IMAGE', action);
       return {
         payload: action.payload
       };
@@ -61,13 +67,9 @@ function createPin(state = {}, action) {
   }
 }
 
-const initialUserState = {
-  firstName: '',
-  lastName: '',
-};
-
 export default combineReducers({
   reducer,
+  userReducer,
   createPin,
   imageReducer,
   form: formReducer,
