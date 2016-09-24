@@ -6,13 +6,16 @@ import { CreatePinFields } from './CreatePinFields';
 import { Field } from 'redux-form';
 
 describe('<CreatePinField />', () => {
-  let wrapper;
   let props;
   beforeEach(() => {
     props = {
       handleSubmit: () => {},
+      myHandleSubmit: () => {},
+      onSubmit: () => {},
       title: 'test title',
       imageURL: 'test url',
+      pristine: true,
+      submitting: false,
       imageReducer: {
         isLoading: false,
         url: 'imagereducer image',
@@ -20,20 +23,20 @@ describe('<CreatePinField />', () => {
       }
     };
   });
-  it('renders CreatePin component with <Field />', () => {
-    //const wrapper = shallow(<CreatePinFields {...props} />);
+  it('renders reactElements without any children elements', () => {
     const wrapper = shallow(<CreatePinFields {...props} />);
     expect(wrapper.contains([
-      <Field name='CreatePinFieldTestName' component='input' />,
-      <button type='submit'>Submit</button>
-    ]));
+      <label htmlFor='title'>Title</label>
+    ])).to.equal(true);
   });
-  it('handles redux form submit', () => {
-    //const props = wrapper.props();
+  it('renders two <Field /> component, title and image url', () => {
+    const wrapper = shallow(<CreatePinFields {...props} />);
+    expect(wrapper.find(Field)).to.have.length(2);
+  });
+  it('handles redux form submit when clicked on Submit', () => {
     const handleSubmit = sinon.spy();
     const newProps = Object.assign(props, { handleSubmit });
     const wrapper = shallow(<CreatePinFields { ...newProps } />);
-    //const handleSubmitMethod = wrapper.instance().handleSubmit();
     wrapper.find('button').simulate('click');
     expect(handleSubmit.calledOnce);
   }); 

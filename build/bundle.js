@@ -46623,7 +46623,6 @@
 	    _classCallCheck(this, CreatePinFields);
 
 	    return _possibleConstructorReturn(this, (CreatePinFields.__proto__ || Object.getPrototypeOf(CreatePinFields)).call(this, props));
-	    //this.handleSubmit = this.handleSubmit.bind(this);
 	  }
 
 	  _createClass(CreatePinFields, [{
@@ -46678,7 +46677,7 @@
 
 	CreatePinFields.propTypes = {};
 
-	exports.CreatePinFields = CreatePinFields = (0, _reduxForm.reduxForm)({
+	var CreatePinFieldsFormWrapper = (0, _reduxForm.reduxForm)({
 	  form: 'newPin'
 	})(CreatePinFields);
 
@@ -46701,7 +46700,6 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
 	    myHandleSubmit: function myHandleSubmit(formValues) {
-	      console.log('******** formValues', formValues);
 	      var title = formValues.title;
 	      var imageURLField = formValues.imageURLField;
 
@@ -46710,9 +46708,7 @@
 	  };
 	};
 
-	var CreatePinFieldsComponent = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CreatePinFields);
-
-	exports.default = CreatePinFieldsComponent;
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CreatePinFieldsFormWrapper);
 
 /***/ },
 /* 460 */

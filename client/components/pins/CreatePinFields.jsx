@@ -12,7 +12,6 @@ import ImageURLField from './ImageURLField';
 export class CreatePinFields extends Component {
   constructor(props) {
     super(props);
-    //this.handleSubmit = this.handleSubmit.bind(this);
   }
   render() {
     const { handleSubmit, myHandleSubmit, onSubmit, title, imageURL, pristine, submitting } = this.props;
@@ -37,7 +36,7 @@ export class CreatePinFields extends Component {
 CreatePinFields.propTypes = {
 };
 
-CreatePinFields = reduxForm({
+const CreatePinFieldsFormWrapper = reduxForm({
   form: 'newPin',
 })(CreatePinFields);
 
@@ -56,16 +55,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     myHandleSubmit(formValues) {
-      console.log('******** formValues', formValues);
       const { title, imageURLField } = formValues;
       dispatch(createPin(title, imageURLField));
     }
   };
 }
 
-const CreatePinFieldsComponent = connect(mapStateToProps, mapDispatchToProps)(CreatePinFields);
-
-export default CreatePinFieldsComponent;
-
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePinFieldsFormWrapper);
 
 
