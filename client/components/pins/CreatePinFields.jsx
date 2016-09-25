@@ -14,8 +14,20 @@ export class CreatePinFields extends Component {
     super(props);
   }
   render() {
-    const { handleSubmit, myHandleSubmit, onSubmit, title, imageURL, pristine, submitting } = this.props;
-    const { isLoading, url, isInvalidURL } = this.props.imageReducer;
+    const { 
+      handleSubmit, 
+      myHandleSubmit, 
+      onSubmit, 
+      title, 
+      imageURL, 
+      pristine, 
+      submitting,
+      imageReducer: {
+        isLoading,
+        url,
+        isInvalidURL
+      }
+    } = this.props;
     return (
       <div className='create-container'>
         <form onSubmit={handleSubmit(myHandleSubmit)}>
@@ -36,6 +48,14 @@ export class CreatePinFields extends Component {
 CreatePinFields.propTypes = {
 };
 
+
+/**
+ * CreatePinFieldsFormWrapper
+ *
+ * Wraps React component with reduxForm
+ *
+ * @returns reduxForm object
+ */
 const CreatePinFieldsFormWrapper = reduxForm({
   form: 'newPin',
 })(CreatePinFields);

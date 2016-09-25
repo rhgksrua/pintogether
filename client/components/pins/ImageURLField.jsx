@@ -8,9 +8,9 @@ import FontAwesome from 'react-fontawesome';
 
 import { checkImage } from '../../actions/actions';
 
-class ImageURLField extends Component {
+export class ImageURLField extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.handleImage = this.handleImage.bind(this);
     this.delayedHandleImage = debounce(this.delayedHandleImage.bind(this), 1000);
   }
@@ -27,11 +27,9 @@ class ImageURLField extends Component {
   }
   render() {
     return (
-      <div>
-        <div>
-          <label htmlFor='imageURL'>Image URL</label>
-          <input type='text' onChange={this.handleImage} />
-        </div>
+      <div className='image-url-container'>
+        <label htmlFor='imageURL'>Image URL</label>
+        <input type='text' onChange={this.handleImage} />
       </div>
     );
   }

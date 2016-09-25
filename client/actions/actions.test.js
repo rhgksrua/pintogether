@@ -33,17 +33,6 @@ describe('actions.js', () => {
       const expected = checkImagePromise('cat.gif');
       return expect(expected).to.eventually.equal('cat.gif');
     });
-    xit('should resolve promise with image url', () => {
-      const expected = {
-        type: 'CHECK_IMAGE',
-        payload: {
-          url: 'pin url'
-        }
-      };
-      fakeServer.requests[0].respond(200);
-      const actual = checkImage('url.gif');
-      expect(actual).to.equal(expected);
-    });
   });
 });
 

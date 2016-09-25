@@ -7,7 +7,7 @@ mongoose.Promise = bluebird;
 const pinSchema = mongoose.Schema({
   username: { type: String, required: true },
   userId: { type: String, required: true },
-  likes: { type: Number, default: 0 },
+  likes: [{userId: { type: String, required: true }}],
   date: { type: Date, default: Date.now },
   pin: {
     title: { type: String, required: true },

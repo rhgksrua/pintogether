@@ -46636,7 +46636,7 @@
 	      var imageURL = _props.imageURL;
 	      var pristine = _props.pristine;
 	      var submitting = _props.submitting;
-	      var _props$imageReducer = this.props.imageReducer;
+	      var _props$imageReducer = _props.imageReducer;
 	      var isLoading = _props$imageReducer.isLoading;
 	      var url = _props$imageReducer.url;
 	      var isInvalidURL = _props$imageReducer.isInvalidURL;
@@ -46677,6 +46677,13 @@
 
 	CreatePinFields.propTypes = {};
 
+	/**
+	 * CreatePinFieldsFormWrapper
+	 *
+	 * Wraps React component with reduxForm
+	 *
+	 * @returns reduxForm object
+	 */
 	var CreatePinFieldsFormWrapper = (0, _reduxForm.reduxForm)({
 	  form: 'newPin'
 	})(CreatePinFields);
@@ -46719,6 +46726,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.ImageURLField = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -46748,13 +46756,13 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var ImageURLField = function (_Component) {
+	var ImageURLField = exports.ImageURLField = function (_Component) {
 	  _inherits(ImageURLField, _Component);
 
 	  function ImageURLField(props) {
 	    _classCallCheck(this, ImageURLField);
 
-	    var _this = _possibleConstructorReturn(this, (ImageURLField.__proto__ || Object.getPrototypeOf(ImageURLField)).call(this));
+	    var _this = _possibleConstructorReturn(this, (ImageURLField.__proto__ || Object.getPrototypeOf(ImageURLField)).call(this, props));
 
 	    _this.handleImage = _this.handleImage.bind(_this);
 	    _this.delayedHandleImage = (0, _debounce2.default)(_this.delayedHandleImage.bind(_this), 1000);
@@ -46787,17 +46795,13 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'image-url-container' },
 	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'imageURL' },
-	            'Image URL'
-	          ),
-	          _react2.default.createElement('input', { type: 'text', onChange: this.handleImage })
-	        )
+	          'label',
+	          { htmlFor: 'imageURL' },
+	          'Image URL'
+	        ),
+	        _react2.default.createElement('input', { type: 'text', onChange: this.handleImage })
 	      );
 	    }
 	  }]);
