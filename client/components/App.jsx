@@ -12,9 +12,11 @@ class App extends Component {
     this.props.checkLogin();
   }
   render() {
+    // Check username
+    const { username, loggedIn } = this.props;
     return (
       <div>
-        <Nav />
+        <Nav username={username} loggedIn={loggedIn} />
         {this.props.children}
       </div>
     );

@@ -38132,10 +38132,15 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      // Check username
+	      var _props = this.props;
+	      var username = _props.username;
+	      var loggedIn = _props.loggedIn;
+
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_Nav2.default, null),
+	        _react2.default.createElement(_Nav2.default, { username: username, loggedIn: loggedIn }),
 	        this.props.children
 	      );
 	    }
@@ -44412,6 +44417,10 @@
 	  _createClass(Nav, [{
 	    key: 'render',
 	    value: function render() {
+	      var _props = this.props;
+	      var username = _props.username;
+	      var loggedIn = _props.loggedIn;
+
 	      return _react2.default.createElement(
 	        'nav',
 	        { className: 'nav-container' },
@@ -44419,7 +44428,9 @@
 	        _react2.default.createElement(_NavItem2.default, { to: '/all', itemName: 'All' }),
 	        _react2.default.createElement(_NavItem2.default, { to: '/me', itemName: 'Me' }),
 	        _react2.default.createElement(_NavItem2.default, { to: '/create', itemName: 'Create' }),
-	        _react2.default.createElement(_LoginGitHub2.default, null)
+	        loggedIn && username && _react2.default.createElement(_NavItem2.default, { itemName: username }),
+	        loggedIn && username && _react2.default.createElement(_NavItem2.default, { to: '/logout', itemName: 'Log Out' }),
+	        !loggedIn && _react2.default.createElement(_LoginGitHub2.default, null)
 	      );
 	    }
 	  }]);

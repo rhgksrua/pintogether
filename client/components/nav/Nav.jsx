@@ -10,13 +10,22 @@ import NavItem from './NavItem';
 
 class Nav extends Component {
   render() {
+    const { username, loggedIn } = this.props;
     return (
       <nav className='nav-container'>
         <NavItem to='/' itemName='PinTogether' />
         <NavItem to='/all' itemName='All' />
         <NavItem to='/me' itemName='Me' />
         <NavItem to='/create' itemName='Create' />
-        <LogInGitHub />
+        {loggedIn && username &&
+          <NavItem itemName={username} />
+        }
+        {loggedIn && username &&
+          <NavItem to='/logout' itemName='Log Out' />
+        }
+        {!loggedIn &&
+          <LogInGitHub />
+        }
       </nav>
     );
   }
