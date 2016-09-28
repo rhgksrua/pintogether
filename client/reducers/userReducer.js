@@ -14,6 +14,10 @@ function userReducer(state = { loggedIn: false }, action) {
       return {
         loggedIn: false
       };
+    case types.REMOVE_USER_STATUS_FULFILLED:
+    case types.REMOVE_USER_STATUS_REJECTED:
+      // No matter what happens on the server, user status is removed from client.
+      return { loggedIn: false };
     default:
       return state;
   }

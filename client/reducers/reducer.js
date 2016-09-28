@@ -5,6 +5,7 @@ import { reducer as formReducer } from 'redux-form';
 
 import * as types from './actionTypes';
 import userReducer from './userReducer';
+import pinsReducer from './pinsReducer';
 
 function reducer(state = {}, action) {
   switch(action.type) {
@@ -70,6 +71,7 @@ function createPin(state = {}, action) {
 export default combineReducers({
   reducer,
   userReducer,
+  pinsReducer,
   createPin,
   imageReducer,
   form: formReducer,

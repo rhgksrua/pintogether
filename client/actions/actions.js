@@ -12,6 +12,25 @@ export const checkImage = (url) => {
   };
 };
 
+export const xcheckImagePromise = (url) => {
+  const options = {
+    mode: 'no-cors'
+  };
+  return fetch(url, options)
+    .then(res => {
+      if (res.status >= 400) {
+        throw new Error('failed');
+      }
+      return res.blob();
+    })
+    .then(img => {
+      Promise.resolve(url);
+    })
+    .catch(err => {
+      Promise.reject(err);
+    });
+};
+
 export const checkImagePromise = (url) => {
   const options = {
     mode: 'no-cors'

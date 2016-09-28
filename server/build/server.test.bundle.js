@@ -467,7 +467,6 @@
 	      console.log(err.message);
 	      return res.json({ error: true, message: 'new pin db error' });
 	    }
-
 	    return res.json({
 	      completed: true,
 	      pin: {
@@ -481,7 +480,11 @@
 	};
 
 	function getPins(req, res) {
-	  res.json({ pins: 'all pins' });
+	  var query = {};
+	  var projection = {};
+	  _Pin2.default.find(query, projection).exec().then(function (doc) {
+	    return res.json({ pins: doc });
+	  });
 	}
 
 	exports.default = router;
@@ -532,7 +535,7 @@
 	});
 	function isAuthenticated(req, res, next) {
 	  if (req.isAuthenticated()) return next();
-	  return res.json({ error: 'authentication failed' });
+	  return res.sendStatus(404);
 	}
 
 	exports.default = isAuthenticated;
@@ -560,6 +563,7 @@
 	var router = _express2.default.Router();
 
 	router.post('/login', _isAuthenticated2.default, checkLogin);
+	router.post('/logout', _isAuthenticated2.default, logOut);
 
 	/**
 	 * checkLogin
@@ -579,6 +583,14 @@
 	  return res.json({
 	    username: username,
 	    email: email
+	  });
+	}
+
+	function logOut(req, res) {
+	  //if (true) return res.sendStatus(404);
+	  req.logout();
+	  return res.json({
+	    status: 'logged out'
 	  });
 	}
 
