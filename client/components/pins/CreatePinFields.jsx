@@ -3,8 +3,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import Promise from 'es6-promise';
-import fetch from 'isomorphic-fetch';
 
 import { createPin } from '../../actions/createPinActions';
 import ImageURLField from './ImageURLField';

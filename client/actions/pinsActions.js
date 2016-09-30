@@ -1,8 +1,5 @@
 'use strict';
 
-import Promise from 'bluebird';
-import 'isomorphic-fetch';
-
 import * as types from '../reducers/actionTypes';
 
 export const receivePins = (allPins) => {

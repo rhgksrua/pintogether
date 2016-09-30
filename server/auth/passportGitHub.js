@@ -34,13 +34,13 @@ const gitHub = (passport) => {
             const newUser = new User();
             newUser.github.username = profile.username;
             newUser.github.email = profile._json.email;
-            newUser.save((err) => {
+            newUser.save((err, doc) => {
               if (err) return done(err, null);
-              return done(null, userInfo);
+              return done(null, Object.assign(userInfo, { id: doc.id }));
             });
           } else {
             // User already signed up.
-            return done(null, userInfo);
+            return done(null, userInfo, { id: user.id });
           }
         });
       });

@@ -4,8 +4,6 @@ import React, { Component, PropTypes } from 'react';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import debounce from 'debounce';
-import Promise from 'es6-promise';
-import fetch from 'isomorphic-fetch';
 
 import { checkImage } from '../../actions/actions';
 import CreatePinFields from './CreatePinFields';

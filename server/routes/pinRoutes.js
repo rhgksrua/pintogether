@@ -20,11 +20,10 @@ router.get('/', getPins);
  */
 function addPins(req, res) {
   const { title, url } = req.body;
-  console.log(req.body);
+  const { username, id } = req.user;
   const newPin = new Pin();
-  // need to replace username and id
-  newPin.username = 'john';
-  newPin.userId = '1234';
+  newPin.username = username;
+  newPin.userId = id;
   newPin.pin.title = title;
   newPin.pin.url = url;
   newPin.save(err => {

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchAllPins } from '../actions/pinsActions';
+import PinGallery from './pins/PinGallery';
 
 /**
  *
@@ -18,6 +19,7 @@ class AllPins extends Component {
     return (
       <div>
         <p>All Pins</p>
+        <PinGallery test='hello world' />
       </div>
     );
   }

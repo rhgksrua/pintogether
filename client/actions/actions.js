@@ -1,8 +1,5 @@
 'use strict';
 
-import Promise from 'bluebird';
-import 'isomorphic-fetch';
-
 export const checkImage = (url) => {
   return {
     type: 'CHECK_IMAGE',

@@ -28,7 +28,6 @@ function checkLogin(req, res) {
 }
 
 function logOut(req, res) {
-  //if (true) return res.sendStatus(404);
   req.logout();
   return res.json({
     status: 'logged out'

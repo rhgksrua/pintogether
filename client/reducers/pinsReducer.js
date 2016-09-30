@@ -9,8 +9,8 @@ const initialPinsState = {
 
 function pinsReducer(state = initialPinsState, action) {
   switch(action.type) {
-    case types.FETCH_ALL_PINS_FULFILLED:
-      return state;
+    case types.FETCH_ALL_PINS:
+      return Object.assign({}, state, action.allPins);
     default:
       return state;
   }

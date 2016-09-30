@@ -306,13 +306,13 @@
 	          var newUser = new _User2.default();
 	          newUser.github.username = profile.username;
 	          newUser.github.email = profile._json.email;
-	          newUser.save(function (err) {
+	          newUser.save(function (err, doc) {
 	            if (err) return done(err, null);
-	            return done(null, userInfo);
+	            return done(null, Object.assign(userInfo, { id: doc.id }));
 	          });
 	        } else {
 	          // User already signed up.
-	          return done(null, userInfo);
+	          return done(null, userInfo, { id: user.id });
 	        }
 	      });
 	    });
@@ -454,12 +454,13 @@
 	  var _req$body = req.body;
 	  var title = _req$body.title;
 	  var url = _req$body.url;
+	  var _req$user = req.user;
+	  var username = _req$user.username;
+	  var id = _req$user.id;
 
-	  console.log(req.body);
 	  var newPin = new _Pin2.default();
-	  // need to replace username and id
-	  newPin.username = 'john';
-	  newPin.userId = '1234';
+	  newPin.username = username;
+	  newPin.userId = id;
 	  newPin.pin.title = title;
 	  newPin.pin.url = url;
 	  newPin.save(function (err) {
@@ -587,7 +588,6 @@
 	}
 
 	function logOut(req, res) {
-	  //if (true) return res.sendStatus(404);
 	  req.logout();
 	  return res.json({
 	    status: 'logged out'
