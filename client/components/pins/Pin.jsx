@@ -8,7 +8,7 @@ class Pin extends Component {
     return (
       <li className='pin'>
         <p>{title}</p>
-        <img src={imageURL} width='100px' />
+        <img src={imageURL} />
       </li>
     );
   }

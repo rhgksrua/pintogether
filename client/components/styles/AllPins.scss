@@ -1,0 +1,17 @@
+$pins-container-w: 1000px;
+$pins-w: $pins-container-w / 4;
+$container-margin: 40px;
+
+.all-pins-container {
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0 20px;
+  .pin-gallery {
+    .pin {
+      img {
+        width: $pins-w;
+      }
+    }
+  }
+}
+
