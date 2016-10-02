@@ -1,15 +1,49 @@
-$pins-container-w: 1000px;
-$pins-w: $pins-container-w / 4;
+$pins-container-w: 100%;
+$pins-gallery-w: 100%;
+$pins-margin: 1%;
+$pins-w: ($pins-gallery-w - (6 * $pins-margin))  / 3;
 $container-margin: 40px;
+$username-color: #424242;
+$likes-border-color: #EBEBEB;
 
 .all-pins-container {
   margin-right: auto;
   margin-left: auto;
   padding: 0 20px;
+  .all-pins-title {
+    // h3
+    font-size: 1.3em;
+    margin: 20px;
+  }
   .pin-gallery {
+    font-family: 'Quattrocento', serif;
+    max-width: $pins-container-w;
     .pin {
+      box-sizing: border-box;
+      padding: 4px;
+      margin: $pins-margin;
+      border-radius: 4px;
+      border: 2px solid #EBEBEB;
+      max-width: $pins-w;
+      // change width on media query.
+      // max-width
+      // small / medium / large
+      // small should show single column of image
+      // medium  should show two or three
+      // large should show five or more.
+      text-align: center;
       img {
-        width: $pins-w;
+        max-width: 100%;
+        height: auto;
+      }
+      .pin-title {
+        font-size: 1.1em;
+      }
+      .pin-username {
+        color: $username-color;
+      }
+      .likes {
+        border: 1px solid $likes-border-color;
       }
     }
   }

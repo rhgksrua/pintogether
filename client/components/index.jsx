@@ -11,6 +11,9 @@ import '../styles/index.scss';
 import 'babel-polyfill';
 import 'isomorphic-fetch';
 
+// main styles
+import './styles/index.scss';
+
 ReactDom.render((
   <Store>
     <Routes />

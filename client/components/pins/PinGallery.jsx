@@ -11,13 +11,13 @@ class PinGallery extends Component {
     const { pinsReducer: { pins } } = this.props;
     const allPins = pins.map(el => {
       return (
-        <Pin key={el._id} imageURL={el.pin.url} title={el.pin.title} />
+        <Pin key={el._id} imageURL={el.pin.url} title={el.pin.title} username={el.username} />
       );
     });
     return (
       <Masonry
         className={'pin-gallery'}
-        elementType={'ul'}
+        elementType={'div'}
       >
         {allPins}
       </Masonry>

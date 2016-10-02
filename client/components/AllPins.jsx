@@ -20,7 +20,7 @@ class AllPins extends Component {
   render() {
     return (
       <div className='all-pins-container'>
-        <p>All Pins</p>
+        <h3 className='all-pins-title'>All Pins</h3>
         <PinGallery test='hello world' />
       </div>
     );
