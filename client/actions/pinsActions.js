@@ -15,19 +15,14 @@ export const receivePinsFailed = () => {
   };
 };
 
-export const requestPins = () => {
-  return {
-    type: types.REQUEST_ALL_PINS,
-  };
-};
-
 export function fetchAllPins(allPins) {
   return dispatch => {
-    //dispatch(requestPins());
+    const port = window.location.port ? `:${window.location.port}` : '';
+    const url = `${window.location.protocol}//${window.location.hostname}${port}/pins`;
     const options = {
       method: 'get'
     }
-    return fetch('pins', options)
+    return fetch(url, options)
       .then(res => {
         if (res.status >= 400) throw new Error('server unavailable');
         return res.json();

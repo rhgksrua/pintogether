@@ -24,7 +24,7 @@ class RouterComponent extends Component {
           <Route path='/me' component={UserPins} />
           <Route path='/create' component={CreatePin} />
           <Route path='/all' component={AllPins} />
-          <Route path='/u/:userId' component={UserPins} />
+          <Route path='/u/:username' component={UserPins} />
           <Route path='/logout' onEnter={logOutUser.bind(Object.assign(this, { dispatch }))} />
           <Route path='*' component={NoMatch} />
         </Route>

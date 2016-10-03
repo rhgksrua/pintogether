@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post('/', isAuthenticated, addPins);
 router.get('/', getPins);
+router.get('/:username', getUserPins);
 
 /**
  * addPins - Protected route.
@@ -49,6 +50,22 @@ function getPins(req, res) {
   Pin.find(query, projection).exec()
     .then(doc => {
       return res.json({pins: doc});
+    });
+}
+
+function getUserPins(req, res) {
+  const { username } = req.params;
+  console.log(username);
+  const query = {
+    username
+  }
+  Pin.find(query).exec()
+    .then(doc => {
+      return res.json({pins: doc});
+    })
+    .catch(err => {
+      console.log(err);
+      return res.json({error: true, message: 'db error'});
     });
 }
 

@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react';
 
+import NavItem from '../nav/NavItem';
+
 class Pin extends Component {
   render() {
     const { imageURL, title, username } = this.props;
@@ -9,7 +11,9 @@ class Pin extends Component {
       <div className='pin'>
         <img className='pin-image' src={imageURL} />
         <h5 className='pin-title'>{title}</h5>
-        <p className='pin-username'>{username}</p>
+        <div className='pin-username'>
+          <NavItem to={`/u/${username}`} itemName={username} />
+        </div>
         <p className='likes'>Likes: 0</p>
       </div>
     );

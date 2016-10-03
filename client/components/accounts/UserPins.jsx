@@ -1,27 +1,43 @@
 'use strict';
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import UserPinGallery from '../pins/UserPinGallery';
+
+import { fetchUserPins } from '../../actions/userPinsActions';
+
+
 
 /**
  *
  * @returns {undefined}
  */
-class UserPins extends Component {
+export class UserPins extends Component {
   componentDidMount() {
-    // fetch all pins
-  }
-  handleFetchPins() {
+    const { getUserPins, params: { username } } = this.props;
+    getUserPins(username);
   }
   render() {
-    const userId = this.props.params.userId ? this.props.params.userId : 'n/a';
+    const { params: { username } } = this.props;
     return (
-      <div>
-        <p>{userId}</p>
+      <div className='user-pins-container'>
+        <h3>{username}</h3>
+        <UserPinGallery />
       </div>
     );
   }
 }
 
-export default UserPins;
+const mapStateToProps = state => {
+  return {};
+};
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    getUserPins: (username) => {
+      dispatch(fetchUserPins(username));
+    }
+  };
+}
 
-
+export default connect(mapStateToProps, mapDispatchToProps)(UserPins);

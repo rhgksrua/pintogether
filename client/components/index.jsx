@@ -13,6 +13,8 @@ import 'isomorphic-fetch';
 
 // main styles
 import './styles/index.scss';
+import './styles/AllPins.scss';
+import './styles/UserPins.scss';
 
 ReactDom.render((
   <Store>

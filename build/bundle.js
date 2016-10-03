@@ -72,6 +72,10 @@
 
 	__webpack_require__(789);
 
+	__webpack_require__(474);
+
+	__webpack_require__(794);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	_reactDom2.default.render(_react2.default.createElement(
@@ -26172,6 +26176,10 @@
 
 	var _pinsReducer2 = _interopRequireDefault(_pinsReducer);
 
+	var _userPinsReducer = __webpack_require__(793);
+
+	var _userPinsReducer2 = _interopRequireDefault(_userPinsReducer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -26248,6 +26256,7 @@
 	  reducer: reducer,
 	  userReducer: _userReducer2.default,
 	  pinsReducer: _pinsReducer2.default,
+	  userPinsReducer: _userPinsReducer2.default,
 	  createPin: createPin,
 	  imageReducer: imageReducer,
 	  form: _reduxForm.reducer
@@ -35051,6 +35060,9 @@
 	var FETCH_ALL_PINS_FAILED = exports.FETCH_ALL_PINS_FAILED = 'FETCH_ALL_PINS_FAILED';
 	var REQUEST_ALL_PINS = exports.REQUEST_ALL_PINS = 'REQUEST_ALL_PINS';
 
+	var ADD_USER_PINS = exports.ADD_USER_PINS = 'ADD_USER_PINS';
+	var ADD_USER_PINS_FAILED = exports.ADD_USER_PINS_FAILED = 'ADD_USER_PINS_FAILED';
+
 /***/ },
 /* 381 */
 /***/ function(module, exports, __webpack_require__) {
@@ -35212,7 +35224,7 @@
 	          _react2.default.createElement(_reactRouter.Route, { path: '/me', component: _UserPins2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/create', component: _CreatePin2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/all', component: _AllPins2.default }),
-	          _react2.default.createElement(_reactRouter.Route, { path: '/u/:userId', component: _UserPins2.default }),
+	          _react2.default.createElement(_reactRouter.Route, { path: '/u/:username', component: _UserPins2.default }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '/logout', onEnter: _logOutUser2.default.bind(Object.assign(this, { dispatch: dispatch })) }),
 	          _react2.default.createElement(_reactRouter.Route, { path: '*', component: _NoMatch2.default })
 	        )
@@ -40857,7 +40869,8 @@
 	    method: 'POST',
 	    credentials: 'same-origin'
 	  };
-	  var url = 'user/login';
+	  var port = window.location.port ? ':' + window.location.port : '';
+	  var url = window.location.protocol + '//' + window.location.hostname + port + '/user/login';
 	  return fetch(url, options).then(function (res) {
 	    if (res.status >= 400) {
 	      throw new Error('failed to authenticate');
@@ -41528,7 +41541,7 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'div',
+	        'h3',
 	        null,
 	        'Home'
 	      );
@@ -41606,12 +41619,21 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.UserPins = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(173);
+
+	var _UserPinGallery = __webpack_require__(792);
+
+	var _UserPinGallery2 = _interopRequireDefault(_UserPinGallery);
+
+	var _userPinsActions = __webpack_require__(791);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41625,7 +41647,7 @@
 	 *
 	 * @returns {undefined}
 	 */
-	var UserPins = function (_Component) {
+	var UserPins = exports.UserPins = function (_Component) {
 	  _inherits(UserPins, _Component);
 
 	  function UserPins() {
@@ -41637,23 +41659,26 @@
 	  _createClass(UserPins, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      // fetch all pins
+	      var _props = this.props;
+	      var getUserPins = _props.getUserPins;
+	      var username = _props.params.username;
+
+	      getUserPins(username);
 	    }
-	  }, {
-	    key: 'handleFetchPins',
-	    value: function handleFetchPins() {}
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var userId = this.props.params.userId ? this.props.params.userId : 'n/a';
+	      var username = this.props.params.username;
+
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'user-pins-container' },
 	        _react2.default.createElement(
-	          'p',
+	          'h3',
 	          null,
-	          userId
-	        )
+	          username
+	        ),
+	        _react2.default.createElement(_UserPinGallery2.default, null)
 	      );
 	    }
 	  }]);
@@ -41661,7 +41686,18 @@
 	  return UserPins;
 	}(_react.Component);
 
-	exports.default = UserPins;
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {};
+	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    getUserPins: function getUserPins(username) {
+	      dispatch((0, _userPinsActions.fetchUserPins)(username));
+	    }
+	  };
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UserPins);
 
 /***/ },
 /* 458 */
@@ -41686,8 +41722,6 @@
 	var _PinGallery = __webpack_require__(460);
 
 	var _PinGallery2 = _interopRequireDefault(_PinGallery);
-
-	__webpack_require__(474);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41728,7 +41762,7 @@
 	          { className: 'all-pins-title' },
 	          'All Pins'
 	        ),
-	        _react2.default.createElement(_PinGallery2.default, { test: 'hello world' })
+	        _react2.default.createElement(_PinGallery2.default, null)
 	      );
 	    }
 	  }]);
@@ -41759,7 +41793,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.requestPins = exports.receivePinsFailed = exports.receivePins = undefined;
+	exports.receivePinsFailed = exports.receivePins = undefined;
 	exports.fetchAllPins = fetchAllPins;
 
 	var _actionTypes = __webpack_require__(380);
@@ -41781,19 +41815,14 @@
 	  };
 	};
 
-	var requestPins = exports.requestPins = function requestPins() {
-	  return {
-	    type: types.REQUEST_ALL_PINS
-	  };
-	};
-
 	function fetchAllPins(allPins) {
 	  return function (dispatch) {
-	    //dispatch(requestPins());
+	    var port = window.location.port ? ':' + window.location.port : '';
+	    var url = window.location.protocol + '//' + window.location.hostname + port + '/pins';
 	    var options = {
 	      method: 'get'
 	    };
-	    return fetch('pins', options).then(function (res) {
+	    return fetch(url, options).then(function (res) {
 	      if (res.status >= 400) throw new Error('server unavailable');
 	      return res.json();
 	    }).then(function (pins) {
@@ -47342,6 +47371,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _NavItem = __webpack_require__(449);
+
+	var _NavItem2 = _interopRequireDefault(_NavItem);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -47377,9 +47410,9 @@
 	          title
 	        ),
 	        _react2.default.createElement(
-	          'p',
+	          'div',
 	          { className: 'pin-username' },
-	          username
+	          _react2.default.createElement(_NavItem2.default, { to: '/u/' + username, itemName: username })
 	        ),
 	        _react2.default.createElement(
 	          'p',
@@ -62281,7 +62314,211 @@
 
 
 	// module
-	exports.push([module.id, "html, body {\n  font-family: 'Oswald', sans-serif; }\n", ""]);
+	exports.push([module.id, "html, body {\n  font-family: 'Oswald', sans-serif; }\n  html h3, body h3 {\n    font-size: 1.3em;\n    margin: 20px; }\n  html h5, body h5 {\n    font-size: 1.1em; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 791 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.addUserPinsFailed = exports.addUserPins = undefined;
+	exports.fetchUserPins = fetchUserPins;
+
+	var _actionTypes = __webpack_require__(380);
+
+	var types = _interopRequireWildcard(_actionTypes);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var addUserPins = exports.addUserPins = function addUserPins(pins) {
+	  return {
+	    type: types.ADD_USER_PINS,
+	    pins: pins
+	  };
+	};
+
+	var addUserPinsFailed = exports.addUserPinsFailed = function addUserPinsFailed() {
+	  return {
+	    type: types.ADD_USER_PINS_FAILED
+	  };
+	};
+
+	function fetchUserPins(username) {
+	  return function (dispatch) {
+	    var options = {
+	      method: 'get',
+	      credentials: 'same-origin'
+	    };
+	    var port = window.location.port ? ':' + window.location.port : '';
+	    var url = window.location.protocol + '//' + window.location.hostname + port + '/pins/' + username;
+	    return fetch(url, options).then(function (res) {
+	      if (res.status >= 400) throw new Error('server n/a');
+	      return res.json();
+	    }).then(function (pins) {
+	      if (pins.error) throw new Error(pins.message);
+	      return dispatch(addUserPins(pins));
+	    }).catch(function (err) {
+	      console.error(err);
+	      dispatch(addUserPinsFailed());
+	    });
+	  };
+	}
+
+/***/ },
+/* 792 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(173);
+
+	var _reactMasonryComponent = __webpack_require__(461);
+
+	var _reactMasonryComponent2 = _interopRequireDefault(_reactMasonryComponent);
+
+	var _Pin = __webpack_require__(473);
+
+	var _Pin2 = _interopRequireDefault(_Pin);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var PinGallery = function (_Component) {
+	  _inherits(PinGallery, _Component);
+
+	  function PinGallery() {
+	    _classCallCheck(this, PinGallery);
+
+	    return _possibleConstructorReturn(this, (PinGallery.__proto__ || Object.getPrototypeOf(PinGallery)).apply(this, arguments));
+	  }
+
+	  _createClass(PinGallery, [{
+	    key: 'render',
+	    value: function render() {
+	      var pins = this.props.userPinsReducer.pins;
+
+	      console.log('***', pins);
+	      var userPins = pins.map(function (el) {
+	        return _react2.default.createElement(_Pin2.default, { key: el._id, imageURL: el.pin.url, title: el.pin.title, username: el.username });
+	      });
+	      return _react2.default.createElement(
+	        _reactMasonryComponent2.default,
+	        {
+	          className: 'pin-gallery',
+	          elementType: 'div'
+	        },
+	        userPins
+	      );
+	    }
+	  }]);
+
+	  return PinGallery;
+	}(_react.Component);
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  var userPinsReducer = state.userPinsReducer;
+
+	  return {
+	    userPinsReducer: userPinsReducer
+	  };
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(PinGallery);
+
+/***/ },
+/* 793 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _actionTypes = __webpack_require__(380);
+
+	var types = _interopRequireWildcard(_actionTypes);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var initialUserPinsState = {
+	  pins: [],
+	  pending: false
+	};
+
+	function userPinsReducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialUserPinsState : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case types.ADD_USER_PINS:
+	      console.log('reducer pins', action.pins);
+	      return Object.assign({}, state, action.pins);
+	    default:
+	      return state;
+	  }
+	}
+
+	exports.default = userPinsReducer;
+
+/***/ },
+/* 794 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(795);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(453)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./UserPins.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./UserPins.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 795 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(452)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
 
 	// exports
 

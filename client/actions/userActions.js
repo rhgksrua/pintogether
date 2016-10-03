@@ -24,7 +24,8 @@ const checkUserStatus = () => {
     method: 'POST',
     credentials: 'same-origin',
   };
-  const url = 'user/login';
+  const port = window.location.port ? `:${window.location.port}` : '';
+  const url = `${window.location.protocol}//${window.location.hostname}${port}/user/login`;
   return fetch(url, options)
     .then(res => {
       if (res.status >= 400) {

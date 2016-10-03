@@ -16,4 +16,5 @@ function pinsReducer(state = initialPinsState, action) {
   }
 }
 
+
 export default pinsReducer;

@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { fetchAllPins } from '../actions/pinsActions';
 import PinGallery from './pins/PinGallery';
 
-import './styles/AllPins.scss';
 
 /**
  *
@@ -21,7 +20,7 @@ class AllPins extends Component {
     return (
       <div className='all-pins-container'>
         <h3 className='all-pins-title'>All Pins</h3>
-        <PinGallery test='hello world' />
+        <PinGallery />
       </div>
     );
   }

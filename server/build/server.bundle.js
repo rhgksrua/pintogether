@@ -422,6 +422,7 @@
 
 	router.post('/', _isAuthenticated2.default, addPins);
 	router.get('/', getPins);
+	router.get('/:username', getUserPins);
 
 	/**
 	 * addPins - Protected route.
@@ -467,6 +468,21 @@
 	  var projection = {};
 	  _Pin2.default.find(query, projection).exec().then(function (doc) {
 	    return res.json({ pins: doc });
+	  });
+	}
+
+	function getUserPins(req, res) {
+	  var username = req.params.username;
+
+	  console.log(username);
+	  var query = {
+	    username: username
+	  };
+	  _Pin2.default.find(query).exec().then(function (doc) {
+	    return res.json({ pins: doc });
+	  }).catch(function (err) {
+	    console.log(err);
+	    return res.json({ error: true, message: 'db error' });
 	  });
 	}
 
