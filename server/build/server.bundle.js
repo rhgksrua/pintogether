@@ -120,7 +120,7 @@
 
 	var _pinRoutes2 = _interopRequireDefault(_pinRoutes);
 
-	var _userRoutes = __webpack_require__(19);
+	var _userRoutes = __webpack_require__(17);
 
 	var _userRoutes2 = _interopRequireDefault(_userRoutes);
 
@@ -294,7 +294,7 @@
 	          });
 	        } else {
 	          // User already signed up.
-	          return done(null, userInfo, { id: user.id });
+	          return done(null, Object.assign(userInfo, { id: user.id }));
 	        }
 	      });
 	    });
@@ -408,7 +408,7 @@
 
 	var _passport2 = _interopRequireDefault(_passport);
 
-	var _Pin = __webpack_require__(17);
+	var _Pin = __webpack_require__(25);
 
 	var _Pin2 = _interopRequireDefault(_Pin);
 
@@ -420,9 +420,19 @@
 
 	var router = _express2.default.Router();
 
+	// '/pins' base route
+
+	// Add user pins
 	router.post('/', _isAuthenticated2.default, addPins);
+
+	// Return all pins
 	router.get('/', getPins);
+
+	// Return user pins
 	router.get('/:username', getUserPins);
+
+	// Like or unlike pins
+	router.post('/like', _isAuthenticated2.default, pinLiked);
 
 	/**
 	 * addPins - Protected route.
@@ -474,7 +484,6 @@
 	function getUserPins(req, res) {
 	  var username = req.params.username;
 
-	  console.log(username);
 	  var query = {
 	    username: username
 	  };
@@ -486,61 +495,71 @@
 	  });
 	}
 
+	/**
+	 * pinLiked
+	 *
+	 * Should toggle between like and not liked.
+	 *
+	 * @param req
+	 * @param res
+	 * @returns {undefined}
+	 */
+	function pinLiked(req, res) {
+	  var pinId = req.body.pinId;
+
+	  var userId = req.user.id;
+
+	  // find pin and remove userId if it exists
+	  var query = {
+	    _id: pinId,
+	    'likes.userId': userId
+	  };
+	  var update = {
+	    $pull: {
+	      likes: {
+	        userId: userId
+	      }
+	    }
+	  };
+	  _Pin2.default.update(query, update).exec().then(function (writeResult) {
+	    if (writeResult.nModified < 1) {
+	      // nothing to do since either pin or user does not exist.  Need to attempt
+	      // to add userId to the pin. Note: pin might not exist
+	      return addUserLike(pinId, userId);
+	    }
+	    return writeResult;
+	  }).then(function (writeResult) {
+	    // recieves writeResult from removing or adding userId to likes.
+	    // If nModified is 0, most likely pin does not exist.
+	    if (writeResult.nModified > 0) {
+	      return res.json({ status: true, id: userId });
+	    } else {
+	      throw new Error('cannot like pins');
+	    }
+	  }).catch(function (err) {
+	    console.log(err);
+	    return res.json({ error: true, message: 'db error' });
+	  });
+	}
+
+	function addUserLike(pinId, userId) {
+	  var query = {
+	    _id: pinId
+	  };
+	  var update = {
+	    $push: {
+	      likes: {
+	        userId: userId
+	      }
+	    }
+	  };
+	  return _Pin2.default.update(query, update).exec();
+	}
+
 	exports.default = router;
 
 /***/ },
 /* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _bluebird = __webpack_require__(9);
-
-	var _bluebird2 = _interopRequireDefault(_bluebird);
-
-	var _mongoose = __webpack_require__(7);
-
-	var _mongoose2 = _interopRequireDefault(_mongoose);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	_mongoose2.default.Promise = _bluebird2.default;
-
-	var pinSchema = _mongoose2.default.Schema({
-	  username: { type: String, required: true },
-	  userId: { type: String, required: true },
-	  likes: [{ userId: { type: String, required: true } }],
-	  date: { type: Date, default: Date.now },
-	  pin: {
-	    title: { type: String, required: true },
-	    url: { type: String, required: true }
-	  }
-	});
-
-	exports.default = _mongoose2.default.model('Pin', pinSchema);
-
-/***/ },
-/* 18 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	function isAuthenticated(req, res, next) {
-	  if (req.isAuthenticated()) return next();
-	  return res.sendStatus(404);
-	}
-
-	exports.default = isAuthenticated;
-
-/***/ },
-/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -579,6 +598,7 @@
 	  var username = _req$user.username;
 	  var email = _req$user.email;
 
+	  console.log(req.user);
 	  return res.json({
 	    username: username,
 	    email: email
@@ -593,6 +613,66 @@
 	}
 
 	exports.default = router;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function isAuthenticated(req, res, next) {
+	  if (req.isAuthenticated()) {
+	    return next();
+	  }
+	  console.log('auth failed');
+	  return res.sendStatus(404);
+	}
+
+	exports.default = isAuthenticated;
+
+/***/ },
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _bluebird = __webpack_require__(9);
+
+	var _bluebird2 = _interopRequireDefault(_bluebird);
+
+	var _mongoose = __webpack_require__(7);
+
+	var _mongoose2 = _interopRequireDefault(_mongoose);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	_mongoose2.default.Promise = _bluebird2.default;
+
+	var pinSchema = _mongoose2.default.Schema({
+	  username: { type: String, required: true },
+	  userId: { type: String, required: true },
+	  likes: [{ userId: { type: String, required: true } }],
+	  date: { type: Date, default: Date.now },
+	  pin: {
+	    title: { type: String, required: true },
+	    url: { type: String, required: true }
+	  }
+	});
+
+	exports.default = _mongoose2.default.model('Pin', pinSchema);
 
 /***/ }
 /******/ ]);

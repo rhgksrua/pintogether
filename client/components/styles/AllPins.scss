@@ -6,6 +6,8 @@ $container-margin: 40px;
 $username-color: #424242;
 $likes-border-color: #EBEBEB;
 
+@import "pins";
+
 .all-pins-container {
   margin-right: auto;
   margin-left: auto;
@@ -18,34 +20,6 @@ $likes-border-color: #EBEBEB;
   .pin-gallery {
     font-family: 'Quattrocento', serif;
     max-width: $pins-container-w;
-    .pin {
-      box-sizing: border-box;
-      padding: 4px;
-      margin: $pins-margin;
-      border-radius: 4px;
-      border: 2px solid #EBEBEB;
-      max-width: $pins-w;
-      // change width on media query.
-      // max-width
-      // small / medium / large
-      // small should show single column of image
-      // medium  should show two or three
-      // large should show five or more.
-      text-align: center;
-      img {
-        max-width: 100%;
-        height: auto;
-      }
-      .pin-title {
-        font-size: 1.1em;
-      }
-      .pin-username {
-        color: $username-color;
-      }
-      .likes {
-        border: 1px solid $likes-border-color;
-      }
-    }
   }
 }
 

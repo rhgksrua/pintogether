@@ -40,7 +40,7 @@ const gitHub = (passport) => {
             });
           } else {
             // User already signed up.
-            return done(null, userInfo, { id: user.id });
+            return done(null, Object.assign(userInfo, { id: user.id }));
           }
         });
       });

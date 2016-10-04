@@ -6,9 +6,19 @@ import isAuthenticated from '../lib/isAuthenticated';
 
 const router = express.Router();
 
+// '/pins' base route
+
+// Add user pins
 router.post('/', isAuthenticated, addPins);
+
+// Return all pins
 router.get('/', getPins);
+
+// Return user pins
 router.get('/:username', getUserPins);
+
+// Like or unlike pins
+router.post('/like', isAuthenticated, pinLiked);
 
 /**
  * addPins - Protected route.
@@ -55,7 +65,6 @@ function getPins(req, res) {
 
 function getUserPins(req, res) {
   const { username } = req.params;
-  console.log(username);
   const query = {
     username
   }
@@ -68,6 +77,70 @@ function getUserPins(req, res) {
       return res.json({error: true, message: 'db error'});
     });
 }
+
+/**
+ * pinLiked
+ *
+ * Should toggle between like and not liked.
+ *
+ * @param req
+ * @param res
+ * @returns {undefined}
+ */
+function pinLiked(req, res) {
+  const { pinId } = req.body;
+  const userId = req.user.id;
+
+  // find pin and remove userId if it exists
+  const query = {
+    _id: pinId,
+    'likes.userId': userId
+  };
+  const update = {
+    $pull: {
+      likes: {
+        userId
+      }
+    }
+  };
+  Pin.update(query, update).exec()
+    .then(writeResult => {
+      if (writeResult.nModified < 1) {
+        // nothing to do since either pin or user does not exist.  Need to attempt
+        // to add userId to the pin. Note: pin might not exist
+        return addUserLike(pinId, userId);
+      }
+      return writeResult;
+    })
+    .then(writeResult => {
+      // recieves writeResult from removing or adding userId to likes.
+      // If nModified is 0, most likely pin does not exist.
+      if (writeResult.nModified > 0) {
+        return res.json({status: true, id: userId});
+      } else {
+        throw new Error('cannot like pins');
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      return res.json({error: true, message: 'db error'});
+    });
+}
+
+function addUserLike(pinId, userId) {
+  const query = {
+    _id: pinId
+  };
+  const update = {
+    $push: {
+      likes: {
+        userId
+      }
+    }
+  };
+  return Pin.update(query, update).exec();
+}
+
 
 
 export default router;

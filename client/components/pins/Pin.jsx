@@ -5,8 +5,13 @@ import React, { Component } from 'react';
 import NavItem from '../nav/NavItem';
 
 class Pin extends Component {
+  handleClick() {
+    console.log('clicked like');
+    const { pinKey } = this.props;
+    this.props.handleClick(pinKey);
+  }
   render() {
-    const { imageURL, title, username } = this.props;
+    const { imageURL, title, username, likes } = this.props;
     return (
       <div className='pin'>
         <img className='pin-image' src={imageURL} />
@@ -14,7 +19,7 @@ class Pin extends Component {
         <div className='pin-username'>
           <NavItem to={`/u/${username}`} itemName={username} />
         </div>
-        <p className='likes'>Likes: 0</p>
+        <p className='likes' onClick={this.handleClick.bind(this)}>Likes: {likes}</p>
       </div>
     );
   }

@@ -5,9 +5,14 @@ import React, { Component } from 'react';
 class Home extends Component {
   render() {
     return (
-      <h3>
-        Home
-      </h3>
+      <div>
+        <h3>Pintogether</h3>
+        <article>
+          <p>Pinterest Clone for FCC</p>
+          <p>Share your interests with total strangers!</p>
+        </article>
+      </div>
+
     );
   }
 }
