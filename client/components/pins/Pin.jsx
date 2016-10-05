@@ -11,7 +11,7 @@ class Pin extends Component {
     this.props.handleClick(pinKey);
   }
   render() {
-    const { imageURL, title, username, likes } = this.props;
+    const { imageURL, title, username, likes, liked } = this.props;
     return (
       <div className='pin'>
         <img className='pin-image' src={imageURL} />
@@ -19,7 +19,9 @@ class Pin extends Component {
         <div className='pin-username'>
           <NavItem to={`/u/${username}`} itemName={username} />
         </div>
-        <p className='likes' onClick={this.handleClick.bind(this)}>Likes: {likes}</p>
+        {liked &&
+        <p className='likes' onClick={this.handleClick.bind(this)}>Likes: {likes} {liked.toString()}</p>
+        }
       </div>
     );
   }

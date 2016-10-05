@@ -10,9 +10,16 @@ import { pinLiked } from '../../actions/pinLikedAction';
 
 class PinGallery extends Component {
   render() {
-    const { handleClick, pinsReducer: { pins } } = this.props;
+    const { 
+      handleClick, 
+      pinsReducer: { pins },
+      userReducer: { id },
+    } = this.props;
     const allPins = pins.map(el => {
       const likes = el.likes.length;
+      const liked = el.likes.some(like => {
+        return like.userId === id;
+      });
       return (
         <Pin 
           key={el._id} 
@@ -22,6 +29,7 @@ class PinGallery extends Component {
           username={el.username} 
           handleClick={handleClick}
           likes={likes}
+          liked={liked ? true : false}
         />
       );
     });
@@ -37,9 +45,10 @@ class PinGallery extends Component {
 }
 
 const mapStateToProps = state => {
-  const { pinsReducer } = state;
+  const { pinsReducer, userReducer } = state;
   return {
-    pinsReducer
+    pinsReducer,
+    userReducer,
   };
 };
 

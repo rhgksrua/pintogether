@@ -20,11 +20,12 @@ router.post('/logout', isAuthenticated, logOut);
  * @returns {undefined}
  */
 function checkLogin(req, res) {
-  const { username, email } = req.user;
+  const { id, username, email } = req.user;
   console.log(req.user);
   return res.json({
     username,
-    email
+    email,
+    id
   });
 }
 

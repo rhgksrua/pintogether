@@ -7,9 +7,10 @@ function userReducer(state = { loggedIn: false }, action) {
     case types.ADD_USER_STATUS_FULFILLED:
       const userStatus = {
         loggedIn: true,
-        username: action.payload.username
+        username: action.payload.username,
+        id: action.payload.id
       };
-      return Object.assign(state, userStatus);
+      return Object.assign({}, state, userStatus);
     case types.ADD_USER_STATUS_REJECTED:
       return {
         loggedIn: false

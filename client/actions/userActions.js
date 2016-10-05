@@ -37,6 +37,7 @@ const checkUserStatus = () => {
       if (userInfo.error) {
         throw new Error('failed');
       }
+      console.log('userInfo', userInfo);
       return userInfo;
     })
     .catch(err => {

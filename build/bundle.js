@@ -35090,9 +35090,10 @@
 	    case types.ADD_USER_STATUS_FULFILLED:
 	      var userStatus = {
 	        loggedIn: true,
-	        username: action.payload.username
+	        username: action.payload.username,
+	        id: action.payload.id
 	      };
-	      return Object.assign(state, userStatus);
+	      return Object.assign({}, state, userStatus);
 	    case types.ADD_USER_STATUS_REJECTED:
 	      return {
 	        loggedIn: false
@@ -40946,6 +40947,7 @@
 	    if (userInfo.error) {
 	      throw new Error('failed');
 	    }
+	    console.log('userInfo', userInfo);
 	    return userInfo;
 	  }).catch(function (err) {
 	    console.log(err.message);
@@ -47357,6 +47359,7 @@
 	      var title = _props.title;
 	      var username = _props.username;
 	      var likes = _props.likes;
+	      var liked = _props.liked;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -47372,11 +47375,13 @@
 	          { className: 'pin-username' },
 	          _react2.default.createElement(_NavItem2.default, { to: '/u/' + username, itemName: username })
 	        ),
-	        _react2.default.createElement(
+	        liked && _react2.default.createElement(
 	          'p',
 	          { className: 'likes', onClick: this.handleClick.bind(this) },
 	          'Likes: ',
-	          likes
+	          likes,
+	          ' ',
+	          liked.toString()
 	        )
 	      );
 	    }
@@ -47626,9 +47631,13 @@
 	      var _props = this.props;
 	      var handleClick = _props.handleClick;
 	      var pins = _props.pinsReducer.pins;
+	      var id = _props.userReducer.id;
 
 	      var allPins = pins.map(function (el) {
 	        var likes = el.likes.length;
+	        var liked = el.likes.some(function (like) {
+	          return like.userId === id;
+	        });
 	        return _react2.default.createElement(_Pin2.default, {
 	          key: el._id,
 	          pinKey: el._id,
@@ -47636,7 +47645,8 @@
 	          title: el.pin.title,
 	          username: el.username,
 	          handleClick: handleClick,
-	          likes: likes
+	          likes: likes,
+	          liked: liked ? true : false
 	        });
 	      });
 	      return _react2.default.createElement(
@@ -47655,9 +47665,11 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  var pinsReducer = state.pinsReducer;
+	  var userReducer = state.userReducer;
 
 	  return {
-	    pinsReducer: pinsReducer
+	    pinsReducer: pinsReducer,
+	    userReducer: userReducer
 	  };
 	};
 

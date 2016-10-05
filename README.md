@@ -20,4 +20,8 @@ Required env var:
 npm run dev:watch
 ```
 
+Tests...
+```
+npm test
+```
 
