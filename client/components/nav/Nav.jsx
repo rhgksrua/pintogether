@@ -17,6 +17,7 @@ class Nav extends Component {
         <NavItem to='/all' itemName='All' />
         <NavItem to='/me' itemName='Me' />
         <NavItem to='/create' itemName='Create' />
+        <NavItem to={`/u/siamanggibbon`} itemName={'siamanggibbon'} />
         {loggedIn && username &&
           <NavItem to={`/u/${username}`} itemName={username} />
         }

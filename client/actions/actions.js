@@ -33,7 +33,7 @@ export const checkImagePromise = (url) => {
     mode: 'no-cors'
   };
   return new Promise((resolve, reject) => {
-    if (!/\.gif$|\.jpg$|\.png$/.test(url)) {
+    if (!/\.gif$|\.jpg$|\.jpeg$|\.png$/.test(url)) {
       return reject(new Error('invalid ext'));
     }
     fetch(url, options)

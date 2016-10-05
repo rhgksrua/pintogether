@@ -21,7 +21,6 @@ router.post('/logout', isAuthenticated, logOut);
  */
 function checkLogin(req, res) {
   const { id, username, email } = req.user;
-  console.log(req.user);
   return res.json({
     username,
     email,

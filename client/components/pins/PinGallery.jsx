@@ -11,8 +11,8 @@ import { pinLiked } from '../../actions/pinLikedAction';
 class PinGallery extends Component {
   render() {
     const { 
+      pins,
       handleClick, 
-      pinsReducer: { pins },
       userReducer: { id },
     } = this.props;
     const allPins = pins.map(el => {

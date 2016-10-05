@@ -17,17 +17,21 @@ class AllPins extends Component {
     getAllPins();
   }
   render() {
+    const { pinsReducer: { pins } } = this.props;
     return (
       <div className='all-pins-container'>
         <h3 className='all-pins-title'>All Pins</h3>
-        <PinGallery />
+        <PinGallery pins={pins} />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  return {};
+  const { pinsReducer } = state;
+  return {
+    pinsReducer
+  };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {

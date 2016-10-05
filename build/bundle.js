@@ -35143,24 +35143,26 @@
 	    case types.FETCH_ALL_PINS:
 	      return Object.assign({}, state, action.allPins);
 	    case types.UPDATE_LIKED:
-
 	      newPins = state.pins.map(function (pin) {
+	        if (pin._id !== action.payload.pinId) {
+	          console.log('not the correct pin');
+	          return pin;
+	        }
+	        console.log('found pin!');
+	        // if liked remove like. if unliked add like
 	        exists = pin.likes.some(function (like) {
-	          if (like.userId === action.payload.userId) {
-	            return true;
-	          }
-	          return false;
+	          return like.userId === action.payload.userId;
 	        });
 	        if (exists) {
+	          console.log('need to remove userid');
 	          newLikes = pin.likes.filter(function (like) {
 	            return like.userId !== action.payload.userId;
 	          });
-	        } else {
-	          newLikes = pin.likes.concat({ userId: action.payload.userId });
+	          return Object.assign({}, pin, { likes: newLikes });
 	        }
-	        newPin = Object.assign({}, pin);
-	        newPin.likes = newLikes;
-	        return newPin;
+	        console.log('add like to pin');
+	        newLikes = pin.likes.concat({ userId: action.payload.userId });
+	        return Object.assign({}, pin, { likes: newLikes });
 	      });
 	      return Object.assign({}, state, { pins: newPins });
 
@@ -35196,10 +35198,43 @@
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialUserPinsState : arguments[0];
 	  var action = arguments[1];
 
+	  var newPins = void 0;
+	  var newPin = void 0;
+	  var newLikes = void 0;
+	  var exists = void 0;
+	  var newState = void 0;
 	  switch (action.type) {
 	    case types.ADD_USER_PINS:
-	      console.log('reducer pins', action.pins);
 	      return Object.assign({}, state, action.pins);
+	    case types.ADD_USER_PINS_FAILED:
+	      if (action.clear) {
+	        return Object.assign({}, state, initialUserPinsState);
+	      }
+	      return state;
+	    case types.UPDATE_LIKED:
+	      newPins = state.pins.map(function (pin) {
+	        if (pin._id !== action.payload.pinId) {
+	          console.log('not the correct pin');
+	          return pin;
+	        }
+	        console.log('found pin!');
+	        // if liked remove like. if unliked add like
+	        exists = pin.likes.some(function (like) {
+	          return like.userId === action.payload.userId;
+	        });
+	        if (exists) {
+	          console.log('need to remove userid');
+	          newLikes = pin.likes.filter(function (like) {
+	            return like.userId !== action.payload.userId;
+	          });
+	          return Object.assign({}, pin, { likes: newLikes });
+	        }
+	        console.log('add like to pin');
+	        newLikes = pin.likes.concat({ userId: action.payload.userId });
+	        return Object.assign({}, pin, { likes: newLikes });
+	      });
+	      return Object.assign({}, state, { pins: newPins });
+
 	    default:
 	      return state;
 	  }
@@ -41036,6 +41071,7 @@
 	        _react2.default.createElement(_NavItem2.default, { to: '/all', itemName: 'All' }),
 	        _react2.default.createElement(_NavItem2.default, { to: '/me', itemName: 'Me' }),
 	        _react2.default.createElement(_NavItem2.default, { to: '/create', itemName: 'Create' }),
+	        _react2.default.createElement(_NavItem2.default, { to: '/u/siamanggibbon', itemName: 'siamanggibbon' }),
 	        loggedIn && username && _react2.default.createElement(_NavItem2.default, { to: '/u/' + username, itemName: username }),
 	        loggedIn && username && _react2.default.createElement(_NavItem2.default, { to: '/logout', itemName: 'Log Out' }),
 	        !loggedIn && _react2.default.createElement(_LoginGitHub2.default, null)
@@ -41719,6 +41755,10 @@
 
 	var _UserPinGallery2 = _interopRequireDefault(_UserPinGallery);
 
+	var _PinGallery = __webpack_require__(476);
+
+	var _PinGallery2 = _interopRequireDefault(_PinGallery);
+
 	var _userPinsActions = __webpack_require__(473);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -41752,9 +41792,29 @@
 	      getUserPins(username);
 	    }
 	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      // this is kind of a work around for inifinite fetch loop.
+	      // React-router keeps all components mounted unless you manually unmount it.
+	      // When going from /u/user1 to /u/user2, it will use the same UserPins component.
+	      // So, componentWillReceiveProps needs to be used to update new data.  However,
+	      // fetching inside componentWillReceiveProps updates the props and 
+	      // componentWillReceiveProps calls itself again.  It ends up in an inifinite loop.
+	      // The work around is that if username have not changed, fetch will not be fired.
+	      var getUserPins = nextProps.getUserPins;
+
+	      var oldUsername = this.props.params.username;
+	      var newUsername = nextProps.params.username;
+	      if (oldUsername !== newUsername) {
+	        getUserPins(newUsername);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var username = this.props.params.username;
+	      var _props2 = this.props;
+	      var pins = _props2.userPinsReducer.pins;
+	      var username = _props2.params.username;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -41764,7 +41824,7 @@
 	          null,
 	          username
 	        ),
-	        _react2.default.createElement(_UserPinGallery2.default, null)
+	        _react2.default.createElement(_PinGallery2.default, { pins: pins })
 	      );
 	    }
 	  }]);
@@ -41773,7 +41833,9 @@
 	}(_react.Component);
 
 	var mapStateToProps = function mapStateToProps(state) {
-	  return {};
+	  var userPinsReducer = state.userPinsReducer;
+
+	  return { userPinsReducer: userPinsReducer };
 	};
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
@@ -41811,6 +41873,8 @@
 
 	var _Pin2 = _interopRequireDefault(_Pin);
 
+	var _pinLikedAction = __webpack_require__(477);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -41833,9 +41897,16 @@
 	    value: function render() {
 	      var pins = this.props.userPinsReducer.pins;
 
-	      console.log('***', pins);
 	      var userPins = pins.map(function (el) {
-	        return _react2.default.createElement(_Pin2.default, { key: el._id, imageURL: el.pin.url, title: el.pin.title, username: el.username });
+	        return _react2.default.createElement(_Pin2.default, {
+	          key: el._id,
+	          imageURL: el.pin.url,
+	          title: el.pin.title,
+	          username: el.username,
+	          handleClick: handleClick,
+	          likes: likes,
+	          liked: liked ? true : false
+	        });
 	      });
 	      return _react2.default.createElement(
 	        _reactMasonryComponent2.default,
@@ -41859,7 +41930,15 @@
 	  };
 	};
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(PinGallery);
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    handleClick: function handleClick(pinId) {
+	      dispatch((0, _pinLikedAction.pinLiked)(pinId));
+	    }
+	  };
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PinGallery);
 
 /***/ },
 /* 460 */
@@ -47375,7 +47454,7 @@
 	          { className: 'pin-username' },
 	          _react2.default.createElement(_NavItem2.default, { to: '/u/' + username, itemName: username })
 	        ),
-	        liked && _react2.default.createElement(
+	        _react2.default.createElement(
 	          'p',
 	          { className: 'likes', onClick: this.handleClick.bind(this) },
 	          'Likes: ',
@@ -47417,14 +47496,18 @@
 	  };
 	};
 
-	var addUserPinsFailed = exports.addUserPinsFailed = function addUserPinsFailed() {
+	var addUserPinsFailed = exports.addUserPinsFailed = function addUserPinsFailed(clear) {
 	  return {
-	    type: types.ADD_USER_PINS_FAILED
+	    type: types.ADD_USER_PINS_FAILED,
+	    clear: clear
 	  };
 	};
 
 	function fetchUserPins(username) {
 	  return function (dispatch) {
+	    if (!username) {
+	      return dispatch(addUserPinsFailed(true));
+	    }
 	    var options = {
 	      method: 'get',
 	      credentials: 'same-origin'
@@ -47499,6 +47582,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var pins = this.props.pinsReducer.pins;
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'all-pins-container' },
@@ -47507,7 +47592,7 @@
 	          { className: 'all-pins-title' },
 	          'All Pins'
 	        ),
-	        _react2.default.createElement(_PinGallery2.default, null)
+	        _react2.default.createElement(_PinGallery2.default, { pins: pins })
 	      );
 	    }
 	  }]);
@@ -47516,7 +47601,11 @@
 	}(_react.Component);
 
 	var mapStateToProps = function mapStateToProps(state) {
-	  return {};
+	  var pinsReducer = state.pinsReducer;
+
+	  return {
+	    pinsReducer: pinsReducer
+	  };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
@@ -47629,8 +47718,8 @@
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props;
+	      var pins = _props.pins;
 	      var handleClick = _props.handleClick;
-	      var pins = _props.pinsReducer.pins;
 	      var id = _props.userReducer.id;
 
 	      var allPins = pins.map(function (el) {
@@ -47953,7 +48042,7 @@
 	    mode: 'no-cors'
 	  };
 	  return new Promise(function (resolve, reject) {
-	    if (!/\.gif$|\.jpg$|\.png$/.test(url)) {
+	    if (!/\.gif$|\.jpg$|\.jpeg$|\.png$/.test(url)) {
 	      return reject(new Error('invalid ext'));
 	    }
 	    fetch(url, options).then(function (response) {

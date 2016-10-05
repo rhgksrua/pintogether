@@ -6,13 +6,22 @@ import Masonry from 'react-masonry-component';
 
 import Pin from './Pin';
 
+import { pinLiked } from '../../actions/pinLikedAction';
+
 class PinGallery extends Component {
   render() {
     const { userPinsReducer: { pins } } = this.props;
-    console.log('***', pins);
     const userPins = pins.map(el => {
       return (
-        <Pin key={el._id} imageURL={el.pin.url} title={el.pin.title} username={el.username} />
+        <Pin 
+          key={el._id} 
+          imageURL={el.pin.url} 
+          title={el.pin.title} 
+          username={el.username} 
+          handleClick={handleClick}
+          likes={likes}
+          liked={liked ? true : false}
+        />
       );
     });
     return (
@@ -33,5 +42,13 @@ const mapStateToProps = state => {
   };
 }
 
-export default connect(mapStateToProps)(PinGallery);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    handleClick: (pinId) => {
+      dispatch(pinLiked(pinId));
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PinGallery);
 

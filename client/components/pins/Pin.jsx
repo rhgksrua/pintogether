@@ -19,9 +19,9 @@ class Pin extends Component {
         <div className='pin-username'>
           <NavItem to={`/u/${username}`} itemName={username} />
         </div>
-        {liked &&
-        <p className='likes' onClick={this.handleClick.bind(this)}>Likes: {likes} {liked.toString()}</p>
-        }
+          <p className='likes' onClick={this.handleClick.bind(this)}>
+            Likes: {likes} {liked.toString()}
+          </p>
       </div>
     );
   }

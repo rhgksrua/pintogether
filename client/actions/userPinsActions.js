@@ -9,14 +9,18 @@ export const addUserPins = pins => {
   };
 };
 
-export const addUserPinsFailed = () => {
+export const addUserPinsFailed = (clear) => {
   return {
     type: types.ADD_USER_PINS_FAILED,
+    clear
   };
 };
 
 export function fetchUserPins(username) {
   return dispatch => {
+    if (!username) {
+      return dispatch(addUserPinsFailed(true));
+    }
     const options = {
       method: 'get',
       credentials: 'same-origin'

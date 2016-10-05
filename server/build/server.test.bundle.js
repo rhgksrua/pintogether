@@ -671,7 +671,6 @@
 	  var username = _req$user.username;
 	  var email = _req$user.email;
 
-	  console.log(req.user);
 	  return res.json({
 	    username: username,
 	    email: email,
