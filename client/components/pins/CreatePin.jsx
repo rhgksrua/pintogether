@@ -9,6 +9,9 @@ import { checkImage } from '../../actions/actions';
 import CreatePinFields from './CreatePinFields';
 import ImageURLField from './ImageURLField';
 
+// styles
+import '../styles/Create.scss';
+
 export class CreatePin extends Component {
   constructor(props) {
     super();
@@ -17,9 +20,7 @@ export class CreatePin extends Component {
     const { isLoading, url, isInvalidURL } = this.props.imageReducer;
     return (
       <div className='create-container'>
-        <img src={url} />
-        <div>isInvalidURL: {isInvalidURL.toString()}</div>
-        <div>isLoading: {isLoading.toString()}</div>
+        <img className='user-image' src={url} />
         <CreatePinFields />
       </div>
     );

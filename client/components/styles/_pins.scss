@@ -7,7 +7,7 @@
   margin: $pins-margin;
   border-radius: 4px;
   border: 2px solid #EBEBEB;
-  max-width: $pins-w;
+  width: $pins-w;
   // change width on media query.
   // max-width
   // small / medium / large
@@ -16,7 +16,7 @@
   // large should show five or more.
   text-align: center;
   img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
   }
   .pin-title {

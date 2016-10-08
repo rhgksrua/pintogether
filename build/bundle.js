@@ -35282,7 +35282,7 @@
 
 	var _UserPins2 = _interopRequireDefault(_UserPins);
 
-	var _AllPins = __webpack_require__(474);
+	var _AllPins = __webpack_require__(476);
 
 	var _AllPins2 = _interopRequireDefault(_AllPins);
 
@@ -41755,11 +41755,11 @@
 
 	var _UserPinGallery2 = _interopRequireDefault(_UserPinGallery);
 
-	var _PinGallery = __webpack_require__(476);
+	var _PinGallery = __webpack_require__(474);
 
 	var _PinGallery2 = _interopRequireDefault(_PinGallery);
 
-	var _userPinsActions = __webpack_require__(473);
+	var _userPinsActions = __webpack_require__(475);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41873,7 +41873,7 @@
 
 	var _Pin2 = _interopRequireDefault(_Pin);
 
-	var _pinLikedAction = __webpack_require__(477);
+	var _pinLikedAction = __webpack_require__(473);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47480,8 +47480,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.addUserPinsFailed = exports.addUserPins = undefined;
-	exports.fetchUserPins = fetchUserPins;
+	exports.pinLiked = exports.updateLikedFailed = exports.updateLiked = undefined;
 
 	var _actionTypes = __webpack_require__(380);
 
@@ -47489,188 +47488,46 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	var addUserPins = exports.addUserPins = function addUserPins(pins) {
+	var updateLiked = exports.updateLiked = function updateLiked(payload) {
 	  return {
-	    type: types.ADD_USER_PINS,
-	    pins: pins
+	    type: types.UPDATE_LIKED,
+	    payload: payload
 	  };
 	};
 
-	var addUserPinsFailed = exports.addUserPinsFailed = function addUserPinsFailed(clear) {
+	var updateLikedFailed = exports.updateLikedFailed = function updateLikedFailed() {
 	  return {
-	    type: types.ADD_USER_PINS_FAILED,
-	    clear: clear
+	    type: types.UPDATE_LIKED_FAILED
 	  };
 	};
 
-	function fetchUserPins(username) {
+	var pinLiked = exports.pinLiked = function pinLiked(pinId) {
 	  return function (dispatch) {
-	    if (!username) {
-	      return dispatch(addUserPinsFailed(true));
-	    }
-	    var options = {
-	      method: 'get',
-	      credentials: 'same-origin'
-	    };
 	    var port = window.location.port ? ':' + window.location.port : '';
-	    var url = window.location.protocol + '//' + window.location.hostname + port + '/pins/' + username;
+	    var url = window.location.protocol + '//' + window.location.hostname + port + '/pins/like';
+	    var options = {
+	      headers: {
+	        'Content-Type': 'application/json'
+	      },
+	      method: 'post',
+	      credentials: 'same-origin',
+	      body: JSON.stringify({ pinId: pinId })
+	    };
 	    return fetch(url, options).then(function (res) {
 	      if (res.status >= 400) throw new Error('server n/a');
 	      return res.json();
-	    }).then(function (pins) {
-	      if (pins.error) throw new Error(pins.message);
-	      return dispatch(addUserPins(pins));
+	    }).then(function (res) {
+	      if (res.error || !res.id) throw new Error('cannot like');
+	      return dispatch(updateLiked({ pinId: pinId, userId: res.id }));
 	    }).catch(function (err) {
 	      console.error(err);
-	      dispatch(addUserPinsFailed());
+	      dispatch(updateLikedFailed());
 	    });
 	  };
-	}
+	};
 
 /***/ },
 /* 474 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(173);
-
-	var _pinsActions = __webpack_require__(475);
-
-	var _PinGallery = __webpack_require__(476);
-
-	var _PinGallery2 = _interopRequireDefault(_PinGallery);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	/**
-	 *
-	 * @returns {undefined}
-	 */
-	var AllPins = function (_Component) {
-	  _inherits(AllPins, _Component);
-
-	  function AllPins() {
-	    _classCallCheck(this, AllPins);
-
-	    return _possibleConstructorReturn(this, (AllPins.__proto__ || Object.getPrototypeOf(AllPins)).apply(this, arguments));
-	  }
-
-	  _createClass(AllPins, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var getAllPins = this.props.getAllPins;
-
-	      getAllPins();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var pins = this.props.pinsReducer.pins;
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'all-pins-container' },
-	        _react2.default.createElement(
-	          'h3',
-	          { className: 'all-pins-title' },
-	          'All Pins'
-	        ),
-	        _react2.default.createElement(_PinGallery2.default, { pins: pins })
-	      );
-	    }
-	  }]);
-
-	  return AllPins;
-	}(_react.Component);
-
-	var mapStateToProps = function mapStateToProps(state) {
-	  var pinsReducer = state.pinsReducer;
-
-	  return {
-	    pinsReducer: pinsReducer
-	  };
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-	  return {
-	    getAllPins: function getAllPins() {
-	      dispatch((0, _pinsActions.fetchAllPins)());
-	    }
-	  };
-	};
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AllPins);
-
-/***/ },
-/* 475 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.receivePinsFailed = exports.receivePins = undefined;
-	exports.fetchAllPins = fetchAllPins;
-
-	var _actionTypes = __webpack_require__(380);
-
-	var types = _interopRequireWildcard(_actionTypes);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	var receivePins = exports.receivePins = function receivePins(allPins) {
-	  return {
-	    type: types.FETCH_ALL_PINS,
-	    allPins: allPins
-	  };
-	};
-
-	var receivePinsFailed = exports.receivePinsFailed = function receivePinsFailed() {
-	  return {
-	    type: types.FETCH_ALL_PINS_FAILED
-	  };
-	};
-
-	function fetchAllPins(allPins) {
-	  return function (dispatch) {
-	    var port = window.location.port ? ':' + window.location.port : '';
-	    var url = window.location.protocol + '//' + window.location.hostname + port + '/pins';
-	    var options = {
-	      method: 'get'
-	    };
-	    return fetch(url, options).then(function (res) {
-	      if (res.status >= 400) throw new Error('server unavailable');
-	      return res.json();
-	    }).then(function (pins) {
-	      if (pins.error) throw new Error('invalid pins');
-	      dispatch(receivePins(pins));
-	    }).catch(function (err) {
-	      console.log(err);
-	      dispatch(receivePinsFailed());
-	    });
-	  };
-	}
-
-/***/ },
-/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47695,7 +47552,7 @@
 
 	var _Pin2 = _interopRequireDefault(_Pin);
 
-	var _pinLikedAction = __webpack_require__(477);
+	var _pinLikedAction = __webpack_require__(473);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47773,6 +47630,153 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PinGallery);
 
 /***/ },
+/* 475 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.addUserPinsFailed = exports.addUserPins = undefined;
+	exports.fetchUserPins = fetchUserPins;
+
+	var _actionTypes = __webpack_require__(380);
+
+	var types = _interopRequireWildcard(_actionTypes);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var addUserPins = exports.addUserPins = function addUserPins(pins) {
+	  return {
+	    type: types.ADD_USER_PINS,
+	    pins: pins
+	  };
+	};
+
+	var addUserPinsFailed = exports.addUserPinsFailed = function addUserPinsFailed(clear) {
+	  return {
+	    type: types.ADD_USER_PINS_FAILED,
+	    clear: clear
+	  };
+	};
+
+	function fetchUserPins(username) {
+	  return function (dispatch) {
+	    if (!username) {
+	      return dispatch(addUserPinsFailed(true));
+	    }
+	    var options = {
+	      method: 'get',
+	      credentials: 'same-origin'
+	    };
+	    var port = window.location.port ? ':' + window.location.port : '';
+	    var url = window.location.protocol + '//' + window.location.hostname + port + '/pins/' + username;
+	    return fetch(url, options).then(function (res) {
+	      if (res.status >= 400) throw new Error('server n/a');
+	      return res.json();
+	    }).then(function (pins) {
+	      if (pins.error) throw new Error(pins.message);
+	      return dispatch(addUserPins(pins));
+	    }).catch(function (err) {
+	      console.error(err);
+	      dispatch(addUserPinsFailed());
+	    });
+	  };
+	}
+
+/***/ },
+/* 476 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(173);
+
+	var _pinsActions = __webpack_require__(477);
+
+	var _PinGallery = __webpack_require__(474);
+
+	var _PinGallery2 = _interopRequireDefault(_PinGallery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
+	 *
+	 * @returns {undefined}
+	 */
+	var AllPins = function (_Component) {
+	  _inherits(AllPins, _Component);
+
+	  function AllPins() {
+	    _classCallCheck(this, AllPins);
+
+	    return _possibleConstructorReturn(this, (AllPins.__proto__ || Object.getPrototypeOf(AllPins)).apply(this, arguments));
+	  }
+
+	  _createClass(AllPins, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var getAllPins = this.props.getAllPins;
+
+	      getAllPins();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var pins = this.props.pinsReducer.pins;
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'all-pins-container' },
+	        _react2.default.createElement(
+	          'h3',
+	          { className: 'all-pins-title' },
+	          'All Pins'
+	        ),
+	        _react2.default.createElement(_PinGallery2.default, { pins: pins })
+	      );
+	    }
+	  }]);
+
+	  return AllPins;
+	}(_react.Component);
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  var pinsReducer = state.pinsReducer;
+
+	  return {
+	    pinsReducer: pinsReducer
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    getAllPins: function getAllPins() {
+	      dispatch((0, _pinsActions.fetchAllPins)());
+	    }
+	  };
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AllPins);
+
+/***/ },
 /* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -47781,7 +47785,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.pinLiked = exports.updateLikedFailed = exports.updateLiked = undefined;
+	exports.receivePinsFailed = exports.receivePins = undefined;
+	exports.fetchAllPins = fetchAllPins;
 
 	var _actionTypes = __webpack_require__(380);
 
@@ -47789,43 +47794,38 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	var updateLiked = exports.updateLiked = function updateLiked(payload) {
+	var receivePins = exports.receivePins = function receivePins(allPins) {
 	  return {
-	    type: types.UPDATE_LIKED,
-	    payload: payload
+	    type: types.FETCH_ALL_PINS,
+	    allPins: allPins
 	  };
 	};
 
-	var updateLikedFailed = exports.updateLikedFailed = function updateLikedFailed() {
+	var receivePinsFailed = exports.receivePinsFailed = function receivePinsFailed() {
 	  return {
-	    type: types.UPDATE_LIKED_FAILED
+	    type: types.FETCH_ALL_PINS_FAILED
 	  };
 	};
 
-	var pinLiked = exports.pinLiked = function pinLiked(pinId) {
+	function fetchAllPins(allPins) {
 	  return function (dispatch) {
 	    var port = window.location.port ? ':' + window.location.port : '';
-	    var url = window.location.protocol + '//' + window.location.hostname + port + '/pins/like';
+	    var url = window.location.protocol + '//' + window.location.hostname + port + '/pins';
 	    var options = {
-	      headers: {
-	        'Content-Type': 'application/json'
-	      },
-	      method: 'post',
-	      credentials: 'same-origin',
-	      body: JSON.stringify({ pinId: pinId })
+	      method: 'get'
 	    };
 	    return fetch(url, options).then(function (res) {
-	      if (res.status >= 400) throw new Error('server n/a');
+	      if (res.status >= 400) throw new Error('server unavailable');
 	      return res.json();
-	    }).then(function (res) {
-	      if (res.error || !res.id) throw new Error('cannot like');
-	      return dispatch(updateLiked({ pinId: pinId, userId: res.id }));
+	    }).then(function (pins) {
+	      if (pins.error) throw new Error('invalid pins');
+	      dispatch(receivePins(pins));
 	    }).catch(function (err) {
-	      console.error(err);
-	      dispatch(updateLikedFailed());
+	      console.log(err);
+	      dispatch(receivePinsFailed());
 	    });
 	  };
-	};
+	}
 
 /***/ },
 /* 478 */
@@ -47862,6 +47862,8 @@
 
 	var _ImageURLField2 = _interopRequireDefault(_ImageURLField);
 
+	__webpack_require__(797);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -47869,6 +47871,9 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// styles
+
 
 	var CreatePin = exports.CreatePin = function (_Component) {
 	  _inherits(CreatePin, _Component);
@@ -47890,19 +47895,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'create-container' },
-	        _react2.default.createElement('img', { src: url }),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          'isInvalidURL: ',
-	          isInvalidURL.toString()
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          'isLoading: ',
-	          isLoading.toString()
-	        ),
+	        _react2.default.createElement('img', { className: 'user-image', src: url }),
 	        _react2.default.createElement(_CreatePinFields2.default, null)
 	      );
 	    }
@@ -48120,13 +48113,13 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'create-container' },
+	        { className: 'create-pin-container' },
 	        _react2.default.createElement(
 	          'form',
-	          { onSubmit: handleSubmit(myHandleSubmit) },
+	          { className: 'create-pin-form', onSubmit: handleSubmit(myHandleSubmit) },
 	          _react2.default.createElement(
 	            'div',
-	            null,
+	            { className: 'title-field' },
 	            _react2.default.createElement(
 	              'label',
 	              { htmlFor: 'title' },
@@ -48136,7 +48129,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            null,
+	            { className: 'url-field' },
 	            _react2.default.createElement(_reduxForm.Field, { name: 'imageURLField', component: _ImageURLField2.default, props: { isLoading: isLoading, url: url, isInvalidURL: isInvalidURL } })
 	          ),
 	          _react2.default.createElement(
@@ -62713,7 +62706,7 @@
 
 
 	// module
-	exports.push([module.id, ".pin {\n  box-sizing: border-box;\n  padding: 4px;\n  margin: 1%;\n  border-radius: 4px;\n  border: 2px solid #EBEBEB;\n  max-width: 31.33333%;\n  text-align: center; }\n  .pin img {\n    max-width: 100%;\n    height: auto; }\n  .pin .pin-title {\n    font-size: 1.1em; }\n  .pin .pin-username {\n    color: #424242; }\n  .pin .likes {\n    border: 1px solid #EBEBEB;\n    cursor: pointer; }\n\n.all-pins-container {\n  margin-right: auto;\n  margin-left: auto;\n  padding: 0 20px; }\n  .all-pins-container .all-pins-title {\n    font-size: 1.3em;\n    margin: 20px; }\n  .all-pins-container .pin-gallery {\n    font-family: 'Quattrocento', serif;\n    max-width: 100%; }\n", ""]);
+	exports.push([module.id, ".pin {\n  box-sizing: border-box;\n  padding: 4px;\n  margin: 1%;\n  border-radius: 4px;\n  border: 2px solid #EBEBEB;\n  width: 31.33333%;\n  text-align: center; }\n  .pin img {\n    width: 100%;\n    height: auto; }\n  .pin .pin-title {\n    font-size: 1.1em; }\n  .pin .pin-username {\n    color: #424242; }\n  .pin .likes {\n    border: 1px solid #EBEBEB;\n    cursor: pointer; }\n\n.all-pins-container {\n  margin-right: auto;\n  margin-left: auto;\n  padding: 0 20px; }\n  .all-pins-container .all-pins-title {\n    font-size: 1.3em;\n    margin: 20px; }\n  .all-pins-container .pin-gallery {\n    font-family: 'Quattrocento', serif;\n    max-width: 100%; }\n", ""]);
 
 	// exports
 
@@ -62754,6 +62747,46 @@
 
 	// module
 	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 797 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(798);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(454)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Create.scss", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./Create.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 798 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(453)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".create-container {\n  margin-right: auto;\n  margin-left: auto;\n  margin-top: 50px;\n  width: 500px; }\n  .create-container .user-image {\n    width: 100%; }\n  .create-container .create-pin-container {\n    margin-top: 30px; }\n    .create-container .create-pin-container label {\n      display: block;\n      width: 100px;\n      margin: 5px 0; }\n    .create-container .create-pin-container input {\n      margin: 5px 0;\n      width: 100%; }\n    .create-container .create-pin-container button {\n      margin: 5px 0; }\n", ""]);
 
 	// exports
 

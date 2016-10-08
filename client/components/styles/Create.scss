@@ -1,0 +1,32 @@
+$container-width: 500px;
+
+.create-container {
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 50px;
+  width: $container-width;
+  .user-image {
+    width: 100%;
+  }
+  .create-pin-container {
+    margin-top: 30px;
+    label {
+      display: block;
+      width: 100px;
+      margin: 5px 0;
+    }
+    input {
+      margin: 5px 0;
+      width: 100%;
+    }
+    button {
+      margin: 5px 0;
+    }
+    .create-pin-form {
+      .title-field {
+      }
+      .url-field {
+      }
+    }
+  }
+}

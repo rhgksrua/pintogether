@@ -10,6 +10,7 @@ import connectMongo from 'connect-mongo';
 import bluebird from 'bluebird';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import favicon from 'serve-favicon';
 
 import passportGitHub from './auth/passportGitHub';
 
@@ -32,6 +33,9 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(morgan('dev'));
+
+console.log(__dirname);
+app.use(favicon('./server/public/favicon.ico'));
 
 app.use(session({
   secret: 'supersecretsession',

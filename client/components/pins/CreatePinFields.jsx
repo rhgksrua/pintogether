@@ -27,13 +27,13 @@ export class CreatePinFields extends Component {
       }
     } = this.props;
     return (
-      <div className='create-container'>
-        <form onSubmit={handleSubmit(myHandleSubmit)}>
-          <div>
+      <div className='create-pin-container'>
+        <form className='create-pin-form' onSubmit={handleSubmit(myHandleSubmit)}>
+          <div className='title-field'>
             <label htmlFor='title'>Title</label>
             <Field name='title' component='input' type='text' />
           </div>
-          <div>
+          <div className='url-field'>
             <Field name='imageURLField' component={ImageURLField} props={{ isLoading, url, isInvalidURL }}/>
           </div>
           <button type='submit' disabled={pristine || submitting}>Submit</button>
