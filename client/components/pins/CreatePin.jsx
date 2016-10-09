@@ -10,7 +10,6 @@ import CreatePinFields from './CreatePinFields';
 import ImageURLField from './ImageURLField';
 
 // styles
-import '../styles/Create.scss';
 
 export class CreatePin extends Component {
   constructor(props) {
@@ -20,6 +19,7 @@ export class CreatePin extends Component {
     const { isLoading, url, isInvalidURL } = this.props.imageReducer;
     return (
       <div className='create-container'>
+        <h3 className='page-title'>Create</h3>
         <img className='user-image' src={url} />
         <CreatePinFields />
       </div>

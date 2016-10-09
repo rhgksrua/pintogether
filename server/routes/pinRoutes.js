@@ -20,6 +20,9 @@ router.get('/:username', getUserPins);
 // Like or unlike pins
 router.post('/like', isAuthenticated, pinLiked);
 
+// Remove user pin
+router.delete('/', isAuthenticated, removePin);
+
 /**
  * addPins - Protected route.
  *
@@ -139,6 +142,29 @@ function addUserLike(pinId, userId) {
     }
   };
   return Pin.update(query, update).exec();
+}
+
+
+function removePin(req, res) {
+  const { pinId } = req.body;
+  const userId = req.user.id;
+  console.log(pinId, userId);
+  const query = {
+    userId,
+    _id: pinId
+  };
+  Pin.remove(query).exec()
+    .then(doc => {
+      if (doc.result.n > 0) {
+        return res.json({status: 'good'});
+      }
+      throw new Error('does not exist');
+    })
+    .catch(err => {
+      console.log(err);
+      return res.json({error: 'db error'});
+    });
+
 }
 
 

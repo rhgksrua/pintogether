@@ -1,7 +1,7 @@
 // Pin.jsx styles
-// Import this partial to any component that requires Pin.jsx.
 
 .pin {
+  font-family: 'Quattrocento', serif;
   box-sizing: border-box;
   padding: 4px;
   margin: $pins-margin;
@@ -28,6 +28,12 @@
   .likes {
     border: 1px solid $likes-border-color;
     cursor: pointer;
+    .likes-counter {
+      margin: 3px 5px;
+    }
+    .user-liked {
+      color: red;
+    }
   }
 }
 

@@ -33,18 +33,21 @@ export class UserPins extends Component {
     }
   }
   render() {
-    const { userPinsReducer: { pins }, params: { username } } = this.props;
+    const { 
+      userPinsReducer: { pins }, 
+      params
+    } = this.props;
     return (
       <div className='user-pins-container'>
-        <h3>{username}</h3>
-        <PinGallery pins={pins} />
+        <h3 className='page-title'>{params.username}</h3>
+        <PinGallery pins={pins} params={params} />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  const { userPinsReducer } = state;
+  const { userPinsReducer  } = state;
   return { userPinsReducer };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {

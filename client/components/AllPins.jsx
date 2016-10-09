@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { fetchAllPins } from '../actions/pinsActions';
 import PinGallery from './pins/PinGallery';
 
-
 /**
  *
  * @returns {undefined}
@@ -20,7 +19,7 @@ class AllPins extends Component {
     const { pinsReducer: { pins } } = this.props;
     return (
       <div className='all-pins-container'>
-        <h3 className='all-pins-title'>All Pins</h3>
+        <h3 className='all-pins-title page-title'>All Pins</h3>
         <PinGallery pins={pins} />
       </div>
     );

@@ -4,17 +4,13 @@ import ReactDom from 'react-dom';
 import Store from './Store';
 import Routes from './Routes';
 
-import '../styles/reset.css';
-import '../styles/index.scss';
-
 // Fetch.
 import 'babel-polyfill';
 import 'isomorphic-fetch';
 
 // main styles
+import './styles/reset.css';
 import './styles/index.scss';
-import './styles/AllPins.scss';
-import './styles/UserPins.scss';
 
 ReactDom.render((
   <Store>

@@ -1,11 +1,18 @@
+@import 'allpins';
+@import 'userpins';
+@import 'create';
+@import 'nav';
+@import 'pins';
+
 html, body {
   font-family: 'Oswald', sans-serif;
-  h3 {
-    font-size: 1.3em;
-    margin: 20px;
-  }
+}
 
-  h5 {
-    font-size: 1.1em;
-  }
+.page-title {
+  font-size: 1.3em;
+  margin: 20px;
+}
+
+.intro {
+  margin: 10px;
 }

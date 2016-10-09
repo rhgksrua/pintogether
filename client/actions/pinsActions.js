@@ -32,7 +32,7 @@ export function fetchAllPins(allPins) {
         dispatch(receivePins(pins));
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
         dispatch(receivePinsFailed());
       });
   };

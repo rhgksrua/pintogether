@@ -34,7 +34,6 @@ app.use(bodyParser.urlencoded({
 
 app.use(morgan('dev'));
 
-console.log(__dirname);
 app.use(favicon('./server/public/favicon.ico'));
 
 app.use(session({

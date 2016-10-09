@@ -6,19 +6,13 @@ $container-margin: 40px;
 $username-color: #424242;
 $likes-border-color: #EBEBEB;
 
-@import "pins";
-
 .all-pins-container {
   margin-right: auto;
   margin-left: auto;
   padding: 0 20px;
   .all-pins-title {
-    // h3
-    font-size: 1.3em;
-    margin: 20px;
   }
   .pin-gallery {
-    font-family: 'Quattrocento', serif;
     max-width: $pins-container-w;
   }
 }

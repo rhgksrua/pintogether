@@ -3,8 +3,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-import '../../styles/nav.scss';
-
 class NavItem extends Component {
   render() {
     const itemName = this.props.itemName;

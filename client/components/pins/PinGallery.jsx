@@ -7,19 +7,24 @@ import Masonry from 'react-masonry-component';
 import Pin from './Pin';
 
 import { pinLiked } from '../../actions/pinLikedAction';
+import { removePin } from '../../actions/removePin';
 
 class PinGallery extends Component {
   render() {
     const { 
       pins,
       handleClick, 
-      userReducer: { id },
+      handleDeletePin,
+      userReducer: { id, username },
+      params
     } = this.props;
     const allPins = pins.map(el => {
       const likes = el.likes.length;
       const liked = el.likes.some(like => {
         return like.userId === id;
       });
+      // owner's user page.  Let's users delete pins.
+      const owner = (el.username === username) ? true : false;
       return (
         <Pin 
           key={el._id} 
@@ -28,8 +33,10 @@ class PinGallery extends Component {
           title={el.pin.title} 
           username={el.username} 
           handleClick={handleClick}
+          handleDeletePin={handleDeletePin}
           likes={likes}
           liked={liked ? true : false}
+          owner={owner}
         />
       );
     });
@@ -56,6 +63,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     handleClick: (pinId) => {
       dispatch(pinLiked(pinId));
+    },
+    handleDeletePin: pinId => {
+      dispatch(removePin(pinId));
     }
   }
 };

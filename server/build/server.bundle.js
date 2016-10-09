@@ -62,7 +62,7 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(__dirname) {'use strict';
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -108,23 +108,23 @@
 
 	var _morgan2 = _interopRequireDefault(_morgan);
 
-	var _serveFavicon = __webpack_require__(26);
+	var _serveFavicon = __webpack_require__(12);
 
 	var _serveFavicon2 = _interopRequireDefault(_serveFavicon);
 
-	var _passportGitHub = __webpack_require__(12);
+	var _passportGitHub = __webpack_require__(13);
 
 	var _passportGitHub2 = _interopRequireDefault(_passportGitHub);
 
-	var _authRoutes = __webpack_require__(15);
+	var _authRoutes = __webpack_require__(16);
 
 	var _authRoutes2 = _interopRequireDefault(_authRoutes);
 
-	var _pinRoutes = __webpack_require__(16);
+	var _pinRoutes = __webpack_require__(17);
 
 	var _pinRoutes2 = _interopRequireDefault(_pinRoutes);
 
-	var _userRoutes = __webpack_require__(19);
+	var _userRoutes = __webpack_require__(20);
 
 	var _userRoutes2 = _interopRequireDefault(_userRoutes);
 
@@ -148,7 +148,6 @@
 
 	app.use((0, _morgan2.default)('dev'));
 
-	console.log(__dirname);
 	app.use((0, _serveFavicon2.default)('./server/public/favicon.ico'));
 
 	app.use((0, _expressSession2.default)({
@@ -184,7 +183,6 @@
 	});
 
 	exports.default = app;
-	/* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ },
 /* 2 */
@@ -248,6 +246,12 @@
 
 /***/ },
 /* 12 */
+/***/ function(module, exports) {
+
+	module.exports = require("serve-favicon");
+
+/***/ },
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -256,11 +260,11 @@
 	  value: true
 	});
 
-	var _passportGithub = __webpack_require__(13);
+	var _passportGithub = __webpack_require__(14);
 
 	var _passportGithub2 = _interopRequireDefault(_passportGithub);
 
-	var _User = __webpack_require__(14);
+	var _User = __webpack_require__(15);
 
 	var _User2 = _interopRequireDefault(_User);
 
@@ -313,13 +317,13 @@
 	exports.default = gitHub;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports) {
 
 	module.exports = require("passport-github2");
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -344,7 +348,7 @@
 	exports.default = _mongoose2.default.model('User', userSchema);
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -399,7 +403,7 @@
 	exports.default = router;
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -416,11 +420,11 @@
 
 	var _passport2 = _interopRequireDefault(_passport);
 
-	var _Pin = __webpack_require__(17);
+	var _Pin = __webpack_require__(18);
 
 	var _Pin2 = _interopRequireDefault(_Pin);
 
-	var _isAuthenticated = __webpack_require__(18);
+	var _isAuthenticated = __webpack_require__(19);
 
 	var _isAuthenticated2 = _interopRequireDefault(_isAuthenticated);
 
@@ -441,6 +445,9 @@
 
 	// Like or unlike pins
 	router.post('/like', _isAuthenticated2.default, pinLiked);
+
+	// Remove user pin
+	router.delete('/', _isAuthenticated2.default, removePin);
 
 	/**
 	 * addPins - Protected route.
@@ -564,10 +571,30 @@
 	  return _Pin2.default.update(query, update).exec();
 	}
 
+	function removePin(req, res) {
+	  var pinId = req.body.pinId;
+
+	  var userId = req.user.id;
+	  console.log(pinId, userId);
+	  var query = {
+	    userId: userId,
+	    _id: pinId
+	  };
+	  _Pin2.default.remove(query).exec().then(function (doc) {
+	    if (doc.result.n > 0) {
+	      return res.json({ status: 'good' });
+	    }
+	    throw new Error('does not exist');
+	  }).catch(function (err) {
+	    console.log(err);
+	    return res.json({ error: 'db error' });
+	  });
+	}
+
 	exports.default = router;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -602,7 +629,7 @@
 	exports.default = _mongoose2.default.model('Pin', pinSchema);
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -621,7 +648,7 @@
 	exports.default = isAuthenticated;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -634,7 +661,7 @@
 
 	var _express2 = _interopRequireDefault(_express);
 
-	var _isAuthenticated = __webpack_require__(18);
+	var _isAuthenticated = __webpack_require__(19);
 
 	var _isAuthenticated2 = _interopRequireDefault(_isAuthenticated);
 
@@ -676,225 +703,6 @@
 	}
 
 	exports.default = router;
-
-/***/ },
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*!
-	 * serve-favicon
-	 * Copyright(c) 2010 Sencha Inc.
-	 * Copyright(c) 2011 TJ Holowaychuk
-	 * Copyright(c) 2014-2015 Douglas Christopher Wilson
-	 * MIT Licensed
-	 */
-
-	'use strict';
-
-	/**
-	 * Module dependencies.
-	 * @private
-	 */
-
-	var etag = __webpack_require__(27);
-	var fresh = __webpack_require__(28);
-	var fs = __webpack_require__(29);
-	var ms = __webpack_require__(30);
-	var parseUrl = __webpack_require__(31);
-	var path = __webpack_require__(4);
-	var resolve = path.resolve;
-
-	/**
-	 * Module exports.
-	 * @public
-	 */
-
-	module.exports = favicon;
-
-	/**
-	 * Module variables.
-	 * @private
-	 */
-
-	var maxMaxAge = 60 * 60 * 24 * 365 * 1000; // 1 year
-
-	/**
-	 * Serves the favicon located by the given `path`.
-	 *
-	 * @public
-	 * @param {String|Buffer} path
-	 * @param {Object} [options]
-	 * @return {Function} middleware
-	 */
-
-	function favicon(path, options) {
-	  var opts = options || {};
-
-	  var buf;
-	  var icon; // favicon cache
-	  var maxAge = calcMaxAge(opts.maxAge);
-	  var stat;
-
-	  if (!path) throw new TypeError('path to favicon.ico is required');
-
-	  if (Buffer.isBuffer(path)) {
-	    buf = new Buffer(path.length);
-	    path.copy(buf);
-
-	    icon = createIcon(buf, maxAge);
-	  } else if (typeof path === 'string') {
-	    path = resolve(path);
-	    stat = fs.statSync(path);
-	    if (stat.isDirectory()) throw createIsDirError(path);
-	  } else {
-	    throw new TypeError('path to favicon.ico must be string or buffer');
-	  }
-
-	  return function favicon(req, res, next){
-	    if (parseUrl(req).pathname !== '/favicon.ico') {
-	      next();
-	      return;
-	    }
-
-	    if (req.method !== 'GET' && req.method !== 'HEAD') {
-	      res.statusCode = req.method === 'OPTIONS' ? 200 : 405;
-	      res.setHeader('Allow', 'GET, HEAD, OPTIONS');
-	      res.setHeader('Content-Length', '0');
-	      res.end();
-	      return;
-	    }
-
-	    if (icon) return send(req, res, icon);
-
-	    fs.readFile(path, function(err, buf){
-	      if (err) return next(err);
-	      icon = createIcon(buf, maxAge);
-	      send(req, res, icon);
-	    });
-	  };
-	};
-
-	/**
-	 * Calculate the max-age from a configured value.
-	 *
-	 * @private
-	 * @param {string|number} val
-	 * @return {number}
-	 */
-
-	function calcMaxAge(val) {
-	  var num = typeof val === 'string'
-	    ? ms(val)
-	    : val;
-
-	  return num != null
-	    ? Math.min(Math.max(0, num), maxMaxAge)
-	    : maxMaxAge
-	}
-
-	/**
-	 * Create icon data from Buffer and max-age.
-	 *
-	 * @private
-	 * @param {Buffer} buf
-	 * @param {number} maxAge
-	 * @return {object}
-	 */
-
-	function createIcon(buf, maxAge) {
-	  return {
-	    body: buf,
-	    headers: {
-	      'Cache-Control': 'public, max-age=' + Math.floor(maxAge / 1000),
-	      'ETag': etag(buf)
-	    }
-	  };
-	}
-
-	/**
-	 * Create EISDIR error.
-	 *
-	 * @private
-	 * @param {string} path
-	 * @return {Error}
-	 */
-
-	function createIsDirError(path) {
-	  var error = new Error('EISDIR, illegal operation on directory \'' + path + '\'');
-	  error.code = 'EISDIR';
-	  error.errno = 28;
-	  error.path = path;
-	  error.syscall = 'open';
-	  return error;
-	}
-
-	/**
-	 * Send icon data in response to a request.
-	 *
-	 * @private
-	 * @param {IncomingMessage} req
-	 * @param {OutgoingMessage} res
-	 * @param {object} icon
-	 */
-
-	function send(req, res, icon) {
-	  var headers = icon.headers;
-
-	  // Set headers
-	  var keys = Object.keys(headers);
-	  for (var i = 0; i < keys.length; i++) {
-	    var key = keys[i];
-	    res.setHeader(key, headers[key]);
-	  }
-
-	  if (fresh(req.headers, res._headers)) {
-	    res.statusCode = 304;
-	    res.end();
-	    return;
-	  }
-
-	  res.statusCode = 200;
-	  res.setHeader('Content-Length', icon.body.length);
-	  res.setHeader('Content-Type', 'image/x-icon');
-	  res.end(icon.body);
-	}
-
-
-/***/ },
-/* 27 */
-/***/ function(module, exports) {
-
-	module.exports = require("etag");
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	module.exports = require("fresh");
-
-/***/ },
-/* 29 */
-/***/ function(module, exports) {
-
-	module.exports = require("fs");
-
-/***/ },
-/* 30 */
-/***/ function(module, exports) {
-
-	module.exports = require("ms");
-
-/***/ },
-/* 31 */
-/***/ function(module, exports) {
-
-	module.exports = require("parseurl");
 
 /***/ }
 /******/ ]);
