@@ -1,6 +1,13 @@
 // Pin.jsx styles
 
+$modal-w: 50%;
+$modal-h: 100px;
+$yes-no-height: $modal-h / 2;
+$modal-offset-left: $modal-w / 2;
+$modal-offset-top: $modal-h / 3;
+
 .pin {
+  position: relative;
   font-family: 'Quattrocento', serif;
   box-sizing: border-box;
   padding: 4px;
@@ -15,18 +22,79 @@
   // medium  should show two or three
   // large should show five or more.
   text-align: center;
+
+  .pin-close-box {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 2px;
+    background-color: #FFF;
+    .pin-close {
+    }
+  }
+  .confirm-remove-modal {
+    position: absolute;
+    box-sizing: border-box;
+    color: red;
+    left: $modal-offset-left;
+    top: $modal-offset-top;
+    background-color: rgba(255, 255, 255, 0.77);
+    border-radius: 3px;
+    width: $modal-w;
+    height: $modal-h;
+    .confirm-remove-yes {
+      box-sizing: border-box;
+      height: $yes-no-height;
+      border: 1px solid black;
+      cursor: pointer;
+      color: white;
+      border-radius: 3px;
+      background-color: rgba(255, 0, 0, 0.59);
+      span {
+        box-sizing: border-box;
+        position: relative;
+        top: 50%;
+        display: inline-block;
+        transform: translateY(-50%);
+        text-align: center;
+      }
+
+    }
+    .confirm-remove-no {
+      box-sizing: border-box;
+      height: $yes-no-height;
+      border: 1px solid black;
+      cursor: pointer;
+      color: white;
+      background-color: rgba(19, 12, 12, 0.50);
+      border-radius: 3px;
+      span {
+        box-sizing: border-box;
+        position: relative;
+        top: 50%;
+        display: inline-block;
+        transform: translateY(-50%);
+        text-align: center;
+      }
+    }
+  }
   img {
     width: 100%;
     height: auto;
   }
   .pin-title {
     font-size: 1.1em;
+    padding: 3px;
   }
   .pin-username {
     color: $username-color;
+    padding: 3px;
   }
   .likes {
     border: 1px solid $likes-border-color;
+    padding: 3px;
     cursor: pointer;
     .likes-counter {
       margin: 3px 5px;

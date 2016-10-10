@@ -21,7 +21,6 @@ class RouterComponent extends Component {
       <Router history={browserHistory}>
         <Route path='/' component={App}>
           <IndexRoute component={Home} />
-          <Route path='/me' component={UserPins} />
           <Route path='/create' component={CreatePin} />
           <Route path='/all' component={AllPins} />
           <Route path='/u/:username' component={UserPins} />
