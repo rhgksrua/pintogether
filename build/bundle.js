@@ -35204,11 +35204,20 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	var initialState = {
+	  //url: 'http://placehold.it/350x150', 
+	  url: '',
+	  isInvalidURL: false,
+	  isLoading: false
+	};
+
 	function imageReducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? { url: 'http://placehold.it/350x150', isInvalidURL: false, isLoading: false } : arguments[0];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	  var action = arguments[1];
 
 	  switch (action.type) {
+	    case types.CHECK_IMAGE:
+	      return Object.assign({}, state, { url: action.url });
 	    case types.CHECK_IMAGE_PENDING:
 	      return {
 	        isInvalidURL: true,
@@ -47091,6 +47100,9 @@
 	      });
 	    }
 	  }, {
+	    key: 'handleImageError',
+	    value: function handleImageError() {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props;
@@ -47140,7 +47152,7 @@
 	            )
 	          )
 	        ),
-	        _react2.default.createElement('img', { className: 'pin-image', src: imageURL }),
+	        _react2.default.createElement('img', { className: 'pin-image', src: imageURL, onError: this.handleImageError.bind(this) }),
 	        _react2.default.createElement(
 	          'h5',
 	          { className: 'pin-title' },
@@ -47152,21 +47164,32 @@
 	          _react2.default.createElement(_NavItem2.default, { to: '/u/' + username, itemName: username })
 	        ),
 	        _react2.default.createElement(
-	          'p',
-	          { className: 'likes', onClick: this.handleClick.bind(this) },
+	          'div',
+	          { className: 'likes-container' },
 	          _react2.default.createElement(
-	            'span',
-	            { className: 'likes-counter' },
-	            'Likes: ',
-	            likes
-	          ),
-	          liked && _react2.default.createElement(
-	            'span',
-	            { className: 'user-liked' },
-	            _react2.default.createElement(_reactFontawesome2.default, {
-	              className: '',
-	              name: 'heart'
-	            })
+	            'p',
+	            { className: 'likes', onClick: this.handleClick.bind(this) },
+	            liked && _react2.default.createElement(
+	              'span',
+	              { className: 'user-liked' },
+	              _react2.default.createElement(_reactFontawesome2.default, {
+	                className: '',
+	                name: 'heart'
+	              })
+	            ),
+	            !liked && _react2.default.createElement(
+	              'span',
+	              { className: 'user-not-liked' },
+	              _react2.default.createElement(_reactFontawesome2.default, {
+	                className: '',
+	                name: 'heart'
+	              })
+	            ),
+	            _react2.default.createElement(
+	              'span',
+	              { className: 'likes-counter' },
+	              likes
+	            )
 	          )
 	        )
 	      );
@@ -47771,8 +47794,15 @@
 	  }
 
 	  _createClass(CreatePin, [{
+	    key: 'handleImageError',
+	    value: function handleImageError() {
+	      console.log('image ERR');
+	      this.props.checkImage('http://placehold.it/350x150');
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      console.log(this.props);
 	      var _props$imageReducer = this.props.imageReducer;
 	      var isLoading = _props$imageReducer.isLoading;
 	      var url = _props$imageReducer.url;
@@ -47786,7 +47816,7 @@
 	          { className: 'page-title' },
 	          'Create'
 	        ),
-	        _react2.default.createElement('img', { className: 'user-image', src: url }),
+	        _react2.default.createElement('img', { className: 'user-image', src: url, onError: this.handleImageError.bind(this) }),
 	        _react2.default.createElement(_CreatePinFields2.default, null)
 	      );
 	    }
@@ -47899,26 +47929,13 @@
 	var checkImage = exports.checkImage = function checkImage(url) {
 	  return {
 	    type: 'CHECK_IMAGE',
+	    url: url
+	    /*
 	    payload: {
-	      promise: checkImagePromise(url)
+	      promise: checkImagePromise(url),
 	    }
+	    */
 	  };
-	};
-
-	var xcheckImagePromise = exports.xcheckImagePromise = function xcheckImagePromise(url) {
-	  var options = {
-	    mode: 'no-cors'
-	  };
-	  return fetch(url, options).then(function (res) {
-	    if (res.status >= 400) {
-	      throw new Error('failed');
-	    }
-	    return res.blob();
-	  }).then(function (img) {
-	    Promise.resolve(url);
-	  }).catch(function (err) {
-	    Promise.reject(err);
-	  });
 	};
 
 	var checkImagePromise = exports.checkImagePromise = function checkImagePromise(url) {
@@ -54322,7 +54339,8 @@
 	    var _this = _possibleConstructorReturn(this, (ImageURLField.__proto__ || Object.getPrototypeOf(ImageURLField)).call(this, props));
 
 	    _this.handleImage = _this.handleImage.bind(_this);
-	    _this.delayedHandleImage = (0, _debounce2.default)(_this.delayedHandleImage.bind(_this), 1000);
+	    //this.delayedHandleImage = debounce(this.delayedHandleImage.bind(this), 1000);
+	    _this.delayedHandleImage = _this.delayedHandleImage.bind(_this);
 	    return _this;
 	  }
 
@@ -62712,7 +62730,7 @@
 
 
 	// module
-	exports.push([module.id, ".all-pins-container {\n  margin-right: auto;\n  margin-left: auto;\n  padding: 0 20px; }\n  .all-pins-container .pin-gallery {\n    max-width: 100%; }\n\n.create-container {\n  margin-right: auto;\n  margin-left: auto;\n  margin-top: 50px;\n  width: 500px; }\n  .create-container .user-image {\n    width: 100%; }\n  .create-container .create-pin-container {\n    margin-top: 30px; }\n    .create-container .create-pin-container label {\n      display: block;\n      width: 100px;\n      margin: 5px 0; }\n    .create-container .create-pin-container input {\n      margin: 5px 0;\n      width: 100%; }\n    .create-container .create-pin-container button {\n      margin: 5px 0; }\n\n.nav-container {\n  height: 50px;\n  background-color: #EBEBEB; }\n  .nav-container .nav-item {\n    position: relative;\n    top: 50%;\n    display: inline-block;\n    padding: 0 20px;\n    transform: translateY(-50%);\n    text-align: center; }\n\n.pin {\n  position: relative;\n  font-family: 'Quattrocento', serif;\n  box-sizing: border-box;\n  padding: 4px;\n  margin: 1%;\n  border-radius: 4px;\n  border: 2px solid #EBEBEB;\n  width: 31.33333%;\n  text-align: center; }\n  .pin .pin-close-box {\n    position: absolute;\n    top: 0;\n    right: 0;\n    cursor: pointer;\n    padding: 3px;\n    border-radius: 2px;\n    background-color: #FFF; }\n  .pin .confirm-remove-modal {\n    position: absolute;\n    box-sizing: border-box;\n    color: red;\n    left: 25%;\n    top: 33.33333px;\n    background-color: rgba(255, 255, 255, 0.77);\n    border-radius: 3px;\n    width: 50%;\n    height: 100px; }\n    .pin .confirm-remove-modal .confirm-remove-yes {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      border-radius: 3px;\n      background-color: rgba(255, 0, 0, 0.59); }\n      .pin .confirm-remove-modal .confirm-remove-yes span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n    .pin .confirm-remove-modal .confirm-remove-no {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      background-color: rgba(19, 12, 12, 0.5);\n      border-radius: 3px; }\n      .pin .confirm-remove-modal .confirm-remove-no span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n  .pin img {\n    width: 100%;\n    height: auto; }\n  .pin .pin-title {\n    font-size: 1.1em;\n    padding: 3px; }\n  .pin .pin-username {\n    color: #424242;\n    padding: 3px; }\n  .pin .likes {\n    border: 1px solid #EBEBEB;\n    padding: 3px;\n    cursor: pointer; }\n    .pin .likes .likes-counter {\n      margin: 3px 5px; }\n    .pin .likes .user-liked {\n      color: red; }\n\nhtml, body {\n  font-family: 'Oswald', sans-serif; }\n\n.page-title {\n  font-size: 1.3em;\n  margin: 20px; }\n\n.intro {\n  margin: 10px; }\n", ""]);
+	exports.push([module.id, ".all-pins-container {\n  margin-right: auto;\n  margin-left: auto;\n  padding: 0 20px; }\n  .all-pins-container .pin-gallery {\n    max-width: 100%; }\n\n.create-container {\n  margin-right: auto;\n  margin-left: auto;\n  margin-top: 50px;\n  width: 500px; }\n  .create-container .user-image {\n    width: 100%; }\n  .create-container .create-pin-container {\n    margin-top: 30px; }\n    .create-container .create-pin-container label {\n      display: block;\n      width: 100px;\n      margin: 5px 0; }\n    .create-container .create-pin-container input {\n      margin: 5px 0;\n      width: 100%; }\n    .create-container .create-pin-container button {\n      margin: 5px 0; }\n\n.nav-container {\n  height: 50px;\n  background: #bdc3c7;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to left, #bdc3c7, #2c3e50);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to left, #bdc3c7, #2c3e50);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n  color: #EBEBEB;\n  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.2); }\n  .nav-container .nav-item {\n    position: relative;\n    top: 50%;\n    display: inline-block;\n    padding: 0 20px;\n    transform: translateY(-50%);\n    text-align: center; }\n\n.pin {\n  position: relative;\n  font-family: 'Quattrocento', serif;\n  background-color: #F3F3F3;\n  box-sizing: border-box;\n  margin: 1%;\n  border-radius: 4px;\n  width: 31.33333%;\n  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.12);\n  text-align: center; }\n  .pin .pin-close-box {\n    position: absolute;\n    box-sizing: border-box;\n    top: 0;\n    right: 0;\n    cursor: pointer;\n    padding: 3px;\n    background-color: #FFF;\n    border: 1px solid #EBEBEB; }\n  .pin .confirm-remove-modal {\n    position: absolute;\n    box-sizing: border-box;\n    color: red;\n    left: 25%;\n    top: 33.33333px;\n    background-color: rgba(255, 255, 255, 0.77);\n    border-radius: 4px;\n    width: 50%;\n    height: 100px; }\n    .pin .confirm-remove-modal .confirm-remove-yes {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      border-radius: 4px;\n      background-color: rgba(255, 0, 0, 0.59); }\n      .pin .confirm-remove-modal .confirm-remove-yes span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n    .pin .confirm-remove-modal .confirm-remove-no {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      background-color: rgba(19, 12, 12, 0.5);\n      border-radius: 4px; }\n      .pin .confirm-remove-modal .confirm-remove-no span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n  .pin img {\n    width: 100%;\n    height: auto;\n    border-radius: 4px; }\n  .pin .pin-title {\n    margin-top: 5px;\n    font-size: 1.1em;\n    padding: 3px; }\n  .pin .pin-username {\n    color: #A7A7A7;\n    padding: 3px; }\n  .pin .likes-container {\n    margin-bottom: 10px;\n    padding: 3px; }\n    .pin .likes-container .likes {\n      display: inline;\n      cursor: pointer; }\n      .pin .likes-container .likes .likes-counter {\n        margin: 3px 5px; }\n      .pin .likes-container .likes .user-liked {\n        color: red; }\n      .pin .likes-container .likes .user-not-liked {\n        color: black; }\n\nhtml, body {\n  font-family: 'Oswald', sans-serif;\n  background: #fceabb;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to left, #fceabb, #f8b500);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to left, #fceabb, #f8b500);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }\n\n.page-title {\n  font-size: 1.3em;\n  margin: 20px; }\n\n.intro {\n  margin: 10px; }\n\na:link {\n  text-decoration: inherit;\n  color: inherit;\n  cursor: auto; }\n\na:visited {\n  text-decoration: inherit;\n  color: inherit;\n  cursor: auto; }\n", ""]);
 
 	// exports
 

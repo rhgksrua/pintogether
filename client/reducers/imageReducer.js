@@ -2,8 +2,17 @@
 
 import * as types from './actionTypes';
 
-export default function imageReducer(state = { url: 'http://placehold.it/350x150', isInvalidURL: false, isLoading: false }, action) {
+const initialState = { 
+  //url: 'http://placehold.it/350x150', 
+  url: '', 
+  isInvalidURL: false, 
+  isLoading: false 
+};
+
+export default function imageReducer(state = initialState, action) {
   switch(action.type) {
+    case types.CHECK_IMAGE:
+      return Object.assign({}, state, {url: action.url});
     case types.CHECK_IMAGE_PENDING:
       return {
         isInvalidURL: true,

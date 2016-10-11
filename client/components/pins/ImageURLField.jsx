@@ -12,7 +12,8 @@ export class ImageURLField extends Component {
   constructor(props) {
     super(props);
     this.handleImage = this.handleImage.bind(this);
-    this.delayedHandleImage = debounce(this.delayedHandleImage.bind(this), 1000);
+    //this.delayedHandleImage = debounce(this.delayedHandleImage.bind(this), 1000);
+    this.delayedHandleImage = this.delayedHandleImage.bind(this);
   }
   delayedHandleImage(e) {
     const { meta: { dispatch }, input: { value, onChange } } = this.props;

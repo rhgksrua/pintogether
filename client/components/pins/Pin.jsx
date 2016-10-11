@@ -26,6 +26,8 @@ class Pin extends Component {
       confirmPopup: !this.state.confirmPopup
     });
   }
+  handleImageError() {
+  }
   render() {
     const { owner, imageURL, title, username, likes, liked } = this.props;
     return (
@@ -54,22 +56,32 @@ class Pin extends Component {
           </p>
         </div>
         }
-        <img className='pin-image' src={imageURL} />
+        <img className='pin-image' src={imageURL} onError={this.handleImageError.bind(this)} />
         <h5 className='pin-title'>{title}</h5>
         <div className='pin-username'>
           <NavItem to={`/u/${username}`} itemName={username} />
         </div>
-          <p className='likes' onClick={this.handleClick.bind(this)}>
-            <span className='likes-counter'>Likes: {likes}</span>
-            {liked &&
-            <span className='user-liked'>
-              <FontAwesome
-                className=''
-                name='heart'
-              />
-            </span>
-            }
-          </p>
+          <div className='likes-container'>
+            <p className='likes' onClick={this.handleClick.bind(this)}>
+              {liked &&
+              <span className='user-liked'>
+                <FontAwesome
+                  className=''
+                  name='heart'
+                />
+              </span>
+              }
+              {!liked &&
+              <span className='user-not-liked'>
+                <FontAwesome
+                  className=''
+                  name='heart'
+                />
+              </span>
+              }
+              <span className='likes-counter'>{likes}</span>
+            </p>
+          </div>
       </div>
     );
   }

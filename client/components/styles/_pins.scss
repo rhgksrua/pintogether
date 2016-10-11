@@ -5,16 +5,18 @@ $modal-h: 100px;
 $yes-no-height: $modal-h / 2;
 $modal-offset-left: $modal-w / 2;
 $modal-offset-top: $modal-h / 3;
+$border-radius: 4px;
+$username-color: #A7A7A7;
 
 .pin {
   position: relative;
   font-family: 'Quattrocento', serif;
+  background-color: #F3F3F3;
   box-sizing: border-box;
-  padding: 4px;
   margin: $pins-margin;
-  border-radius: 4px;
-  border: 2px solid #EBEBEB;
+  border-radius: $border-radius;
   width: $pins-w;
+  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.12);
   // change width on media query.
   // max-width
   // small / medium / large
@@ -25,12 +27,13 @@ $modal-offset-top: $modal-h / 3;
 
   .pin-close-box {
     position: absolute;
+    box-sizing: border-box;
     top: 0;
     right: 0;
     cursor: pointer;
     padding: 3px;
-    border-radius: 2px;
     background-color: #FFF;
+    border: 1px solid #EBEBEB;
     .pin-close {
     }
   }
@@ -41,7 +44,7 @@ $modal-offset-top: $modal-h / 3;
     left: $modal-offset-left;
     top: $modal-offset-top;
     background-color: rgba(255, 255, 255, 0.77);
-    border-radius: 3px;
+    border-radius: $border-radius;
     width: $modal-w;
     height: $modal-h;
     .confirm-remove-yes {
@@ -50,7 +53,7 @@ $modal-offset-top: $modal-h / 3;
       border: 1px solid black;
       cursor: pointer;
       color: white;
-      border-radius: 3px;
+      border-radius: $border-radius;
       background-color: rgba(255, 0, 0, 0.59);
       span {
         box-sizing: border-box;
@@ -69,7 +72,7 @@ $modal-offset-top: $modal-h / 3;
       cursor: pointer;
       color: white;
       background-color: rgba(19, 12, 12, 0.50);
-      border-radius: 3px;
+      border-radius: $border-radius;
       span {
         box-sizing: border-box;
         position: relative;
@@ -83,8 +86,10 @@ $modal-offset-top: $modal-h / 3;
   img {
     width: 100%;
     height: auto;
+    border-radius: $border-radius;
   }
   .pin-title {
+    margin-top: 5px;
     font-size: 1.1em;
     padding: 3px;
   }
@@ -92,15 +97,21 @@ $modal-offset-top: $modal-h / 3;
     color: $username-color;
     padding: 3px;
   }
-  .likes {
-    border: 1px solid $likes-border-color;
+  .likes-container {
+    margin-bottom: 10px;
     padding: 3px;
-    cursor: pointer;
-    .likes-counter {
-      margin: 3px 5px;
-    }
-    .user-liked {
-      color: red;
+    .likes {
+      display: inline;
+      cursor: pointer;
+      .likes-counter {
+        margin: 3px 5px;
+      }
+      .user-liked {
+        color: red;
+      }
+      .user-not-liked {
+        color: black;
+      }
     }
   }
 }

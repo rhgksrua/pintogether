@@ -15,12 +15,17 @@ export class CreatePin extends Component {
   constructor(props) {
     super();
   }
+  handleImageError() {
+    console.log('image ERR');
+    this.props.checkImage('http://placehold.it/350x150');
+  }
   render() {
+    console.log(this.props);
     const { isLoading, url, isInvalidURL } = this.props.imageReducer;
     return (
       <div className='create-container'>
         <h3 className='page-title'>Create</h3>
-        <img className='user-image' src={url} />
+        <img className='user-image' src={url} onError={this.handleImageError.bind(this)} />
         <CreatePinFields />
       </div>
     );
