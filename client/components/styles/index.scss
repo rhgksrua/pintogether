@@ -3,6 +3,7 @@
 @import 'create';
 @import 'nav';
 @import 'pins';
+@import 'mixins/media';
 
 html, body {
   font-family: 'Oswald', sans-serif;
@@ -32,3 +33,4 @@ a:visited {
   color: inherit;
   cursor: auto;
 }
+

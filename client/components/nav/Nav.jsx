@@ -13,7 +13,7 @@ class Nav extends Component {
     const { username, loggedIn } = this.props;
     return (
       <nav className='nav-container'>
-        <NavItem to='/' itemName='PinTogether' />
+        <NavItem to='/' itemName='PinTogether' onlyActiveOnIndex={true} />
         <NavItem to='/all' itemName='All' />
         <NavItem to='/create' itemName='Create' />
         {loggedIn && username &&

@@ -1,5 +1,7 @@
 // Pin.jsx styles
 
+@import 'mixins/media';
+
 $modal-w: 50%;
 $modal-h: 100px;
 $yes-no-height: $modal-h / 2;
@@ -15,8 +17,8 @@ $username-color: #A7A7A7;
   box-sizing: border-box;
   margin: $pins-margin;
   border-radius: $border-radius;
-  width: $pins-w;
   box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.12);
+  width: $pins-w;
   // change width on media query.
   // max-width
   // small / medium / large
@@ -24,7 +26,6 @@ $username-color: #A7A7A7;
   // medium  should show two or three
   // large should show five or more.
   text-align: center;
-
   .pin-close-box {
     position: absolute;
     box-sizing: border-box;
@@ -116,3 +117,9 @@ $username-color: #A7A7A7;
   }
 }
 
+@include phone {
+  .pin {
+    width: 100%;
+    margin: 10px 0;
+  }
+}

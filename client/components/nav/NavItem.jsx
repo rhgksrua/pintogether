@@ -8,7 +8,7 @@ class NavItem extends Component {
     const itemName = this.props.itemName;
     const to = this.props.to;
     const navElement = to ? 
-      <Link to={to}>{itemName}</Link> : 
+      <Link to={to} activeClassName='nav-active' onlyActiveOnIndex={this.props.onlyActiveOnIndex}>{itemName}</Link> : 
       <p>{itemName}</p>; 
     return (
       <div className='nav-item'>

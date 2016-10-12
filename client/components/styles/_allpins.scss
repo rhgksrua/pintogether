@@ -1,12 +1,16 @@
+@import 'mixins/media';
+
 $pins-container-w: 100%;
 $pins-gallery-w: 100%;
 $pins-margin: 1%;
 $pins-w: ($pins-gallery-w - (6 * $pins-margin))  / 3;
+$pins-w-phone: $pins-gallery-w * 0.9;
 $container-margin: 40px;
 $username-color: #424242;
 $likes-border-color: #EBEBEB;
 
 .all-pins-container {
+  box-sizing: border-box;
   margin-right: auto;
   margin-left: auto;
   padding: 0 20px;
@@ -17,3 +21,8 @@ $likes-border-color: #EBEBEB;
   }
 }
 
+@include phone {
+  .all-pins-container {
+    padding: 0;
+  }
+}
