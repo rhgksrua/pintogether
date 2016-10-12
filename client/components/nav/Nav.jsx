@@ -13,18 +13,38 @@ class Nav extends Component {
     const { username, loggedIn } = this.props;
     return (
       <nav className='nav-container'>
-        <NavItem to='/' itemName='PinTogether' onlyActiveOnIndex={true} />
-        <NavItem to='/all' itemName='All' />
-        <NavItem to='/create' itemName='Create' />
-        {loggedIn && username &&
-          <NavItem to={`/u/${username}`} itemName={username} />
-        }
-        {loggedIn && username &&
-          <NavItem to='/logout' itemName='Log Out' />
-        }
-        {!loggedIn &&
-          <LogInGitHub />
-        }
+        <div className='nav-small'>
+          {/* need to toggle this nav */}
+          <div className='nav-item-container'>
+            <div className='close-menu'>X</div>
+            <NavItem to='/' itemName='PinTogether' onlyActiveOnIndex={true} />
+            <NavItem to='/all' itemName='All' />
+            <NavItem to='/create' itemName='Create' />
+            {loggedIn && username &&
+              <NavItem to={`/u/${username}`} itemName={username} />
+            }
+            {loggedIn && username &&
+              <NavItem to='/logout' itemName='Log Out' />
+            }
+            {!loggedIn &&
+              <LogInGitHub />
+            }
+          </div>
+        </div>
+        <div className='nav-large'>
+          <NavItem to='/' itemName='PinTogether' onlyActiveOnIndex={true} />
+          <NavItem to='/all' itemName='All' />
+          <NavItem to='/create' itemName='Create' />
+          {loggedIn && username &&
+            <NavItem to={`/u/${username}`} itemName={username} />
+          }
+          {loggedIn && username &&
+            <NavItem to='/logout' itemName='Log Out' />
+          }
+          {!loggedIn &&
+            <LogInGitHub />
+          }
+        </div>
       </nav>
     );
   }

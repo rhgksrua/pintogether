@@ -1,3 +1,5 @@
+@import 'mixins/media';
+
 $nav-bg-color: #EBEBEB;
 
 .nav-container {
@@ -7,18 +9,69 @@ $nav-bg-color: #EBEBEB;
   background: linear-gradient(to left, #bdc3c7 , #2c3e50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: #EBEBEB;
   box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.20);
-
-  .nav-active {
-    border-bottom: 3px solid #FFF;
+  .nav-small {
+    display: none;
   }
-          
-          
-  .nav-item {
+  .nav-large {
     position: relative;
-    top: 50%;
-    display: inline-block;
-    padding: 0 20px;
-    transform: translateY(-50%);
-    text-align: center;
+    height: 50px;
+    .nav-active {
+      border-bottom: 3px solid #FFF;
+    }
+    .nav-item {
+      position: relative;
+      top: 50%;
+      display: inline-block;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      text-align: center;
+    }
+  }
+}
+
+@include phone {
+  .nav-container {
+    .nav-large {
+      display: none;
+    }
+    .hide {
+      // use this to toggle mobile menu
+      display: none;
+     }
+    .nav-small {
+      display: block;
+      position: relative;
+      box-sizing: border-box;
+      margin: 0;
+      position: fixed;
+      background-color: #FFF;
+      height: 100%;
+      width: 100%;
+      color: #424242;
+      z-index: 999;
+      text-align: center;
+      .close-menu {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      .nav-item-container {
+        position: relative;
+        top: 50%;
+        display: inline-block;
+        padding: 0 20px;
+        transform: translateY(-50%);
+        text-align: center;
+        .nav-item {
+          position: relative;
+          display: block;
+          padding: 10px 0;
+          text-align: center;
+          .nav-active {
+            border-bottom: 3px solid #424242;
+          }
+        }
+      }
+    }
   }
 }

@@ -1,4 +1,7 @@
+@import 'mixins/media';
+
 $container-width: 500px;
+$container-width-phone: 100%;
 
 .create-container {
   margin-right: auto;
@@ -12,7 +15,6 @@ $container-width: 500px;
     margin-top: 30px;
     label {
       display: block;
-      width: 100px;
       margin: 5px 0;
     }
     input {
@@ -26,6 +28,37 @@ $container-width: 500px;
       .title-field {
       }
       .url-field {
+      }
+    }
+  }
+}
+
+@include phone {
+  .create-container {
+    box-sizing: border-box;
+    width: $container-width-phone;
+    margin-top: 0;
+    .create-pin-container {
+      box-sizing: border-box;
+      margin-top: 10px;
+      text-align: center;
+      label {
+        display: block;
+        margin: 5px 0;
+      }
+      input {
+        box-sizing: border-box;
+        margin: 5px 0; 
+        width: 90%;
+      }
+      button {
+        margin: 5px 0;
+      }
+      .create-pin-form {
+        .title-field {
+        }
+        .url-field {
+        }
       }
     }
   }
