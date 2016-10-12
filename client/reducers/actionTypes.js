@@ -1,10 +1,8 @@
 'use strict';
 
-export const NONE = 'NONE';
-export const CHECK_IMAGE = 'CHECK_IMAGE';
-export const CHECK_IMAGE_PENDING = 'CHECK_IMAGE_PENDING';
-export const CHECK_IMAGE_FULFILLED = 'CHECK_IMAGE_FULFILLED';
-export const CHECK_IMAGE_REJECTED = 'CHECK_IMAGE_REJECTED';
+
+
+export const SET_IMAGE = 'SET_IMAGE';
 
 export const ADD_USER_STATUS = 'ADD_USER_STATUS';
 export const ADD_USER_STATUS_PENDING = 'ADD_USER_STATUS_PENDING';

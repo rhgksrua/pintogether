@@ -5,7 +5,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import debounce from 'debounce';
 
-import { checkImage } from '../../actions/actions';
+import { setImage } from '../../actions/userImageActions';
 import CreatePinFields from './CreatePinFields';
 import ImageURLField from './ImageURLField';
 
@@ -16,8 +16,8 @@ export class CreatePin extends Component {
     super();
   }
   handleImageError() {
-    console.log('image ERR');
-    this.props.checkImage('http://placehold.it/350x150');
+    console.warn('Broken image url');
+    this.props.setImage('http://placehold.it/350x150');
   }
   render() {
     console.log(this.props);
@@ -44,8 +44,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    checkImage: (url) => {
-      dispatch(checkImage(url));
+    setImage: (url) => {
+      dispatch(setImage(url));
     }
   }
 }

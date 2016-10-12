@@ -34978,11 +34978,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var NONE = exports.NONE = 'NONE';
-	var CHECK_IMAGE = exports.CHECK_IMAGE = 'CHECK_IMAGE';
-	var CHECK_IMAGE_PENDING = exports.CHECK_IMAGE_PENDING = 'CHECK_IMAGE_PENDING';
-	var CHECK_IMAGE_FULFILLED = exports.CHECK_IMAGE_FULFILLED = 'CHECK_IMAGE_FULFILLED';
-	var CHECK_IMAGE_REJECTED = exports.CHECK_IMAGE_REJECTED = 'CHECK_IMAGE_REJECTED';
+	var SET_IMAGE = exports.SET_IMAGE = 'SET_IMAGE';
 
 	var ADD_USER_STATUS = exports.ADD_USER_STATUS = 'ADD_USER_STATUS';
 	var ADD_USER_STATUS_PENDING = exports.ADD_USER_STATUS_PENDING = 'ADD_USER_STATUS_PENDING';
@@ -35205,8 +35201,7 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	var initialState = {
-	  //url: 'http://placehold.it/350x150', 
-	  url: '',
+	  url: 'http://placehold.it/350x150',
 	  isInvalidURL: false,
 	  isLoading: false
 	};
@@ -35216,26 +35211,8 @@
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case types.CHECK_IMAGE:
+	    case types.SET_IMAGE:
 	      return Object.assign({}, state, { url: action.url });
-	    case types.CHECK_IMAGE_PENDING:
-	      return {
-	        isInvalidURL: true,
-	        isLoading: true,
-	        url: 'loading image'
-	      };
-	    case types.CHECK_IMAGE_FULFILLED:
-	      return {
-	        isLoading: false,
-	        isInvalidURL: false,
-	        url: action.payload
-	      };
-	    case types.CHECK_IMAGE_REJECTED:
-	      return {
-	        isLoading: false,
-	        isInvalidURL: true,
-	        url: 'http://placehold.it/350x150'
-	      };
 	    default:
 	      return state;
 	  }
@@ -47764,7 +47741,7 @@
 
 	var _debounce2 = _interopRequireDefault(_debounce);
 
-	var _actions = __webpack_require__(480);
+	var _userImageActions = __webpack_require__(791);
 
 	var _CreatePinFields = __webpack_require__(481);
 
@@ -47796,8 +47773,8 @@
 	  _createClass(CreatePin, [{
 	    key: 'handleImageError',
 	    value: function handleImageError() {
-	      console.log('image ERR');
-	      this.props.checkImage('http://placehold.it/350x150');
+	      console.warn('Broken image url');
+	      this.props.setImage('http://placehold.it/350x150');
 	    }
 	  }, {
 	    key: 'render',
@@ -47837,8 +47814,8 @@
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
-	    checkImage: function checkImage(url) {
-	      dispatch((0, _actions.checkImage)(url));
+	    setImage: function setImage(url) {
+	      dispatch((0, _userImageActions.setImage)(url));
 	    }
 	  };
 	};
@@ -47918,48 +47895,7 @@
 
 
 /***/ },
-/* 480 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var checkImage = exports.checkImage = function checkImage(url) {
-	  return {
-	    type: 'CHECK_IMAGE',
-	    url: url
-	    /*
-	    payload: {
-	      promise: checkImagePromise(url),
-	    }
-	    */
-	  };
-	};
-
-	var checkImagePromise = exports.checkImagePromise = function checkImagePromise(url) {
-	  var options = {
-	    mode: 'no-cors'
-	  };
-	  return new Promise(function (resolve, reject) {
-	    if (!/\.gif$|\.jpg$|\.jpeg$|\.png$/.test(url)) {
-	      return reject(new Error('invalid ext'));
-	    }
-	    fetch(url, options).then(function (response) {
-	      if (response.status >= 400) {
-	        throw new Error('url 404');
-	      }
-	      return response.blob();
-	    }).then(function (blob) {
-	      return resolve(url);
-	    }).catch(function (err) {
-	      reject(err);
-	    });
-	  });
-	};
-
-/***/ },
+/* 480 */,
 /* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -54320,7 +54256,7 @@
 
 	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 
-	var _actions = __webpack_require__(480);
+	var _userImageActions = __webpack_require__(791);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54339,31 +54275,22 @@
 	    var _this = _possibleConstructorReturn(this, (ImageURLField.__proto__ || Object.getPrototypeOf(ImageURLField)).call(this, props));
 
 	    _this.handleImage = _this.handleImage.bind(_this);
-	    //this.delayedHandleImage = debounce(this.delayedHandleImage.bind(this), 1000);
-	    _this.delayedHandleImage = _this.delayedHandleImage.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(ImageURLField, [{
-	    key: 'delayedHandleImage',
-	    value: function delayedHandleImage(e) {
+	    key: 'handleImage',
+	    value: function handleImage(e) {
 	      var _props = this.props;
 	      var dispatch = _props.meta.dispatch;
 	      var _props$input = _props.input;
 	      var value = _props$input.value;
 	      var onChange = _props$input.onChange;
+	      //e.persist();
 
-	      var url = e.target.value;
-	      dispatch((0, _actions.checkImage)(url));
-	    }
-	  }, {
-	    key: 'handleImage',
-	    value: function handleImage(e) {
-	      var onChange = this.props.input.onChange;
-
-	      e.persist();
 	      onChange(e.target.value);
-	      this.delayedHandleImage(e);
+	      var url = e.target.value;
+	      dispatch((0, _userImageActions.setImage)(url));
 	    }
 	  }, {
 	    key: 'render',
@@ -62734,6 +62661,30 @@
 
 	// exports
 
+
+/***/ },
+/* 791 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.setImage = undefined;
+
+	var _actionTypes = __webpack_require__(380);
+
+	var types = _interopRequireWildcard(_actionTypes);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var setImage = exports.setImage = function setImage(url) {
+	  return {
+	    type: 'SET_IMAGE',
+	    url: url
+	  };
+	};
 
 /***/ }
 /******/ ]);
