@@ -36,7 +36,7 @@ export class CreatePinFields extends Component {
           <div className='url-field'>
             <Field name='imageURLField' component={ImageURLField} props={{ isLoading, url, isInvalidURL }}/>
           </div>
-          <button type='submit' disabled={pristine || submitting}>Submit</button>
+          <button className='pin-submit' type='submit' disabled={pristine || submitting}>Submit</button>
         </form>
       </div>
     );

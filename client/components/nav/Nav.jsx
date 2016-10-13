@@ -2,21 +2,42 @@
 
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import FontAwesome from 'react-fontawesome';
 
 import LogInGitHub from '../accounts/LoginGitHub';
 import NavItem from './NavItem';
 
+import { toggleMenu } from '../../actions/navActions';
+
 // make each nav item a component
 
-class Nav extends Component {
+export class Nav extends Component {
+  toggleMenu() {
+    this.props.toggleMenu();
+  }
   render() {
-    const { username, loggedIn } = this.props;
+    const { username, loggedIn, navReducer: { show } } = this.props;
+    const navClassName = show ? 'nav-small' : 'nav-small hide';
+    const toggleClassName = show ? 'small-toggle hide' : 'small-toggle';
+    const titleClassName = show ? 'nav-title-small hide': 'nav-title-small';
     return (
       <nav className='nav-container'>
-        <div className='nav-small'>
-          {/* need to toggle this nav */}
+        <div className={titleClassName}>PT</div>
+        <div className={toggleClassName} onClick={this.toggleMenu.bind(this)}>
+          <FontAwesome
+            className='nav-menu fa-2x'
+            name='bars'
+          />
+        </div>
+        <div className={navClassName} onClick={this.toggleMenu.bind(this)}>
+          <div className='close-menu'>
+            <FontAwesome
+              className='fa-2x'
+              name='times'
+            />
+          </div>
           <div className='nav-item-container'>
-            <div className='close-menu'>X</div>
             <NavItem to='/' itemName='PinTogether' onlyActiveOnIndex={true} />
             <NavItem to='/all' itemName='All' />
             <NavItem to='/create' itemName='Create' />
@@ -50,6 +71,19 @@ class Nav extends Component {
   }
 }
 
-export default Nav;
+const mapStateToProps = state => {
+  const { navReducer } = state;
+  return {
+    navReducer
+  };
+}
 
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    toggleMenu: () => {
+      dispatch(toggleMenu());
+    }
+  };
+}
 
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

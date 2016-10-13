@@ -8,8 +8,21 @@ $container-width-phone: 100%;
   margin-left: auto;
   margin-top: 50px;
   width: $container-width;
-  .user-image {
+  text-align: center;
+  .user-image-container {
+    height: 300px;
     width: 100%;
+    .user-image {
+      box-sizing: border-box;
+      position: relative;
+      top: 50%;
+      display: inline-block;
+      padding: 0 20px;
+      transform: translateY(-50%);
+      text-align: center;
+      max-height: 100%;
+      max-width: 100%;
+    }
   }
   .create-pin-container {
     margin-top: 30px;
@@ -18,8 +31,17 @@ $container-width-phone: 100%;
       margin: 5px 0;
     }
     input {
-      margin: 5px 0;
+      box-sizing: border-box;
       width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 1.2em;
+      transition: all 0.30s ease-in-out;
+      border: 1px solid #EBEBEB;
+      &:focus {
+        border: 1px solid #424242;
+      }
     }
     button {
       margin: 5px 0;
@@ -28,6 +50,20 @@ $container-width-phone: 100%;
       .title-field {
       }
       .url-field {
+      }
+      .pin-submit {
+        box-sizing: border-box;
+        font-family: inherit;
+        font-size: 1.2em;
+        background-color: #EBEBEB;
+        box-shadow: 0;
+        border: 0;
+        width: 100%;
+        transition: all 0.10s; 
+        &:active {
+          background-color: #A2A2A2;
+          box-shadow: inset 0 0 4px #424242;
+        }
       }
     }
   }
@@ -58,6 +94,20 @@ $container-width-phone: 100%;
         .title-field {
         }
         .url-field {
+        }
+        .pin-submit {
+          box-sizing: border-box;
+          font-family: inherit;
+          font-size: 1.2em;
+          background-color: #EBEBEB;
+          box-shadow: 0;
+          border: 0;
+          width: 90%;
+          transition: all 0.10s; 
+          &:active {
+            background-color: #A2A2A2;
+            box-shadow: inset 0 0 4px #424242;
+          }
         }
       }
     }

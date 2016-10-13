@@ -9,6 +9,12 @@ $nav-bg-color: #EBEBEB;
   background: linear-gradient(to left, #bdc3c7 , #2c3e50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: #EBEBEB;
   box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.20);
+  .nav-title-small {
+    display: none;
+  }
+  .small-toggle {
+    display: none;
+  }
   .nav-small {
     display: none;
   }
@@ -29,19 +35,29 @@ $nav-bg-color: #EBEBEB;
   }
 }
 
+
 @include phone {
   .nav-container {
+    .nav-title-small {
+      display: block;
+      position: absolute;
+      top: 16px;
+      left: 10px;
+    }
+    .small-toggle {
+      display: block;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
     .nav-large {
       display: none;
     }
-    .hide {
-      // use this to toggle mobile menu
-      display: none;
-     }
     .nav-small {
       display: block;
       position: relative;
       box-sizing: border-box;
+      opacity: 0.95;
       margin: 0;
       position: fixed;
       background-color: #FFF;
@@ -52,8 +68,8 @@ $nav-bg-color: #EBEBEB;
       text-align: center;
       .close-menu {
         position: absolute;
-        top: 0;
-        right: 0;
+        top: 5px;
+        right: 7px;
       }
       .nav-item-container {
         position: relative;
@@ -73,5 +89,9 @@ $nav-bg-color: #EBEBEB;
         }
       }
     }
+    .hide {
+      // use this to toggle mobile menu
+      display: none;
+     }
   }
 }

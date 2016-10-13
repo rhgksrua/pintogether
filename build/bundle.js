@@ -26177,6 +26177,10 @@
 
 	var _imageReducer2 = _interopRequireDefault(_imageReducer);
 
+	var _navReducer = __webpack_require__(792);
+
+	var _navReducer2 = _interopRequireDefault(_navReducer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -26186,7 +26190,7 @@
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case 'CHECK_IMAGE':
+	    case types.CHECK_IMAGE:
 	      return {
 	        payload: action.payload
 	      };
@@ -26201,6 +26205,7 @@
 	  userPinsReducer: _userPinsReducer2.default,
 	  createPin: createPin,
 	  imageReducer: _imageReducer2.default,
+	  navReducer: _navReducer2.default,
 	  form: _reduxForm.reducer
 	});
 
@@ -35007,6 +35012,8 @@
 	var REMOVE_USER_PIN = exports.REMOVE_USER_PIN = 'REMOVE_USER_PIN';
 	var REMOVE_USER_PIN_FAILED = exports.REMOVE_USER_PIN_FAILED = 'REMOVE_USER_PIN_FAILED';
 
+	var TOGGLE_MENU = exports.TOGGLE_MENU = 'TOGGLE_MENU';
+
 /***/ },
 /* 381 */
 /***/ function(module, exports, __webpack_require__) {
@@ -40996,6 +41003,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.Nav = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -41005,6 +41013,12 @@
 
 	var _reactRouter = __webpack_require__(386);
 
+	var _reactRedux = __webpack_require__(173);
+
+	var _reactFontawesome = __webpack_require__(470);
+
+	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
+
 	var _LoginGitHub = __webpack_require__(450);
 
 	var _LoginGitHub2 = _interopRequireDefault(_LoginGitHub);
@@ -41012,6 +41026,8 @@
 	var _NavItem = __webpack_require__(451);
 
 	var _NavItem2 = _interopRequireDefault(_NavItem);
+
+	var _navActions = __webpack_require__(791);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41023,7 +41039,7 @@
 
 	// make each nav item a component
 
-	var Nav = function (_Component) {
+	var Nav = exports.Nav = function (_Component) {
 	  _inherits(Nav, _Component);
 
 	  function Nav() {
@@ -41033,26 +41049,51 @@
 	  }
 
 	  _createClass(Nav, [{
+	    key: 'toggleMenu',
+	    value: function toggleMenu() {
+	      this.props.toggleMenu();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props;
 	      var username = _props.username;
 	      var loggedIn = _props.loggedIn;
+	      var show = _props.navReducer.show;
 
+	      var navClassName = show ? 'nav-small' : 'nav-small hide';
+	      var toggleClassName = show ? 'small-toggle hide' : 'small-toggle';
+	      var titleClassName = show ? 'nav-title-small hide' : 'nav-title-small';
 	      return _react2.default.createElement(
 	        'nav',
 	        { className: 'nav-container' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'nav-small' },
+	          { className: titleClassName },
+	          'PT'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: toggleClassName, onClick: this.toggleMenu.bind(this) },
+	          _react2.default.createElement(_reactFontawesome2.default, {
+	            className: 'nav-menu fa-2x',
+	            name: 'bars'
+	          })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: navClassName, onClick: this.toggleMenu.bind(this) },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'close-menu' },
+	            _react2.default.createElement(_reactFontawesome2.default, {
+	              className: 'fa-2x',
+	              name: 'times'
+	            })
+	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'nav-item-container' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'close-menu' },
-	              'X'
-	            ),
 	            _react2.default.createElement(_NavItem2.default, { to: '/', itemName: 'PinTogether', onlyActiveOnIndex: true }),
 	            _react2.default.createElement(_NavItem2.default, { to: '/all', itemName: 'All' }),
 	            _react2.default.createElement(_NavItem2.default, { to: '/create', itemName: 'Create' }),
@@ -41078,7 +41119,23 @@
 	  return Nav;
 	}(_react.Component);
 
-	exports.default = Nav;
+	var mapStateToProps = function mapStateToProps(state) {
+	  var navReducer = state.navReducer;
+
+	  return {
+	    navReducer: navReducer
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    toggleMenu: function toggleMenu() {
+	      dispatch((0, _navActions.toggleMenu)());
+	    }
+	  };
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Nav);
 
 /***/ },
 /* 450 */
@@ -47764,7 +47821,7 @@
 
 	var _debounce2 = _interopRequireDefault(_debounce);
 
-	var _userImageActions = __webpack_require__(791);
+	var _userImageActions = __webpack_require__(480);
 
 	var _CreatePinFields = __webpack_require__(481);
 
@@ -47816,7 +47873,11 @@
 	          { className: 'page-title' },
 	          'Create'
 	        ),
-	        _react2.default.createElement('img', { className: 'user-image', src: url, onError: this.handleImageError.bind(this) }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'user-image-container' },
+	          _react2.default.createElement('img', { className: 'user-image', src: url, onError: this.handleImageError.bind(this) })
+	        ),
 	        _react2.default.createElement(_CreatePinFields2.default, null)
 	      );
 	    }
@@ -47918,7 +47979,30 @@
 
 
 /***/ },
-/* 480 */,
+/* 480 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.setImage = undefined;
+
+	var _actionTypes = __webpack_require__(380);
+
+	var types = _interopRequireWildcard(_actionTypes);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var setImage = exports.setImage = function setImage(url) {
+	  return {
+	    type: 'SET_IMAGE',
+	    url: url
+	  };
+	};
+
+/***/ },
 /* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -48001,7 +48085,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'button',
-	            { type: 'submit', disabled: pristine || submitting },
+	            { className: 'pin-submit', type: 'submit', disabled: pristine || submitting },
 	            'Submit'
 	          )
 	        )
@@ -54279,7 +54363,7 @@
 
 	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 
-	var _userImageActions = __webpack_require__(791);
+	var _userImageActions = __webpack_require__(480);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62680,7 +62764,7 @@
 
 
 	// module
-	exports.push([module.id, ".all-pins-container {\n  box-sizing: border-box;\n  margin-right: auto;\n  margin-left: auto;\n  padding: 0 20px; }\n  .all-pins-container .pin-gallery {\n    max-width: 100%; }\n\n@media (max-width: 768px) {\n  .all-pins-container {\n    padding: 0; } }\n\n.create-container {\n  margin-right: auto;\n  margin-left: auto;\n  margin-top: 50px;\n  width: 500px; }\n  .create-container .user-image {\n    width: 100%; }\n  .create-container .create-pin-container {\n    margin-top: 30px; }\n    .create-container .create-pin-container label {\n      display: block;\n      margin: 5px 0; }\n    .create-container .create-pin-container input {\n      margin: 5px 0;\n      width: 100%; }\n    .create-container .create-pin-container button {\n      margin: 5px 0; }\n\n@media (max-width: 768px) {\n  .create-container {\n    box-sizing: border-box;\n    width: 100%;\n    margin-top: 0; }\n    .create-container .create-pin-container {\n      box-sizing: border-box;\n      margin-top: 10px;\n      text-align: center; }\n      .create-container .create-pin-container label {\n        display: block;\n        margin: 5px 0; }\n      .create-container .create-pin-container input {\n        box-sizing: border-box;\n        margin: 5px 0;\n        width: 90%; }\n      .create-container .create-pin-container button {\n        margin: 5px 0; } }\n\n.nav-container {\n  height: 50px;\n  background: #bdc3c7;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to left, #bdc3c7, #2c3e50);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to left, #bdc3c7, #2c3e50);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n  color: #EBEBEB;\n  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.2); }\n  .nav-container .nav-small {\n    display: none; }\n  .nav-container .nav-large {\n    position: relative;\n    height: 50px; }\n    .nav-container .nav-large .nav-active {\n      border-bottom: 3px solid #FFF; }\n    .nav-container .nav-large .nav-item {\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center; }\n\n@media (max-width: 768px) {\n  .nav-container .nav-large {\n    display: none; }\n  .nav-container .hide {\n    display: none; }\n  .nav-container .nav-small {\n    display: block;\n    position: relative;\n    box-sizing: border-box;\n    margin: 0;\n    position: fixed;\n    background-color: #FFF;\n    height: 100%;\n    width: 100%;\n    color: #424242;\n    z-index: 999;\n    text-align: center; }\n    .nav-container .nav-small .close-menu {\n      position: absolute;\n      top: 0;\n      right: 0; }\n    .nav-container .nav-small .nav-item-container {\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center; }\n      .nav-container .nav-small .nav-item-container .nav-item {\n        position: relative;\n        display: block;\n        padding: 10px 0;\n        text-align: center; }\n        .nav-container .nav-small .nav-item-container .nav-item .nav-active {\n          border-bottom: 3px solid #424242; } }\n\n.pin {\n  position: relative;\n  font-family: 'Quattrocento', serif;\n  background-color: #F3F3F3;\n  box-sizing: border-box;\n  margin: 1%;\n  border-radius: 4px;\n  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.12);\n  width: 31.33333%;\n  text-align: center; }\n  .pin .pin-close-box {\n    position: absolute;\n    box-sizing: border-box;\n    top: 0;\n    right: 0;\n    cursor: pointer;\n    padding: 3px;\n    background-color: #FFF;\n    border: 1px solid #EBEBEB; }\n  .pin .confirm-remove-modal {\n    position: absolute;\n    box-sizing: border-box;\n    color: red;\n    left: 25%;\n    top: 33.33333px;\n    background-color: rgba(255, 255, 255, 0.77);\n    border-radius: 4px;\n    width: 50%;\n    height: 100px; }\n    .pin .confirm-remove-modal .confirm-remove-yes {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      border-radius: 4px;\n      background-color: rgba(255, 0, 0, 0.59); }\n      .pin .confirm-remove-modal .confirm-remove-yes span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n    .pin .confirm-remove-modal .confirm-remove-no {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      background-color: rgba(19, 12, 12, 0.5);\n      border-radius: 4px; }\n      .pin .confirm-remove-modal .confirm-remove-no span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n  .pin img {\n    width: 100%;\n    height: auto;\n    border-radius: 4px; }\n  .pin .pin-title {\n    margin-top: 5px;\n    font-size: 1.1em;\n    padding: 3px; }\n  .pin .pin-username {\n    color: #A7A7A7;\n    padding: 3px; }\n  .pin .likes-container {\n    margin-bottom: 10px;\n    padding: 3px; }\n    .pin .likes-container .likes {\n      display: inline;\n      cursor: pointer; }\n      .pin .likes-container .likes .likes-counter {\n        margin: 3px 5px; }\n      .pin .likes-container .likes .user-liked {\n        color: red; }\n      .pin .likes-container .likes .user-not-liked {\n        color: black; }\n\n@media (max-width: 768px) {\n  .pin {\n    width: 100%;\n    margin: 10px 0; } }\n\nhtml, body {\n  font-family: 'Oswald', sans-serif;\n  background: #fceabb;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to left, #fceabb, #f8b500);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to left, #fceabb, #f8b500);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }\n\n.page-title {\n  font-size: 1.3em;\n  margin: 20px; }\n\n.intro {\n  margin: 10px; }\n\na:link {\n  text-decoration: inherit;\n  color: inherit;\n  cursor: auto; }\n\na:visited {\n  text-decoration: inherit;\n  color: inherit;\n  cursor: auto; }\n", ""]);
+	exports.push([module.id, ".all-pins-container {\n  box-sizing: border-box;\n  margin-right: auto;\n  margin-left: auto;\n  padding: 0 20px; }\n  .all-pins-container .pin-gallery {\n    max-width: 100%; }\n\n@media (max-width: 768px) {\n  .all-pins-container {\n    padding: 0; } }\n\n.create-container {\n  margin-right: auto;\n  margin-left: auto;\n  margin-top: 50px;\n  width: 500px;\n  text-align: center; }\n  .create-container .user-image-container {\n    height: 300px;\n    width: 100%; }\n    .create-container .user-image-container .user-image {\n      box-sizing: border-box;\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center;\n      max-height: 100%;\n      max-width: 100%; }\n  .create-container .create-pin-container {\n    margin-top: 30px; }\n    .create-container .create-pin-container label {\n      display: block;\n      margin: 5px 0; }\n    .create-container .create-pin-container input {\n      box-sizing: border-box;\n      width: 100%;\n      margin: 5px 0;\n      padding: 10px;\n      font-family: inherit;\n      font-size: 1.2em;\n      transition: all 0.30s ease-in-out;\n      border: 1px solid #EBEBEB; }\n      .create-container .create-pin-container input:focus {\n        border: 1px solid #424242; }\n    .create-container .create-pin-container button {\n      margin: 5px 0; }\n    .create-container .create-pin-container .create-pin-form .pin-submit {\n      box-sizing: border-box;\n      font-family: inherit;\n      font-size: 1.2em;\n      background-color: #EBEBEB;\n      box-shadow: 0;\n      border: 0;\n      width: 100%;\n      transition: all 0.10s; }\n      .create-container .create-pin-container .create-pin-form .pin-submit:active {\n        background-color: #A2A2A2;\n        box-shadow: inset 0 0 4px #424242; }\n\n@media (max-width: 768px) {\n  .create-container {\n    box-sizing: border-box;\n    width: 100%;\n    margin-top: 0; }\n    .create-container .create-pin-container {\n      box-sizing: border-box;\n      margin-top: 10px;\n      text-align: center; }\n      .create-container .create-pin-container label {\n        display: block;\n        margin: 5px 0; }\n      .create-container .create-pin-container input {\n        box-sizing: border-box;\n        margin: 5px 0;\n        width: 90%; }\n      .create-container .create-pin-container button {\n        margin: 5px 0; }\n      .create-container .create-pin-container .create-pin-form .pin-submit {\n        box-sizing: border-box;\n        font-family: inherit;\n        font-size: 1.2em;\n        background-color: #EBEBEB;\n        box-shadow: 0;\n        border: 0;\n        width: 90%;\n        transition: all 0.10s; }\n        .create-container .create-pin-container .create-pin-form .pin-submit:active {\n          background-color: #A2A2A2;\n          box-shadow: inset 0 0 4px #424242; } }\n\n.nav-container {\n  height: 50px;\n  background: #bdc3c7;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to left, #bdc3c7, #2c3e50);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to left, #bdc3c7, #2c3e50);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n  color: #EBEBEB;\n  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.2); }\n  .nav-container .nav-title-small {\n    display: none; }\n  .nav-container .small-toggle {\n    display: none; }\n  .nav-container .nav-small {\n    display: none; }\n  .nav-container .nav-large {\n    position: relative;\n    height: 50px; }\n    .nav-container .nav-large .nav-active {\n      border-bottom: 3px solid #FFF; }\n    .nav-container .nav-large .nav-item {\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center; }\n\n@media (max-width: 768px) {\n  .nav-container .nav-title-small {\n    display: block;\n    position: absolute;\n    top: 16px;\n    left: 10px; }\n  .nav-container .small-toggle {\n    display: block;\n    position: absolute;\n    top: 10px;\n    right: 10px; }\n  .nav-container .nav-large {\n    display: none; }\n  .nav-container .nav-small {\n    display: block;\n    position: relative;\n    box-sizing: border-box;\n    opacity: 0.95;\n    margin: 0;\n    position: fixed;\n    background-color: #FFF;\n    height: 100%;\n    width: 100%;\n    color: #424242;\n    z-index: 999;\n    text-align: center; }\n    .nav-container .nav-small .close-menu {\n      position: absolute;\n      top: 5px;\n      right: 7px; }\n    .nav-container .nav-small .nav-item-container {\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center; }\n      .nav-container .nav-small .nav-item-container .nav-item {\n        position: relative;\n        display: block;\n        padding: 10px 0;\n        text-align: center; }\n        .nav-container .nav-small .nav-item-container .nav-item .nav-active {\n          border-bottom: 3px solid #424242; }\n  .nav-container .hide {\n    display: none; } }\n\n.pin {\n  position: relative;\n  font-family: 'Quattrocento', serif;\n  background-color: #F3F3F3;\n  box-sizing: border-box;\n  margin: 1%;\n  border-radius: 4px;\n  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.12);\n  width: 31.33333%;\n  text-align: center; }\n  .pin .pin-close-box {\n    position: absolute;\n    box-sizing: border-box;\n    top: 0;\n    right: 0;\n    cursor: pointer;\n    padding: 3px;\n    background-color: #FFF;\n    border: 1px solid #EBEBEB; }\n  .pin .confirm-remove-modal {\n    position: absolute;\n    box-sizing: border-box;\n    color: red;\n    left: 25%;\n    top: 33.33333px;\n    background-color: rgba(255, 255, 255, 0.77);\n    border-radius: 4px;\n    width: 50%;\n    height: 100px; }\n    .pin .confirm-remove-modal .confirm-remove-yes {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      border-radius: 4px;\n      background-color: rgba(255, 0, 0, 0.59); }\n      .pin .confirm-remove-modal .confirm-remove-yes span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n    .pin .confirm-remove-modal .confirm-remove-no {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      background-color: rgba(19, 12, 12, 0.5);\n      border-radius: 4px; }\n      .pin .confirm-remove-modal .confirm-remove-no span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n  .pin img {\n    width: 100%;\n    height: auto;\n    border-radius: 4px; }\n  .pin .pin-title {\n    margin-top: 5px;\n    font-size: 1.1em;\n    padding: 3px; }\n  .pin .pin-username {\n    color: #A7A7A7;\n    padding: 3px; }\n  .pin .likes-container {\n    margin-bottom: 10px;\n    padding: 3px; }\n    .pin .likes-container .likes {\n      display: inline;\n      cursor: pointer; }\n      .pin .likes-container .likes .likes-counter {\n        margin: 3px 5px; }\n      .pin .likes-container .likes .user-liked {\n        color: red; }\n      .pin .likes-container .likes .user-not-liked {\n        color: black; }\n\n@media (max-width: 768px) {\n  .pin {\n    width: 100%;\n    margin: 10px 0; } }\n\nhtml, body {\n  font-family: 'Oswald', sans-serif;\n  background: #fceabb;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to left, #fceabb, #f8b500);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to left, #fceabb, #f8b500);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }\n\n.page-title {\n  font-size: 1.3em;\n  margin: 20px; }\n\n.intro {\n  margin: 10px; }\n\na:link {\n  text-decoration: inherit;\n  color: inherit;\n  cursor: auto; }\n\na:visited {\n  text-decoration: inherit;\n  color: inherit;\n  cursor: auto; }\n", ""]);
 
 	// exports
 
@@ -62694,7 +62778,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.setImage = undefined;
+	exports.toggleMenu = undefined;
 
 	var _actionTypes = __webpack_require__(380);
 
@@ -62702,12 +62786,45 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	var setImage = exports.setImage = function setImage(url) {
+	var toggleMenu = exports.toggleMenu = function toggleMenu() {
 	  return {
-	    type: 'SET_IMAGE',
-	    url: url
+	    type: types.TOGGLE_MENU
 	  };
 	};
+
+/***/ },
+/* 792 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = navReducer;
+
+	var _actionTypes = __webpack_require__(380);
+
+	var types = _interopRequireWildcard(_actionTypes);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var initialState = {
+	  show: false
+	};
+
+	function navReducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case types.TOGGLE_MENU:
+	      // toggle mobile menu
+	      return Object.assign({}, state, { show: !state.show });
+	    default:
+	      return state;
+	  }
+	}
 
 /***/ }
 /******/ ]);

@@ -25,7 +25,9 @@ export class CreatePin extends Component {
     return (
       <div className='create-container'>
         <h3 className='page-title'>Create</h3>
-        <img className='user-image' src={url} onError={this.handleImageError.bind(this)} />
+        <div className='user-image-container'>
+          <img className='user-image' src={url} onError={this.handleImageError.bind(this)} />
+        </div>
         <CreatePinFields />
       </div>
     );
