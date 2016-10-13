@@ -1,8 +1,8 @@
 'use strict';
 
-
-
 export const SET_IMAGE = 'SET_IMAGE';
+export const IMAGE_ERROR = 'IMAGE_ERROR';
+export const IMAGE_LOAD = 'IMAGE_LOAD';
 
 export const ADD_USER_STATUS = 'ADD_USER_STATUS';
 export const ADD_USER_STATUS_PENDING = 'ADD_USER_STATUS_PENDING';

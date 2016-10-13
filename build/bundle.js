@@ -34984,6 +34984,8 @@
 	  value: true
 	});
 	var SET_IMAGE = exports.SET_IMAGE = 'SET_IMAGE';
+	var IMAGE_ERROR = exports.IMAGE_ERROR = 'IMAGE_ERROR';
+	var IMAGE_LOAD = exports.IMAGE_LOAD = 'IMAGE_LOAD';
 
 	var ADD_USER_STATUS = exports.ADD_USER_STATUS = 'ADD_USER_STATUS';
 	var ADD_USER_STATUS_PENDING = exports.ADD_USER_STATUS_PENDING = 'ADD_USER_STATUS_PENDING';
@@ -35210,7 +35212,8 @@
 	var initialState = {
 	  url: 'http://placehold.it/350x150',
 	  isInvalidURL: false,
-	  isLoading: false
+	  isLoading: false,
+	  error: true
 	};
 
 	function imageReducer() {
@@ -35220,6 +35223,13 @@
 	  switch (action.type) {
 	    case types.SET_IMAGE:
 	      return Object.assign({}, state, { url: action.url });
+	    case types.IMAGE_ERROR:
+	      return Object.assign({}, state, { error: true });
+	    case types.IMAGE_LOAD:
+	      return Object.assign({}, state, { error: false });
+	    case 'redux-form/CHANGE':
+	      // listen for changes in redux form and reset image error.
+	      return Object.assign({}, state, { error: false });
 	    default:
 	      return state;
 	  }
@@ -47854,17 +47864,32 @@
 	    key: 'handleImageError',
 	    value: function handleImageError() {
 	      console.warn('Broken image url');
-	      this.props.setImage('http://placehold.it/350x150');
+	      this.props.imageError();
+	    }
+	  }, {
+	    key: 'handleImageLoad',
+	    value: function handleImageLoad() {
+	      console.warn('URL good');
+	      this.props.imageLoad();
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.props);
-	      var _props$imageReducer = this.props.imageReducer;
+	      console.log('create pin props', this.props);
+	      var _props = this.props;
+	      var newPin = _props.newPin;
+	      var _props$imageReducer = _props.imageReducer;
+	      var error = _props$imageReducer.error;
 	      var isLoading = _props$imageReducer.isLoading;
 	      var url = _props$imageReducer.url;
 	      var isInvalidURL = _props$imageReducer.isInvalidURL;
 
+	      var newURL = void 0;
+	      try {
+	        newURL = error ? url : newPin.values.imageURLField;
+	      } catch (e) {
+	        newURL = url;
+	      }
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'create-container' },
@@ -47876,7 +47901,11 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'user-image-container' },
-	          _react2.default.createElement('img', { className: 'user-image', src: url, onError: this.handleImageError.bind(this) })
+	          _react2.default.createElement('img', {
+	            className: 'user-image',
+	            src: newURL,
+	            onError: this.handleImageError.bind(this)
+	          })
 	        ),
 	        _react2.default.createElement(_CreatePinFields2.default, null)
 	      );
@@ -47890,9 +47919,11 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  var imageReducer = state.imageReducer;
+	  var newPin = state.form.newPin;
 
 	  return {
-	    imageReducer: imageReducer
+	    imageReducer: imageReducer,
+	    newPin: newPin
 	  };
 	};
 
@@ -47900,6 +47931,12 @@
 	  return {
 	    setImage: function setImage(url) {
 	      dispatch((0, _userImageActions.setImage)(url));
+	    },
+	    imageError: function imageError() {
+	      dispatch((0, _userImageActions.imageError)());
+	    },
+	    imageLoad: function imageLoad() {
+	      dispatch((0, _userImageActions.imageLoad)());
 	    }
 	  };
 	};
@@ -47987,7 +48024,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.setImage = undefined;
+	exports.imageLoad = exports.imageError = exports.setImage = undefined;
 
 	var _actionTypes = __webpack_require__(380);
 
@@ -47997,8 +48034,20 @@
 
 	var setImage = exports.setImage = function setImage(url) {
 	  return {
-	    type: 'SET_IMAGE',
+	    type: types.SET_IMAGE,
 	    url: url
+	  };
+	};
+
+	var imageError = exports.imageError = function imageError() {
+	  return {
+	    type: types.IMAGE_ERROR
+	  };
+	};
+
+	var imageLoad = exports.imageLoad = function imageLoad() {
+	  return {
+	    type: types.IMAGE_LOAD
 	  };
 	};
 
@@ -48028,6 +48077,12 @@
 	var _ImageURLField = __webpack_require__(487);
 
 	var _ImageURLField2 = _interopRequireDefault(_ImageURLField);
+
+	var _TitleField = __webpack_require__(794);
+
+	var _TitleField2 = _interopRequireDefault(_TitleField);
+
+	var _validate = __webpack_require__(793);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48062,6 +48117,7 @@
 	      var url = _props$imageReducer.url;
 	      var isInvalidURL = _props$imageReducer.isInvalidURL;
 
+	      console.log('prop', this.props);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'create-pin-container' },
@@ -48071,12 +48127,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'title-field' },
-	            _react2.default.createElement(
-	              'label',
-	              { htmlFor: 'title' },
-	              'Title'
-	            ),
-	            _react2.default.createElement(_reduxForm.Field, { name: 'title', component: 'input', type: 'text' })
+	            _react2.default.createElement(_reduxForm.Field, { name: 'title', component: _TitleField2.default })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -48106,7 +48157,8 @@
 	 * @returns reduxForm object
 	 */
 	var CreatePinFieldsFormWrapper = (0, _reduxForm.reduxForm)({
-	  form: 'newPin'
+	  form: 'newPin',
+	  validate: _validate.validate
 	})(CreatePinFields);
 
 	var selector = (0, _reduxForm.formValueSelector)('newPin');
@@ -54343,7 +54395,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.ImageURLField = undefined;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -54373,7 +54426,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var ImageURLField = exports.ImageURLField = function (_Component) {
+	var ImageURLField = function (_Component) {
 	  _inherits(ImageURLField, _Component);
 
 	  function ImageURLField(props) {
@@ -54393,15 +54446,21 @@
 	      var _props$input = _props.input;
 	      var value = _props$input.value;
 	      var onChange = _props$input.onChange;
-	      //e.persist();
 
 	      onChange(e.target.value);
-	      var url = e.target.value;
-	      dispatch((0, _userImageActions.setImage)(url));
+	      //const url = e.target.value;
+	      //dispatch(setImage(url));
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      //console.log('********props in urlfield', this.props);
+	      var _props2 = this.props;
+	      var input = _props2.input;
+	      var _props2$meta = _props2.meta;
+	      var touched = _props2$meta.touched;
+	      var error = _props2$meta.error;
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'image-url-container' },
@@ -54410,7 +54469,12 @@
 	          { htmlFor: 'imageURL' },
 	          'Image URL'
 	        ),
-	        _react2.default.createElement('input', { type: 'text', onChange: this.handleImage })
+	        _react2.default.createElement('input', _extends({}, input, { type: 'text', onChange: this.handleImage })),
+	        touched && error && _react2.default.createElement(
+	          'span',
+	          null,
+	          error
+	        )
 	      );
 	    }
 	  }]);
@@ -62825,6 +62889,104 @@
 	      return state;
 	  }
 	}
+
+/***/ },
+/* 793 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var regex = /^http/;
+
+	var validate = exports.validate = function validate(values) {
+	  console.log('*** values', values);
+	  var errors = {};
+	  if (!values.title) {
+	    errors.title = 'Required';
+	  } else if (values.title.length < 3) {
+	    errors.title = 'too short';
+	  }
+	  if (!values.imageURLField) {
+	    errors.imageURLField = 'Required';
+	  } else if (!regex.test(values.imageURLField)) {
+	    errors.imageURLField = 'Needs to begin with \'http\'';
+	  }
+	  return errors;
+	};
+
+/***/ },
+/* 794 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var TitleField = function (_Component) {
+	  _inherits(TitleField, _Component);
+
+	  function TitleField() {
+	    _classCallCheck(this, TitleField);
+
+	    return _possibleConstructorReturn(this, (TitleField.__proto__ || Object.getPrototypeOf(TitleField)).apply(this, arguments));
+	  }
+
+	  _createClass(TitleField, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var input = _props.input;
+	      var _props$meta = _props.meta;
+	      var touched = _props$meta.touched;
+	      var error = _props$meta.error;
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'label',
+	          null,
+	          'Title'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement('input', _extends({}, input, { type: 'text' })),
+	          touched && error && _react2.default.createElement(
+	            'span',
+	            null,
+	            error
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return TitleField;
+	}(_react.Component);
+
+	exports.default = TitleField;
 
 /***/ }
 /******/ ]);

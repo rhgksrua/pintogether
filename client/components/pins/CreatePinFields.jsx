@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 
 import { createPin } from '../../actions/createPinActions';
 import ImageURLField from './ImageURLField';
+import TitleField from './TitleField';
+import { validate } from '../lib/validate';
 
 export class CreatePinFields extends Component {
   constructor(props) {
@@ -24,14 +26,15 @@ export class CreatePinFields extends Component {
         isLoading,
         url,
         isInvalidURL
-      }
+      },
     } = this.props;
+    console.log('prop', this.props);
     return (
       <div className='create-pin-container'>
         <form className='create-pin-form' onSubmit={handleSubmit(myHandleSubmit)}>
           <div className='title-field'>
-            <label htmlFor='title'>Title</label>
-            <Field name='title' component='input' type='text' />
+            <Field name='title' component={TitleField} />
+            {/*touched && error && <span>{error}</span>*/}
           </div>
           <div className='url-field'>
             <Field name='imageURLField' component={ImageURLField} props={{ isLoading, url, isInvalidURL }}/>
@@ -56,6 +59,7 @@ CreatePinFields.propTypes = {
  */
 const CreatePinFieldsFormWrapper = reduxForm({
   form: 'newPin',
+  validate
 })(CreatePinFields);
 
 const selector = formValueSelector('newPin');
