@@ -41206,6 +41206,9 @@
 	  };
 	};
 
+	// Fourth param required for using react router activeClassName with redux
+	// As of this comment, react-router is still version 2 but supposedly,
+	// react-router@^3.0 has this fixed.
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps, null, { pure: false })(Nav);
 
 /***/ },
@@ -41337,6 +41340,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactFontawesome = __webpack_require__(451);
+
+	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -41368,7 +41375,10 @@
 	        _react2.default.createElement(
 	          'a',
 	          { href: '/auth/github' },
-	          'GitHub'
+	          _react2.default.createElement(_reactFontawesome2.default, {
+	            className: 'fa-lg',
+	            name: 'github'
+	          })
 	        )
 	      );
 	    }
@@ -41712,9 +41722,9 @@
 	      // componentWillReceiveProps calls itself again.  It ends up in an inifinite loop.
 	      // The work around is that if username have not changed, fetch will not be fired.
 	      var getUserPins = nextProps.getUserPins;
-
-	      var oldUsername = this.props.params.username;
 	      var newUsername = nextProps.params.username;
+	      var oldUsername = this.props.params.username;
+
 	      if (oldUsername !== newUsername) {
 	        getUserPins(newUsername);
 	      }
@@ -47319,6 +47329,10 @@
 
 	var _NavItem2 = _interopRequireDefault(_NavItem);
 
+	var _PinCloseModal = __webpack_require__(795);
+
+	var _PinCloseModal2 = _interopRequireDefault(_PinCloseModal);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -47337,7 +47351,9 @@
 
 	    _this.state = {
 	      // flag for remove pop up
-	      confirmPopup: false
+	      confirmPopup: false,
+	      brokenImage: false,
+	      placeholder: 'https://placehold.it/200x200'
 	    };
 	    return _this;
 	  }
@@ -47365,7 +47381,13 @@
 	    }
 	  }, {
 	    key: 'handleImageError',
-	    value: function handleImageError() {}
+	    value: function handleImageError() {
+	      // if user submitted broken image...
+	      console.warn('broken pin image');
+	      this.setState({
+	        brokenImage: true
+	      });
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -47376,47 +47398,60 @@
 	      var username = _props.username;
 	      var likes = _props.likes;
 	      var liked = _props.liked;
+	      var _state = this.state;
+	      var brokenImage = _state.brokenImage;
+	      var placeholder = _state.placeholder;
 
+	      var modalProps = {
+	        owner: owner,
+	        handleTogglePopup: this.handleTogglePopup.bind(this),
+	        handleDeletePin: this.handleDeletePin.bind(this),
+	        confirmPopup: this.state.confirmPopup
+	      };
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'pin' },
-	        owner && _react2.default.createElement(
-	          'p',
-	          { className: 'pin-close-box', onClick: this.handleTogglePopup.bind(this) },
-	          _react2.default.createElement(_reactFontawesome2.default, {
-	            className: 'pin-close',
-	            name: 'times'
-	          })
-	        ),
-	        this.state.confirmPopup && _react2.default.createElement(
+	        _react2.default.createElement(
 	          'div',
-	          { className: 'confirm-remove-modal' },
-	          _react2.default.createElement(
+	          { className: 'pin-close-box-container' },
+	          owner && _react2.default.createElement(
 	            'p',
-	            {
-	              className: 'confirm-remove-yes',
-	              onClick: this.handleDeletePin.bind(this)
-	            },
-	            _react2.default.createElement(
-	              'span',
-	              null,
-	              'REMOVE'
-	            )
+	            { className: 'pin-close-box', onClick: this.handleTogglePopup.bind(this) },
+	            _react2.default.createElement(_reactFontawesome2.default, {
+	              className: 'pin-close',
+	              name: 'times'
+	            })
 	          ),
-	          _react2.default.createElement(
-	            'p',
-	            {
-	              className: 'confirm-remove-no',
-	              onClick: this.handleTogglePopup.bind(this)
-	            },
+	          this.state.confirmPopup && _react2.default.createElement(
+	            'div',
+	            { className: 'confirm-remove-modal' },
 	            _react2.default.createElement(
-	              'span',
-	              null,
-	              'CANCEL'
+	              'p',
+	              {
+	                className: 'confirm-remove-yes',
+	                onClick: this.handleDeletePin.bind(this)
+	              },
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'REMOVE'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              {
+	                className: 'confirm-remove-no',
+	                onClick: this.handleTogglePopup.bind(this)
+	              },
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'CANCEL'
+	              )
 	            )
 	          )
 	        ),
-	        _react2.default.createElement('img', { className: 'pin-image', src: imageURL, onError: this.handleImageError.bind(this) }),
+	        _react2.default.createElement('img', { className: 'pin-image', src: !brokenImage ? imageURL : placeholder, onError: this.handleImageError.bind(this) }),
 	        _react2.default.createElement(
 	          'h5',
 	          { className: 'pin-title' },
@@ -47933,8 +47968,6 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	// styles
-
 	var CreatePin = exports.CreatePin = function (_Component) {
 	  _inherits(CreatePin, _Component);
 
@@ -47953,13 +47986,11 @@
 	  }, {
 	    key: 'handleImageLoad',
 	    value: function handleImageLoad() {
-	      console.warn('URL good');
 	      this.props.imageLoad();
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log('create pin props', this.props);
 	      var _props = this.props;
 	      var newPin = _props.newPin;
 	      var _props$imageReducer = _props.imageReducer;
@@ -48201,7 +48232,6 @@
 	      var url = _props$imageReducer.url;
 	      var isInvalidURL = _props$imageReducer.isInvalidURL;
 
-	      console.log('prop', this.props);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'create-pin-container' },
@@ -48211,12 +48241,19 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'title-field' },
-	            _react2.default.createElement(_reduxForm.Field, { name: 'title', component: _TitleField2.default })
+	            _react2.default.createElement(_reduxForm.Field, {
+	              name: 'title',
+	              component: _TitleField2.default
+	            })
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'url-field' },
-	            _react2.default.createElement(_reduxForm.Field, { name: 'imageURLField', component: _ImageURLField2.default, props: { isLoading: isLoading, url: url, isInvalidURL: isInvalidURL } })
+	            _react2.default.createElement(_reduxForm.Field, {
+	              name: 'imageURLField',
+	              component: _ImageURLField2.default,
+	              props: { isLoading: isLoading, url: url, isInvalidURL: isInvalidURL }
+	            })
 	          ),
 	          _react2.default.createElement(
 	            'button',
@@ -54516,34 +54553,17 @@
 	  function ImageURLField(props) {
 	    _classCallCheck(this, ImageURLField);
 
-	    var _this = _possibleConstructorReturn(this, (ImageURLField.__proto__ || Object.getPrototypeOf(ImageURLField)).call(this, props));
-
-	    _this.handleImage = _this.handleImage.bind(_this);
-	    return _this;
+	    return _possibleConstructorReturn(this, (ImageURLField.__proto__ || Object.getPrototypeOf(ImageURLField)).call(this, props));
 	  }
 
 	  _createClass(ImageURLField, [{
-	    key: 'handleImage',
-	    value: function handleImage(e) {
-	      var _props = this.props;
-	      var dispatch = _props.meta.dispatch;
-	      var _props$input = _props.input;
-	      var value = _props$input.value;
-	      var onChange = _props$input.onChange;
-
-	      onChange(e.target.value);
-	      //const url = e.target.value;
-	      //dispatch(setImage(url));
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
-	      //console.log('********props in urlfield', this.props);
-	      var _props2 = this.props;
-	      var input = _props2.input;
-	      var _props2$meta = _props2.meta;
-	      var touched = _props2$meta.touched;
-	      var error = _props2$meta.error;
+	      var _props = this.props;
+	      var input = _props.input;
+	      var _props$meta = _props.meta;
+	      var touched = _props$meta.touched;
+	      var error = _props$meta.error;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -54553,12 +54573,12 @@
 	          { htmlFor: 'imageURL' },
 	          'Image URL'
 	        ),
-	        _react2.default.createElement('input', _extends({}, input, { type: 'text', onChange: this.handleImage })),
-	        touched && error && _react2.default.createElement(
+	        _react2.default.createElement('input', _extends({}, input, { type: 'text' })),
+	        touched && error ? _react2.default.createElement(
 	          'span',
-	          null,
+	          { className: 'field-error' },
 	          error
-	        )
+	        ) : _react2.default.createElement('span', { className: 'field-error' })
 	      );
 	    }
 	  }]);
@@ -54617,19 +54637,15 @@
 	        null,
 	        _react2.default.createElement(
 	          'label',
-	          null,
+	          { htmlFor: 'title' },
 	          'Title'
 	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement('input', _extends({}, input, { type: 'text' })),
-	          touched && error && _react2.default.createElement(
-	            'span',
-	            null,
-	            error
-	          )
-	        )
+	        _react2.default.createElement('input', _extends({}, input, { type: 'text' })),
+	        touched && error ? _react2.default.createElement(
+	          'span',
+	          { className: 'field-error' },
+	          error
+	        ) : _react2.default.createElement('span', { className: 'field-error' })
 	      );
 	    }
 	  }]);
@@ -54650,12 +54666,19 @@
 	});
 	var regex = /^http/;
 
+	/**
+	 * validate
+	 *
+	 * validation func for redux-form
+	 *
+	 * @returns {Object}
+	 */
 	var validate = exports.validate = function validate(values) {
 	  console.log('*** values', values);
 	  var errors = {};
 	  if (!values.title) {
 	    errors.title = 'Required';
-	  } else if (values.title.length < 3) {
+	  } else if (values.title.length < 2) {
 	    errors.title = 'too short';
 	  }
 	  if (!values.imageURLField) {
@@ -63010,10 +63033,80 @@
 
 
 	// module
-	exports.push([module.id, ".all-pins-container {\n  box-sizing: border-box;\n  margin-right: auto;\n  margin-left: auto;\n  padding: 0 20px; }\n  .all-pins-container .pin-gallery {\n    max-width: 100%; }\n\n@media (max-width: 768px) {\n  .all-pins-container {\n    padding: 0; } }\n\n.create-container {\n  margin-right: auto;\n  margin-left: auto;\n  margin-top: 50px;\n  width: 500px;\n  text-align: center; }\n  .create-container .user-image-container {\n    height: 300px;\n    width: 100%; }\n    .create-container .user-image-container .user-image {\n      box-sizing: border-box;\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center;\n      max-height: 100%;\n      max-width: 100%; }\n  .create-container .create-pin-container {\n    margin-top: 30px; }\n    .create-container .create-pin-container label {\n      display: block;\n      margin: 5px 0; }\n    .create-container .create-pin-container input {\n      box-sizing: border-box;\n      width: 100%;\n      margin: 5px 0;\n      padding: 10px;\n      font-family: inherit;\n      font-size: 1.2em;\n      transition: all 0.30s ease-in-out;\n      border: 1px solid #EBEBEB; }\n      .create-container .create-pin-container input:focus {\n        border: 1px solid #424242; }\n    .create-container .create-pin-container button {\n      margin: 5px 0; }\n    .create-container .create-pin-container .create-pin-form .pin-submit {\n      box-sizing: border-box;\n      font-family: inherit;\n      font-size: 1.2em;\n      background-color: #EBEBEB;\n      box-shadow: 0;\n      border: 0;\n      width: 100%;\n      transition: all 0.10s; }\n      .create-container .create-pin-container .create-pin-form .pin-submit:active {\n        background-color: #A2A2A2;\n        box-shadow: inset 0 0 4px #424242; }\n\n@media (max-width: 768px) {\n  .create-container {\n    box-sizing: border-box;\n    width: 100%;\n    margin-top: 0; }\n    .create-container .create-pin-container {\n      box-sizing: border-box;\n      margin-top: 10px;\n      text-align: center; }\n      .create-container .create-pin-container label {\n        display: block;\n        margin: 5px 0; }\n      .create-container .create-pin-container input {\n        box-sizing: border-box;\n        margin: 5px 0;\n        width: 90%; }\n      .create-container .create-pin-container button {\n        margin: 5px 0; }\n      .create-container .create-pin-container .create-pin-form .pin-submit {\n        box-sizing: border-box;\n        font-family: inherit;\n        font-size: 1.2em;\n        background-color: #EBEBEB;\n        box-shadow: 0;\n        border: 0;\n        width: 90%;\n        transition: all 0.10s; }\n        .create-container .create-pin-container .create-pin-form .pin-submit:active {\n          background-color: #A2A2A2;\n          box-shadow: inset 0 0 4px #424242; } }\n\n.nav-container {\n  height: 50px;\n  background: #bdc3c7;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to left, #bdc3c7, #2c3e50);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to left, #bdc3c7, #2c3e50);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n  color: #EBEBEB;\n  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.2); }\n  .nav-container .nav-title-small {\n    display: none; }\n  .nav-container .small-toggle {\n    display: none; }\n  .nav-container .nav-small {\n    display: none; }\n  .nav-container .nav-large {\n    position: relative;\n    height: 50px; }\n    .nav-container .nav-large .nav-active {\n      border-bottom: 3px solid #FFF; }\n    .nav-container .nav-large .nav-item {\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center; }\n\n@media (max-width: 768px) {\n  .nav-container .nav-title-small {\n    display: block;\n    position: absolute;\n    top: 16px;\n    left: 10px; }\n  .nav-container .small-toggle {\n    display: block;\n    position: absolute;\n    top: 10px;\n    right: 10px; }\n  .nav-container .nav-large {\n    display: none; }\n  .nav-container .nav-small {\n    display: block;\n    position: relative;\n    box-sizing: border-box;\n    opacity: 0.95;\n    margin: 0;\n    position: fixed;\n    background-color: #FFF;\n    height: 100%;\n    width: 100%;\n    color: #424242;\n    z-index: 999;\n    text-align: center; }\n    .nav-container .nav-small .close-menu {\n      position: absolute;\n      top: 5px;\n      right: 7px; }\n    .nav-container .nav-small .nav-item-container {\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center; }\n      .nav-container .nav-small .nav-item-container .nav-item {\n        position: relative;\n        display: block;\n        padding: 10px 0;\n        text-align: center; }\n        .nav-container .nav-small .nav-item-container .nav-item .nav-active {\n          border-bottom: 3px solid #424242; }\n  .nav-container .hide {\n    display: none; } }\n\n.pin {\n  position: relative;\n  font-family: 'Quattrocento', serif;\n  background-color: #F3F3F3;\n  box-sizing: border-box;\n  margin: 1%;\n  border-radius: 4px;\n  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.12);\n  width: 31.33333%;\n  text-align: center; }\n  .pin .pin-close-box {\n    position: absolute;\n    box-sizing: border-box;\n    top: 0;\n    right: 0;\n    cursor: pointer;\n    padding: 3px;\n    background-color: #FFF;\n    border: 1px solid #EBEBEB; }\n  .pin .confirm-remove-modal {\n    position: absolute;\n    box-sizing: border-box;\n    color: red;\n    left: 25%;\n    top: 33.33333px;\n    background-color: rgba(255, 255, 255, 0.77);\n    border-radius: 4px;\n    width: 50%;\n    height: 100px; }\n    .pin .confirm-remove-modal .confirm-remove-yes {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      border-radius: 4px;\n      background-color: rgba(255, 0, 0, 0.59); }\n      .pin .confirm-remove-modal .confirm-remove-yes span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n    .pin .confirm-remove-modal .confirm-remove-no {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      background-color: rgba(19, 12, 12, 0.5);\n      border-radius: 4px; }\n      .pin .confirm-remove-modal .confirm-remove-no span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n  .pin img {\n    width: 100%;\n    height: auto;\n    border-radius: 4px; }\n  .pin .pin-title {\n    margin-top: 5px;\n    font-size: 1.1em;\n    padding: 3px; }\n  .pin .pin-username {\n    color: #A7A7A7;\n    padding: 3px; }\n  .pin .likes-container {\n    margin-bottom: 10px;\n    padding: 3px; }\n    .pin .likes-container .likes {\n      display: inline;\n      cursor: pointer; }\n      .pin .likes-container .likes .likes-counter {\n        margin: 3px 5px; }\n      .pin .likes-container .likes .user-liked {\n        color: red; }\n      .pin .likes-container .likes .user-not-liked {\n        color: black; }\n\n@media (max-width: 768px) {\n  .pin {\n    width: 100%;\n    margin: 10px 0; } }\n\nhtml, body {\n  font-family: 'Oswald', sans-serif;\n  background: #fceabb;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to left, #fceabb, #f8b500);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to left, #fceabb, #f8b500);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }\n\n.page-title {\n  font-size: 1.3em;\n  margin: 20px; }\n\n.intro {\n  margin: 10px; }\n\na:link {\n  text-decoration: inherit;\n  color: inherit;\n  cursor: auto; }\n\na:visited {\n  text-decoration: inherit;\n  color: inherit;\n  cursor: auto; }\n", ""]);
+	exports.push([module.id, ".all-pins-container {\n  box-sizing: border-box;\n  margin-right: auto;\n  margin-left: auto;\n  padding: 0 20px; }\n  .all-pins-container .pin-gallery {\n    max-width: 100%; }\n\n@media (max-width: 768px) {\n  .all-pins-container {\n    padding: 0; } }\n\n.create-container {\n  margin-right: auto;\n  margin-left: auto;\n  margin-top: 50px;\n  width: 500px;\n  text-align: center; }\n  .create-container .user-image-container {\n    height: 300px;\n    width: 100%; }\n    .create-container .user-image-container .user-image {\n      box-sizing: border-box;\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center;\n      max-height: 100%;\n      max-width: 100%; }\n  .create-container .create-pin-container {\n    margin-top: 30px; }\n    .create-container .create-pin-container label {\n      display: block;\n      margin: 5px 0; }\n    .create-container .create-pin-container input {\n      box-sizing: border-box;\n      width: 100%;\n      margin: 5px 0;\n      padding: 10px;\n      font-family: inherit;\n      font-size: 1.2em;\n      transition: all 0.30s ease-in-out;\n      border: 1px solid #EBEBEB; }\n      .create-container .create-pin-container input:focus {\n        border: 1px solid #424242; }\n    .create-container .create-pin-container .create-pin-form .pin-submit {\n      box-sizing: border-box;\n      font-family: inherit;\n      font-size: 1.2em;\n      margin-top: 20px;\n      background-color: #EBEBEB;\n      padding: 10px;\n      box-shadow: 0;\n      border: 0;\n      width: 100%;\n      transition: all 0.10s; }\n      .create-container .create-pin-container .create-pin-form .pin-submit:active {\n        background-color: #A2A2A2;\n        box-shadow: inset 0 0 4px #424242; }\n\n@media (max-width: 768px) {\n  .create-container {\n    box-sizing: border-box;\n    width: 100%;\n    margin-top: 0; }\n    .create-container .create-pin-container {\n      box-sizing: border-box;\n      margin-top: 10px;\n      text-align: center; }\n      .create-container .create-pin-container label {\n        display: block;\n        margin: 5px 0; }\n      .create-container .create-pin-container input {\n        box-sizing: border-box;\n        margin: 5px 0;\n        width: 90%; }\n      .create-container .create-pin-container button {\n        margin: 5px 0; }\n      .create-container .create-pin-container .create-pin-form .pin-submit {\n        box-sizing: border-box;\n        font-family: inherit;\n        font-size: 1.2em;\n        margin-top: 10px;\n        background-color: #EBEBEB;\n        box-shadow: 0;\n        border: 0;\n        width: 90%;\n        transition: all 0.10s; }\n        .create-container .create-pin-container .create-pin-form .pin-submit:active {\n          background-color: #A2A2A2;\n          box-shadow: inset 0 0 4px #424242; } }\n\n.field-error {\n  text-align: right;\n  display: inline-block;\n  width: 100%;\n  height: 10px;\n  color: #ff2b2b; }\n\n.nav-container {\n  height: 50px;\n  background: #bdc3c7;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to left, #bdc3c7, #2c3e50);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to left, #bdc3c7, #2c3e50);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n  color: #EBEBEB;\n  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.2); }\n  .nav-container .nav-title-small {\n    display: none; }\n  .nav-container .small-toggle {\n    display: none; }\n  .nav-container .nav-small {\n    display: none; }\n  .nav-container .nav-large {\n    position: relative;\n    height: 50px; }\n    .nav-container .nav-large .nav-active {\n      border-bottom: 3px solid #FFF; }\n    .nav-container .nav-large .nav-item {\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center; }\n\n@media (max-width: 768px) {\n  .nav-container .nav-title-small {\n    display: block;\n    position: absolute;\n    top: 16px;\n    left: 10px; }\n  .nav-container .small-toggle {\n    display: block;\n    position: absolute;\n    top: 10px;\n    right: 10px; }\n  .nav-container .nav-large {\n    display: none; }\n  .nav-container .nav-small {\n    display: block;\n    position: relative;\n    box-sizing: border-box;\n    opacity: 0.95;\n    margin: 0;\n    position: fixed;\n    background-color: #FFF;\n    height: 100%;\n    width: 100%;\n    color: #424242;\n    z-index: 999;\n    text-align: center; }\n    .nav-container .nav-small .close-menu {\n      position: absolute;\n      top: 5px;\n      right: 7px; }\n    .nav-container .nav-small .nav-item-container {\n      position: relative;\n      top: 50%;\n      display: inline-block;\n      padding: 0 20px;\n      transform: translateY(-50%);\n      text-align: center; }\n      .nav-container .nav-small .nav-item-container .nav-item {\n        position: relative;\n        display: block;\n        padding: 10px 0;\n        text-align: center; }\n        .nav-container .nav-small .nav-item-container .nav-item .nav-active {\n          border-bottom: 3px solid #424242; }\n  .nav-container .hide {\n    display: none; } }\n\n.pin {\n  position: relative;\n  font-family: 'Quattrocento', serif;\n  background-color: #F3F3F3;\n  box-sizing: border-box;\n  margin: 1%;\n  border-radius: 4px;\n  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.12);\n  width: 31.33333%;\n  text-align: center; }\n  .pin .pin-close-box {\n    position: absolute;\n    box-sizing: border-box;\n    top: 0;\n    right: 0;\n    cursor: pointer;\n    padding: 3px;\n    background-color: #FFF;\n    border: 1px solid #EBEBEB; }\n  .pin .confirm-remove-modal {\n    position: absolute;\n    box-sizing: border-box;\n    color: red;\n    left: 25%;\n    top: 33.33333px;\n    background-color: rgba(255, 255, 255, 0.77);\n    border-radius: 4px;\n    width: 50%;\n    height: 100px; }\n    .pin .confirm-remove-modal .confirm-remove-yes {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      border-radius: 4px;\n      background-color: rgba(255, 0, 0, 0.59); }\n      .pin .confirm-remove-modal .confirm-remove-yes span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n    .pin .confirm-remove-modal .confirm-remove-no {\n      box-sizing: border-box;\n      height: 50px;\n      border: 1px solid black;\n      cursor: pointer;\n      color: white;\n      background-color: rgba(19, 12, 12, 0.5);\n      border-radius: 4px; }\n      .pin .confirm-remove-modal .confirm-remove-no span {\n        box-sizing: border-box;\n        position: relative;\n        top: 50%;\n        display: inline-block;\n        transform: translateY(-50%);\n        text-align: center; }\n  .pin img {\n    width: 100%;\n    height: auto;\n    border-radius: 4px; }\n  .pin .pin-title {\n    margin-top: 5px;\n    font-size: 1.1em;\n    padding: 3px; }\n  .pin .pin-username {\n    color: #A7A7A7;\n    padding: 3px; }\n  .pin .likes-container {\n    margin-bottom: 10px;\n    padding: 3px; }\n    .pin .likes-container .likes {\n      display: inline;\n      cursor: pointer; }\n      .pin .likes-container .likes .likes-counter {\n        margin: 3px 5px; }\n      .pin .likes-container .likes .user-liked {\n        color: red; }\n      .pin .likes-container .likes .user-not-liked {\n        color: black; }\n\n@media (max-width: 768px) {\n  .pin {\n    width: 100%;\n    margin: 10px 0; } }\n\nhtml, body {\n  font-family: 'Oswald', sans-serif;\n  background: #fceabb;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to left, #fceabb, #f8b500);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(to left, #fceabb, #f8b500);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }\n\n.page-title {\n  font-size: 1.3em;\n  margin: 20px; }\n\n.intro {\n  margin: 10px; }\n\na:link {\n  text-decoration: inherit;\n  color: inherit;\n  cursor: auto; }\n\na:visited {\n  text-decoration: inherit;\n  color: inherit;\n  cursor: auto; }\n", ""]);
 
 	// exports
 
+
+/***/ },
+/* 795 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactFontawesome = __webpack_require__(451);
+
+	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var PinCloseModal = function PinCloseModal(_ref) {
+	  var owner = _ref.owner;
+	  var handleTogglePopup = _ref.handleTogglePopup;
+	  var confirmPopup = _ref.confirmPopup;
+	  var handleDeletePin = _ref.handleDeletePin;
+
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'pin-close-box-container' },
+	    owner && _react2.default.createElement(
+	      'p',
+	      { className: 'pin-close-box', onClick: handleTogglePopup },
+	      _react2.default.createElement(_reactFontawesome2.default, {
+	        className: 'pin-close',
+	        name: 'times'
+	      })
+	    ),
+	    confirmPopup && _react2.default.createElement(
+	      'div',
+	      { className: 'confirm-remove-modal' },
+	      _react2.default.createElement(
+	        'p',
+	        {
+	          className: 'confirm-remove-yes',
+	          onClick: handleDeletePin
+	        },
+	        _react2.default.createElement(
+	          'span',
+	          null,
+	          'REMOVE'
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        {
+	          className: 'confirm-remove-no',
+	          onClick: handleTogglePopup
+	        },
+	        _react2.default.createElement(
+	          'span',
+	          null,
+	          'CANCEL'
+	        )
+	      )
+	    )
+	  );
+	};
+
+	exports.default = PinCloseModal;
 
 /***/ }
 /******/ ]);

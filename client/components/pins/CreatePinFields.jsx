@@ -28,16 +28,21 @@ export class CreatePinFields extends Component {
         isInvalidURL
       },
     } = this.props;
-    console.log('prop', this.props);
     return (
       <div className='create-pin-container'>
         <form className='create-pin-form' onSubmit={handleSubmit(myHandleSubmit)}>
           <div className='title-field'>
-            <Field name='title' component={TitleField} />
-            {/*touched && error && <span>{error}</span>*/}
+            <Field 
+              name='title' 
+              component={TitleField} 
+            />
           </div>
           <div className='url-field'>
-            <Field name='imageURLField' component={ImageURLField} props={{ isLoading, url, isInvalidURL }}/>
+            <Field 
+              name='imageURLField' 
+              component={ImageURLField} 
+              props={{ isLoading, url, isInvalidURL }}
+            />
           </div>
           <button className='pin-submit' type='submit' disabled={pristine || submitting}>Submit</button>
         </form>
@@ -84,5 +89,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePinFieldsFormWrapper);
-
-

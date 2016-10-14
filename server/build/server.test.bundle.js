@@ -502,8 +502,6 @@
 	      }
 	    });
 	  });
-
-	  //res.json({ completed: true, pin: { title, url } });
 	};
 
 	function getPins(req, res) {
@@ -539,10 +537,10 @@
 	 */
 	function pinLiked(req, res) {
 	  var pinId = req.body.pinId;
-
 	  var userId = req.user.id;
 
 	  // find pin and remove userId if it exists
+
 	  var query = {
 	    _id: pinId,
 	    'likes.userId': userId
@@ -591,9 +589,8 @@
 
 	function removePin(req, res) {
 	  var pinId = req.body.pinId;
-
 	  var userId = req.user.id;
-	  console.log(pinId, userId);
+
 	  var query = {
 	    userId: userId,
 	    _id: pinId
@@ -688,6 +685,7 @@
 	var router = _express2.default.Router();
 
 	router.post('/login', _isAuthenticated2.default, checkLogin);
+
 	router.post('/logout', _isAuthenticated2.default, logOut);
 
 	/**

@@ -7,6 +7,7 @@ import isAuthenticated from '../lib/isAuthenticated';
 const router = express.Router();
 
 router.post('/login', isAuthenticated, checkLogin);
+
 router.post('/logout', isAuthenticated, logOut);
 
 /**

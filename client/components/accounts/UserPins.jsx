@@ -25,9 +25,8 @@ export class UserPins extends Component {
     // fetching inside componentWillReceiveProps updates the props and 
     // componentWillReceiveProps calls itself again.  It ends up in an inifinite loop.
     // The work around is that if username have not changed, fetch will not be fired.
-    const { getUserPins } = nextProps;
-    const oldUsername = this.props.params.username;
-    const newUsername = nextProps.params.username;
+    const { getUserPins, params: { username: newUsername } } = nextProps;
+    const { params: { username: oldUsername } } = this.props;
     if (oldUsername !== newUsername) {
       getUserPins(newUsername);
     }

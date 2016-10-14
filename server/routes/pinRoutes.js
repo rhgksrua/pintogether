@@ -1,3 +1,5 @@
+'use strict';
+
 import express from 'express';
 import passport from 'passport';
 
@@ -53,8 +55,6 @@ function addPins(req, res) {
       }
     });
   });
-
-  //res.json({ completed: true, pin: { title, url } });
 };
 
 function getPins(req, res) {
@@ -92,7 +92,7 @@ function getUserPins(req, res) {
  */
 function pinLiked(req, res) {
   const { pinId } = req.body;
-  const userId = req.user.id;
+  const { id: userId } = req.user;
 
   // find pin and remove userId if it exists
   const query = {
@@ -147,8 +147,7 @@ function addUserLike(pinId, userId) {
 
 function removePin(req, res) {
   const { pinId } = req.body;
-  const userId = req.user.id;
-  console.log(pinId, userId);
+  const { id: userId } = req.user;
   const query = {
     userId,
     _id: pinId
@@ -166,8 +165,6 @@ function removePin(req, res) {
     });
 
 }
-
-
 
 export default router;
 

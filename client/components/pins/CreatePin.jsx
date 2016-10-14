@@ -9,8 +9,6 @@ import { setImage, imageError, imageLoad } from '../../actions/userImageActions'
 import CreatePinFields from './CreatePinFields';
 import ImageURLField from './ImageURLField';
 
-// styles
-
 export class CreatePin extends Component {
   constructor(props) {
     super();
@@ -20,11 +18,9 @@ export class CreatePin extends Component {
     this.props.imageError();
   }
   handleImageLoad() {
-    console.warn('URL good');
     this.props.imageLoad();
   }
   render() {
-    console.log('create pin props', this.props);
     const { newPin, imageReducer: { error, isLoading, url, isInvalidURL } } = this.props;
     let newURL;
     try {

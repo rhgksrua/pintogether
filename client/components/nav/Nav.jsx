@@ -112,4 +112,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   };
 }
 
+// Fourth param required for using react router activeClassName with redux
+// As of this comment, react-router is still version 2 but supposedly,
+// react-router@^3.0 has this fixed.
 export default connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(Nav);
