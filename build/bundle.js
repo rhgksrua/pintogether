@@ -47338,10 +47338,6 @@
 
 	var _PinCloseModal2 = _interopRequireDefault(_PinCloseModal);
 
-	var _PinLikes = __webpack_require__(796);
-
-	var _PinLikes2 = _interopRequireDefault(_PinLikes);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -47362,8 +47358,6 @@
 	      // flag for remove pop up
 	      confirmPopup: false,
 	      brokenImage: false,
-	      // shows up for broken image link
-	      // should serve image from own server
 	      placeholder: 'https://placehold.it/200x200'
 	    };
 	    return _this;
@@ -47393,6 +47387,7 @@
 	  }, {
 	    key: 'handleImageError',
 	    value: function handleImageError() {
+	      // if user submitted broken image...
 	      console.warn('broken pin image');
 	      this.setState({
 	        brokenImage: true
@@ -47418,20 +47413,50 @@
 	        handleDeletePin: this.handleDeletePin.bind(this),
 	        confirmPopup: this.state.confirmPopup
 	      };
-	      var pinLikesProps = {
-	        liked: liked,
-	        likes: likes,
-	        handleClick: this.handleClick.bind(this)
-	      };
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'pin' },
-	        _react2.default.createElement(_PinCloseModal2.default, modalProps),
-	        _react2.default.createElement('img', {
-	          className: 'pin-image',
-	          src: !brokenImage ? imageURL : placeholder,
-	          onError: this.handleImageError.bind(this)
-	        }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'pin-close-box-container' },
+	          owner && _react2.default.createElement(
+	            'p',
+	            { className: 'pin-close-box', onClick: this.handleTogglePopup.bind(this) },
+	            _react2.default.createElement(_reactFontawesome2.default, {
+	              className: 'pin-close',
+	              name: 'times'
+	            })
+	          ),
+	          this.state.confirmPopup && _react2.default.createElement(
+	            'div',
+	            { className: 'confirm-remove-modal' },
+	            _react2.default.createElement(
+	              'p',
+	              {
+	                className: 'confirm-remove-yes',
+	                onClick: this.handleDeletePin.bind(this)
+	              },
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'REMOVE'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              {
+	                className: 'confirm-remove-no',
+	                onClick: this.handleTogglePopup.bind(this)
+	              },
+	              _react2.default.createElement(
+	                'span',
+	                null,
+	                'CANCEL'
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement('img', { className: 'pin-image', src: !brokenImage ? imageURL : placeholder, onError: this.handleImageError.bind(this) }),
 	        _react2.default.createElement(
 	          'h5',
 	          { className: 'pin-title' },
@@ -47445,7 +47470,31 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'likes-container' },
-	          _react2.default.createElement(_PinLikes2.default, pinLikesProps)
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'likes', onClick: this.handleClick.bind(this) },
+	            liked && _react2.default.createElement(
+	              'span',
+	              { className: 'user-liked' },
+	              _react2.default.createElement(_reactFontawesome2.default, {
+	                className: '',
+	                name: 'heart'
+	              })
+	            ),
+	            !liked && _react2.default.createElement(
+	              'span',
+	              { className: 'user-not-liked' },
+	              _react2.default.createElement(_reactFontawesome2.default, {
+	                className: '',
+	                name: 'heart'
+	              })
+	            ),
+	            _react2.default.createElement(
+	              'span',
+	              { className: 'likes-counter' },
+	              likes
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -63063,53 +63112,6 @@
 	};
 
 	exports.default = PinCloseModal;
-
-/***/ },
-/* 796 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactFontawesome = __webpack_require__(451);
-
-	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var PinLikes = function PinLikes(_ref) {
-	  var liked = _ref.liked;
-	  var handleClick = _ref.handleClick;
-	  var likes = _ref.likes;
-
-	  var likeClassName = liked ? 'user-liked' : 'user-not-liked';
-	  return _react2.default.createElement(
-	    'p',
-	    { className: 'likes', onClick: handleClick },
-	    _react2.default.createElement(
-	      'span',
-	      { className: likeClassName },
-	      _react2.default.createElement(_reactFontawesome2.default, {
-	        className: '',
-	        name: 'heart'
-	      })
-	    ),
-	    _react2.default.createElement(
-	      'span',
-	      { className: 'likes-counter' },
-	      likes
-	    )
-	  );
-	};
-
-	exports.default = PinLikes;
 
 /***/ }
 /******/ ]);
