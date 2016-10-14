@@ -21,6 +21,11 @@ function userPinsReducer(state = initialUserPinsState, action) {
         return Object.assign({}, state, initialUserPinsState);
       }
       return state;
+    case types.REMOVE_USER_PIN:
+      newPins = state.pins.filter(pin => {
+        return pin._id !== action.pinId;
+      });
+      return Object.assign({}, state, {pins: newPins});
     case types.UPDATE_LIKED:
       newPins = state.pins.map(pin => {
         if (pin._id !== action.payload.pinId) {

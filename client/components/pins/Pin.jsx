@@ -5,6 +5,7 @@ import FontAwesome from 'react-fontawesome';
 
 import NavItem from '../nav/NavItem';
 import PinCloseModal from './PinCloseModal';
+import PinLikes from './PinLikes';
 
 class Pin extends Component {
   constructor(props) {
@@ -13,6 +14,8 @@ class Pin extends Component {
       // flag for remove pop up
       confirmPopup: false,
       brokenImage: false,
+      // shows up for broken image link
+      // should serve image from own server
       placeholder: 'https://placehold.it/200x200'
     };
   }
@@ -30,7 +33,6 @@ class Pin extends Component {
     });
   }
   handleImageError() {
-    // if user submitted broken image...
     console.warn('broken pin image')
     this.setState({
       brokenImage: true
@@ -45,61 +47,25 @@ class Pin extends Component {
       handleDeletePin: this.handleDeletePin.bind(this),
       confirmPopup: this.state.confirmPopup,
     };
+    const pinLikesProps = {
+      liked,
+      likes,
+      handleClick: this.handleClick.bind(this)
+    };
     return (
       <div className='pin'>
-        {/*<PinCloseModal {...modalProps} /> */}
-
-        <div className='pin-close-box-container'>
-          {owner &&
-          <p className='pin-close-box' onClick={this.handleTogglePopup.bind(this)}>
-            <FontAwesome
-              className='pin-close'
-              name='times'
-            />
-          </p>
-          }
-          {this.state.confirmPopup && 
-          <div className='confirm-remove-modal'>
-            <p 
-              className='confirm-remove-yes' 
-              onClick={this.handleDeletePin.bind(this)}
-            >
-              <span>REMOVE</span>
-            </p>
-            <p 
-              className='confirm-remove-no'
-              onClick={this.handleTogglePopup.bind(this)}
-            >
-              <span>CANCEL</span>
-            </p>
-          </div>
-          }
-        </div>
-        <img className='pin-image' src={!brokenImage ? imageURL : placeholder} onError={this.handleImageError.bind(this)} />
+        <PinCloseModal {...modalProps} />
+        <img 
+          className='pin-image' 
+          src={!brokenImage ? imageURL : placeholder} 
+          onError={this.handleImageError.bind(this)} 
+        />
         <h5 className='pin-title'>{title}</h5>
         <div className='pin-username'>
           <NavItem to={`/u/${username}`} itemName={username} />
         </div>
           <div className='likes-container'>
-            <p className='likes' onClick={this.handleClick.bind(this)}>
-              {liked &&
-              <span className='user-liked'>
-                <FontAwesome
-                  className=''
-                  name='heart'
-                />
-              </span>
-              }
-              {!liked &&
-              <span className='user-not-liked'>
-                <FontAwesome
-                  className=''
-                  name='heart'
-                />
-              </span>
-              }
-              <span className='likes-counter'>{likes}</span>
-            </p>
+            <PinLikes {...pinLikesProps} />
           </div>
       </div>
     );
