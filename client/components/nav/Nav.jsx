@@ -112,4 +112,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Nav);
+export default connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(Nav);

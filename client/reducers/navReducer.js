@@ -4,7 +4,7 @@ import * as types from './actionTypes';
 
 const initialState = {
   show: false
-}
+};
 
 export default function navReducer(state = initialState, action) {
   switch(action.type) {
