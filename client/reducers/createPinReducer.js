@@ -3,7 +3,7 @@
 import * as types from './actionTypes';
 
 const initialState = {
-  status: 'none'
+  status: ''
 };
 
 function createPinReducer(state = initialState, action) {
