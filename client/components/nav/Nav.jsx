@@ -62,12 +62,14 @@ export class Nav extends Component {
             <div className='nav-item-container'>
               <NavItem to='/' itemName='PinTogether' onlyActiveOnIndex={true} />
               <NavItem to='/all' itemName='All' />
+              {loggedIn && username &&
               <NavItem to='/create' itemName='Create' />
+              }}
               {loggedIn && username &&
                 <NavItem to={`/u/${username}`} itemName={username} />
               }
               {loggedIn && username &&
-                <NavItem to='/logout' itemName='Log Out' />
+                <NavItem to='/logout' itemName='Log Out' linkClass='logout' />
               }
               {!loggedIn &&
                 <LogInGitHub />
@@ -80,12 +82,14 @@ export class Nav extends Component {
         <div className='nav-large'>
           <NavItem to='/' itemName='PinTogether' onlyActiveOnIndex={true} />
           <NavItem to='/all' itemName='All' />
+          {loggedIn && username &&
           <NavItem to='/create' itemName='Create' />
+          }
           {loggedIn && username &&
             <NavItem to={`/u/${username}`} itemName={username} />
           }
           {loggedIn && username &&
-            <NavItem to='/logout' itemName='Log Out' />
+            <NavItem to='/logout' itemName='Log Out' linkClass='logout' />
           }
           {!loggedIn &&
             <LogInGitHub />

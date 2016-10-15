@@ -4,9 +4,10 @@ import React, { Component, PropTypes } from 'react';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 
-import { createPin } from '../../actions/createPinActions';
 import ImageURLField from './ImageURLField';
 import TitleField from './TitleField';
+
+import { createPin } from '../../actions/createPinActions';
 import { validate } from '../lib/validate';
 
 export class CreatePinFields extends Component {

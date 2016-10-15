@@ -5,10 +5,17 @@ import { Link } from 'react-router';
 
 class NavItem extends Component {
   render() {
-    const itemName = this.props.itemName;
-    const to = this.props.to;
-    const navElement = to ? 
-      <Link to={to} activeClassName='nav-active' onlyActiveOnIndex={this.props.onlyActiveOnIndex}>{itemName}</Link> : 
+    const { to, itemName, onlyActiveOnIndex, linkClass } = this.props;
+    const navElement = to ?
+      <Link 
+        to={to} 
+        className={linkClass ? linkClass : ''}
+        activeClassName='nav-active' 
+        onlyActiveOnIndex={onlyActiveOnIndex}
+      >
+        {itemName}
+      </Link> 
+      : 
       <p>{itemName}</p>; 
     return (
       <div className='nav-item'>

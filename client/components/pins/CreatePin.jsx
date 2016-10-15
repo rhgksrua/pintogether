@@ -21,13 +21,19 @@ export class CreatePin extends Component {
     this.props.imageLoad();
   }
   render() {
-    const { newPin, imageReducer: { error, isLoading, url, isInvalidURL } } = this.props;
+    const { 
+      newPin, 
+      createPinReducer: { status }, 
+      imageReducer: { error, isLoading, url, isInvalidURL } 
+    } = this.props;
+
     let newURL;
     try {
       newURL = error ? url : newPin.values.imageURLField;
     } catch (e) {
       newURL = url;
     }
+
     return (
       <div className='create-container'>
         <h3 className='page-title'>Create</h3>
@@ -39,6 +45,9 @@ export class CreatePin extends Component {
           />
         </div>
         <CreatePinFields />
+        <div className='create-pin-error'>
+          <p className='error-message'>{status}</p>
+        </div>
       </div>
     );
   }
@@ -48,9 +57,10 @@ CreatePin.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { imageReducer, form: { newPin } } = state;
+  const { imageReducer, createPinReducer, form: { newPin } } = state;
   return {
     imageReducer,
+    createPinReducer,
     newPin
   };
 }

@@ -10,7 +10,6 @@ const regex = /^http/;
  * @returns {Object}
  */
 export const validate = values => {
-  console.log('*** values', values);
   const errors = {};
   if (!values.title) {
     errors.title = 'Required';

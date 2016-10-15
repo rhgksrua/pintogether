@@ -68,6 +68,13 @@ $container-width-phone: 100%;
   }
 }
 
+.create-pin-error {
+  margin-top: 10px;
+  .error-message {
+    color: red;
+  }
+}
+
 @include phone {
   .create-container {
     box-sizing: border-box;

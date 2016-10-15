@@ -169,6 +169,7 @@
 	app.set('views', './server/views');
 
 	app.use(_express2.default.static('build'));
+	app.use(_express2.default.static('public'));
 
 	app.use('/auth', _authRoutes2.default);
 	app.use('/pins', _pinRoutes2.default);

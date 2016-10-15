@@ -9,6 +9,7 @@ import pinsReducer from './pinsReducer';
 import userPinsReducer from './userPinsReducer';
 import imageReducer from './imageReducer';
 import navReducer from './navReducer';
+import createPinReducer from './createPinReducer';
 
 function createPin(state = {}, action) {
   switch(action.type) {
@@ -28,5 +29,6 @@ export default combineReducers({
   createPin,
   imageReducer,
   navReducer,
+  createPinReducer,
   form: formReducer,
 });

@@ -55,6 +55,7 @@ app.set('view engine', 'pug');
 app.set('views', './server/views');
 
 app.use(express.static('build'));
+app.use(express.static('public'));
 
 app.use('/auth', authRoutes);
 app.use('/pins', pinRoutes);

@@ -1,18 +1,28 @@
-import Promise from 'bluebird';
-import 'isomorphic-fetch';
+'use strict';
+
+//import Promise from 'bluebird';
+//import 'isomorphic-fetch';
+
+import { reset } from 'redux-form';
 
 import * as types from '../reducers/actionTypes';
 
 export const createPin = (title, url) => {
-  return {
-    type: types.CREATE_PIN,
-    payload: {
-      promise: createPinPromise(title, url)
-    }
+  return dispatch => {
+    dispatch(createPinPromiseAction(title, url, dispatch));
   };
 };
 
-export const createPinPromise = (title, url) => {
+export const createPinPromiseAction = (title, url, dispatch) => {
+  return {
+    type: types.CREATE_PIN,
+    payload: {
+      promise: createPinPromise(title, url, dispatch)
+    }
+  };
+}
+
+export const createPinPromise = (title, url, dispatch) => {
   const options = {
     headers: {
       'Content-Type': 'application/json'
@@ -32,11 +42,11 @@ export const createPinPromise = (title, url) => {
         console.log('returned pin from server', pin);
         // pin should be an object with title and pin and status
         if (pin.error) throw new Error('failed to create pin (db)');
+        dispatch(reset('newPin'));
         return resolve(pin);
       })
       .catch(err => {
         reject(err);
       });
   });
-
 };
