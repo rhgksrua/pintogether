@@ -41176,7 +41176,6 @@
 	              _react2.default.createElement(_NavItem2.default, { to: '/', itemName: 'PinTogether', onlyActiveOnIndex: true }),
 	              _react2.default.createElement(_NavItem2.default, { to: '/all', itemName: 'All' }),
 	              loggedIn && username && _react2.default.createElement(_NavItem2.default, { to: '/create', itemName: 'Create' }),
-	              '}',
 	              loggedIn && username && _react2.default.createElement(_NavItem2.default, { to: '/u/' + username, itemName: username }),
 	              loggedIn && username && _react2.default.createElement(_NavItem2.default, { to: '/logout', itemName: 'Log Out', linkClass: 'logout' }),
 	              !loggedIn && _react2.default.createElement(_LoginGitHub2.default, null)

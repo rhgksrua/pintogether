@@ -64,7 +64,7 @@ export class Nav extends Component {
               <NavItem to='/all' itemName='All' />
               {loggedIn && username &&
               <NavItem to='/create' itemName='Create' />
-              }}
+              }
               {loggedIn && username &&
                 <NavItem to={`/u/${username}`} itemName={username} />
               }
