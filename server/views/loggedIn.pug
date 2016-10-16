@@ -1,9 +1,14 @@
 doctype html
 html(lang="en")
   head
-    title my boilerplate
+    title Logged In
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css", rel="stylesheet")
+    link(href="https://fonts.googleapis.com/css?family=Quattrocento", rel="stylesheet")
+    link(href="https://fonts.googleapis.com/css?family=Oswald", rel="stylesheet")
+    link(href="/css/login.css", rel="stylesheet")
   body
     div
-      p Logged in as <strong>#{username}</strong>
+      p.message Logged in as <strong>#{username}</strong>
       p
         a(href='/') Continue...

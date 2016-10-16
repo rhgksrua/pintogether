@@ -19,12 +19,6 @@ $username-color: #868686;
   border-radius: $border-radius;
   box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.12);
   width: $pins-w;
-  // change width on media query.
-  // max-width
-  // small / medium / large
-  // small should show single column of image
-  // medium  should show two or three
-  // large should show five or more.
   text-align: center;
   .pin-close-box {
     position: absolute;
@@ -138,5 +132,11 @@ $username-color: #868686;
   .pin {
     width: 100%;
     margin: 10px 0;
+  }
+}
+
+@include tablet {
+  .pin {
+    width: $pins-w-tablet;
   }
 }

@@ -15,7 +15,11 @@ function pinsReducer(state = initialPinsState, action) {
   let newState;
   switch(action.type) {
     case types.FETCH_ALL_PINS:
-      return Object.assign({}, state, action.allPins);
+      const { pins } = action.allPins;
+      return {
+        ...state,
+        pins
+      };
     case types.REMOVE_USER_PIN:
       newPins = state.pins.filter(pin => {
         return pin._id !== action.pinId;

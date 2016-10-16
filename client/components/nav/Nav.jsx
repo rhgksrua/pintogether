@@ -24,7 +24,6 @@ export class Nav extends Component {
     window.addEventListener('resize', this.handleResize);
   }
   handleResize(e) {
-    console.log(window.innerWidth);
     this.setState({
       windowWidth: window.innerWidth
     });
@@ -39,7 +38,7 @@ export class Nav extends Component {
     const titleClassName = show ? 'nav-title-small hide': 'nav-title-small';
 
     // hide/show mobile menu.
-    const mobileView = this.state.windowWidth <= 768 ? true : false;
+    const mobileView = this.state.windowWidth <= 640 ? true : false;
 
     return (
       <nav className='nav-container'>
