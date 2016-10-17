@@ -14,6 +14,8 @@ describe('<ImageURLField />', () => {
     props = {
       input: {
         onChange: () => {}
+      },
+      meta: {
       }
     };
     wrapper = shallow(<ImageURLField {...props} />);

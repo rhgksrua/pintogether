@@ -4,29 +4,31 @@ import sinon from 'sinon';
 
 import isAuthenticated from './isAuthenticated';
 
-describe('ExpressJS middleware', () => {
+describe('isAuthenticated - ExpressJS middleware', () => {
   let next;
   let json;
   let res;
+  let req;
+  let sendStatus;
   beforeEach(() => {
     next = sinon.spy();
-    json = sinon.spy();
-    res = { json };
+    sendStatus = sinon.spy();
+    res = { json, sendStatus };
+    req = {};
   });
   it('fails authentication with no user', () => {
-    const req = {};
+    req.isAuthenticated = () => {
+      return false;
+    };
     isAuthenticated(req, res, next);
-    expect(res.json.calledOnce).to.equal(true);
+    expect(res.sendStatus.calledOnce).to.equal(true);
   });
   it('should authenticate with valid user', () => {
-    const req = {
-      user: {
-        authenticated: true
-      }
+    req.isAuthenticated = () => {
+      return true;
     };
     isAuthenticated(req, res, next);
     expect(next.calledOnce).to.equal(true);
-
   });
 
 });

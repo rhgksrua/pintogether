@@ -23,11 +23,13 @@ describe('<CreatePinField />', () => {
       }
     };
   });
-  it('renders reactElements without any children elements', () => {
+  it('renders title field', () => {
     const wrapper = shallow(<CreatePinFields {...props} />);
-    expect(wrapper.contains([
-      <label htmlFor='title'>Title</label>
-    ])).to.equal(true);
+    expect(wrapper.find('.title-field')).to.have.length(1);
+  });
+  it('renders url field', () => {
+    const wrapper = shallow(<CreatePinFields {...props} />);
+    expect(wrapper.find('.url-field')).to.have.length(1);
   });
   it('renders two <Field /> component, title and image url', () => {
     const wrapper = shallow(<CreatePinFields {...props} />);

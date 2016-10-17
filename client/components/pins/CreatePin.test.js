@@ -9,11 +9,16 @@ describe('<CreatePin />', () => {
     const imageReducer = {
       isLoading: true,
       isInvalidURL: true,
-      url: 'none'
+      url: 'none',
     };
-    const wrapper = shallow(<CreatePin imageReducer={imageReducer} />);
+    const createPinReducer = {
+      status: 'none'
+    };
+    const newPin = {
+    };
+    const wrapper = shallow(<CreatePin imageReducer={imageReducer} createPinReducer={createPinReducer} newPin={newPin} />);
     expect(wrapper.contains([
-      <img />
+      <img className='user-image' src='none' />
     ]));
   });
 });

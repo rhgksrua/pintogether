@@ -17,6 +17,7 @@ class NavItem extends Component {
       </Link> 
       : 
       <p>{itemName}</p>; 
+
     return (
       <div className='nav-item'>
         {navElement}

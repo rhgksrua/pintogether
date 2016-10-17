@@ -8,7 +8,7 @@ import FontAwesome from 'react-fontawesome';
 
 import { setImage } from '../../actions/userImageActions';
 
-class ImageURLField extends Component {
+export class ImageURLField extends Component {
   constructor(props) {
     super(props);
   }

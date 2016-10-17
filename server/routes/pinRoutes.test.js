@@ -1,7 +1,7 @@
 import request from 'supertest';
 import server from '../server';
 
-describe('Server routes for pin CRUD', function () {
+describe('pinRoutes.js - Server routes for pin CRUD', function () {
   let serverInstance;
   beforeEach(function () {
     serverInstance = server.listen(3001, () => {
@@ -18,9 +18,7 @@ describe('Server routes for pin CRUD', function () {
     request(server)
       .post('/pins')
       .send(newPin)
-      .expect(200, {
-        error: 'authentication failed'
-      }, done);
+      .expect(404, done);
   });
 });
 

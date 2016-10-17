@@ -743,7 +743,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	describe('Server routes for pin CRUD', function () {
+	describe('pinRoutes.js - Server routes for pin CRUD', function () {
 	  var serverInstance = void 0;
 	  beforeEach(function () {
 	    serverInstance = _server2.default.listen(3001, function () {});
@@ -756,9 +756,7 @@
 	      url: 'https://localhost',
 	      title: 'super duper title'
 	    };
-	    (0, _supertest2.default)(_server2.default).post('/pins').send(newPin).expect(200, {
-	      error: 'authentication failed'
-	    }, done);
+	    (0, _supertest2.default)(_server2.default).post('/pins').send(newPin).expect(404, done);
 	  });
 	});
 
@@ -782,25 +780,28 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	(0, _mocha.describe)('ExpressJS middleware', function () {
+	(0, _mocha.describe)('isAuthenticated - ExpressJS middleware', function () {
 	  var next = void 0;
 	  var json = void 0;
 	  var res = void 0;
+	  var req = void 0;
+	  var sendStatus = void 0;
 	  beforeEach(function () {
 	    next = _sinon2.default.spy();
-	    json = _sinon2.default.spy();
-	    res = { json: json };
+	    sendStatus = _sinon2.default.spy();
+	    res = { json: json, sendStatus: sendStatus };
+	    req = {};
 	  });
 	  (0, _mocha.it)('fails authentication with no user', function () {
-	    var req = {};
+	    req.isAuthenticated = function () {
+	      return false;
+	    };
 	    (0, _isAuthenticated2.default)(req, res, next);
-	    (0, _chai.expect)(res.json.calledOnce).to.equal(true);
+	    (0, _chai.expect)(res.sendStatus.calledOnce).to.equal(true);
 	  });
 	  (0, _mocha.it)('should authenticate with valid user', function () {
-	    var req = {
-	      user: {
-	        authenticated: true
-	      }
+	    req.isAuthenticated = function () {
+	      return true;
 	    };
 	    (0, _isAuthenticated2.default)(req, res, next);
 	    (0, _chai.expect)(next.calledOnce).to.equal(true);

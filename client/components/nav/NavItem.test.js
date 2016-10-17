@@ -9,13 +9,11 @@ describe('<NavItem />', () => {
   it('renders nav item', () => {
     const props = {
       to: '/test',
-      itemName: 'testItemName'
+      itemName: 'testItemName',
+      onlyActiveOnIndex: false,
     };
     const wrapper = mount(<NavItem {...props} />);
     expect(wrapper.text()).to.equal('testItemName');
-    expect(wrapper.contains([
-      <Link to='/test'>testItemName</Link>
-    ])).to.equal(true);
   });
   it('renders nav item without link', () => {
     const wrapper = mount(<NavItem itemName='test' />);

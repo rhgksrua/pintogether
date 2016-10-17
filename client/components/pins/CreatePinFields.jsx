@@ -11,9 +11,6 @@ import { createPin } from '../../actions/createPinActions';
 import { validate } from '../lib/validate';
 
 export class CreatePinFields extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const { 
       handleSubmit, 

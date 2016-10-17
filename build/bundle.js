@@ -41499,6 +41499,7 @@
 	        null,
 	        itemName
 	      );
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'nav-item' },
@@ -48353,10 +48354,10 @@
 	var CreatePinFields = exports.CreatePinFields = function (_Component) {
 	  _inherits(CreatePinFields, _Component);
 
-	  function CreatePinFields(props) {
+	  function CreatePinFields() {
 	    _classCallCheck(this, CreatePinFields);
 
-	    return _possibleConstructorReturn(this, (CreatePinFields.__proto__ || Object.getPrototypeOf(CreatePinFields)).call(this, props));
+	    return _possibleConstructorReturn(this, (CreatePinFields.__proto__ || Object.getPrototypeOf(CreatePinFields)).apply(this, arguments));
 	  }
 
 	  _createClass(CreatePinFields, [{
@@ -48463,6 +48464,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.ImageURLField = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -48494,7 +48496,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var ImageURLField = function (_Component) {
+	var ImageURLField = exports.ImageURLField = function (_Component) {
 	  _inherits(ImageURLField, _Component);
 
 	  function ImageURLField(props) {
