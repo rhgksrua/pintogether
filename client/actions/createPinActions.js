@@ -7,9 +7,14 @@ import { reset } from 'redux-form';
 
 import * as types from '../reducers/actionTypes';
 
-export const createPin = (title, url) => {
+/**
+ * This action exists only to inject dispatch to createPinPromise.
+ *
+ * @returns {undefined}
+ */
+export const createPin = (title, url, actionCreator = createPinPromiseAction) => {
   return dispatch => {
-    dispatch(createPinPromiseAction(title, url, dispatch));
+    dispatch(actionCreator(title, url, dispatch));
   };
 };
 

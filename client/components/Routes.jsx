@@ -7,7 +7,6 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import App from './App';
 import NoMatch from './NoMatch';
 import Home from './Home';
-import Me from './accounts/Me';
 import UserPins from './accounts/UserPins';
 import AllPins from './AllPins';
 import CreatePin from './pins/CreatePin.jsx';
