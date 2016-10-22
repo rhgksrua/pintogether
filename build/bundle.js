@@ -41531,6 +41531,13 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	/**
+	 * toggleMenu
+	 *
+	 * Toggles mobile menu.
+	 *
+	 * @returns {undefined}
+	 */
 	var toggleMenu = exports.toggleMenu = function toggleMenu() {
 	  return {
 	    type: types.TOGGLE_MENU
@@ -48658,6 +48665,14 @@
 
 	var _userActions = __webpack_require__(450);
 
+	/**
+	 * onEnter hook for react router
+	 *
+	 * @param nextState
+	 * @param replace
+	 * @param callback
+	 * @returns {undefined}
+	 */
 	function logOutUser(nextState, replace, callback) {
 	  var dispatch = this.dispatch;
 
