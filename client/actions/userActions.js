@@ -5,8 +5,7 @@ import * as types from '../reducers/actionTypes';
 export const checkLogin = () => {
   return {
     type: types.ADD_USER_STATUS,
-    payload:  checkUserStatus(),
-    meta: { request: true }
+    payload: checkUserStatus(),
   };
 };
 
@@ -19,7 +18,7 @@ export const logOut = () => {
   };
 }
 
-const checkUserStatus = () => {
+export const checkUserStatus = () => {
   const options = {
     method: 'POST',
     credentials: 'same-origin',
@@ -45,7 +44,7 @@ const checkUserStatus = () => {
     });
 }
 
-const removeUserStatus = () => {
+export const removeUserStatus = () => {
   const options = {
     method: 'POST',
     credentials: 'same-origin',

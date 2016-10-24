@@ -4,7 +4,7 @@ import chai, { assert, expect } from 'chai';
 
 import logOutUser from './logOutUser';
 
-describe('logOutUser.js - onEnter hook for react-router', () => {
+describe.skip('logOutUser.js - onEnter hook for react-router', () => {
   it('should logout user and redirect user to home', () => {
     const nextState = {};
     const replace = sinon.spy();

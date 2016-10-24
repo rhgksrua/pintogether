@@ -41017,7 +41017,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.logOut = exports.checkLogin = undefined;
+	exports.removeUserStatus = exports.checkUserStatus = exports.logOut = exports.checkLogin = undefined;
 
 	var _actionTypes = __webpack_require__(380);
 
@@ -41028,8 +41028,7 @@
 	var checkLogin = exports.checkLogin = function checkLogin() {
 	  return {
 	    type: types.ADD_USER_STATUS,
-	    payload: checkUserStatus(),
-	    meta: { request: true }
+	    payload: checkUserStatus()
 	  };
 	};
 
@@ -41042,7 +41041,7 @@
 	  };
 	};
 
-	var checkUserStatus = function checkUserStatus() {
+	var checkUserStatus = exports.checkUserStatus = function checkUserStatus() {
 	  var options = {
 	    method: 'POST',
 	    credentials: 'same-origin'
@@ -41065,7 +41064,7 @@
 	  });
 	};
 
-	var removeUserStatus = function removeUserStatus() {
+	var removeUserStatus = exports.removeUserStatus = function removeUserStatus() {
 	  var options = {
 	    method: 'POST',
 	    credentials: 'same-origin'
@@ -47778,10 +47777,9 @@
 	};
 
 	var removePin = exports.removePin = function removePin(pinId) {
-	  console.log('removing pin');
 	  return function (dispatch) {
 	    var port = window.location.port ? ':' + window.location.port : '';
-	    var url = window.location.protocol + '//' + window.location.hostname + port + '/pins/';
+	    var url = window.location.protocol + '//' + window.location.hostname + port + '/pins';
 	    var options = {
 	      headers: {
 	        'Content-Type': 'application/json'

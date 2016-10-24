@@ -16,10 +16,9 @@ export const removeUserPinFailed = () => {
 }
 
 export const removePin = pinId => {
-  console.log('removing pin');
   return dispatch => {
     const port = window.location.port ? `:${window.location.port}` : '';
-    const url = `${window.location.protocol}//${window.location.hostname}${port}/pins/`;
+    const url = `${window.location.protocol}//${window.location.hostname}${port}/pins`;
     const options = {
       headers: {
         'Content-Type': 'application/json'

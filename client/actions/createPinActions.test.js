@@ -10,21 +10,11 @@ chai.use(chaiAsPromised);
 import { createPin, createPinPromise, createPinPromiseAction } from './createPinActions';
 
 describe('createPinActions.js', () => {
-  let dispatch;
-  let middleMock;
-
   beforeEach(() => {
     fetchMock
       .mock('pins', 200)
       .catch(404);
-
-    dispatch = () => {
-    };
-    middleMock = (dispatch, action) => {
-      
-    };
   });
-
   afterEach(() => {
     fetchMock.restore();
   });
