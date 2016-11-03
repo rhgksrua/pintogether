@@ -57,16 +57,12 @@ app.set('views', './server/views');
 app.use(express.static('build'));
 app.use(express.static('public'));
 
+// routes
 app.use('/auth', authRoutes);
 app.use('/pins', pinRoutes);
 app.use('/user', userRoutes);
 
-app.get('/test', (req, res) => {
-  return res.send(404);
-});
-
 app.get('*', (req, res) => {
-  console.log('node env', process.env.NODE_ENV);
   if (process.env.NODE_ENV === 'production') {
     return res.render('indexProd');
   }

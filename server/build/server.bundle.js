@@ -171,17 +171,13 @@
 	app.use(_express2.default.static('build'));
 	app.use(_express2.default.static('public'));
 
+	// routes
 	app.use('/auth', _authRoutes2.default);
 	app.use('/pins', _pinRoutes2.default);
 	app.use('/user', _userRoutes2.default);
 
-	app.get('/test', function (req, res) {
-	  return res.send(404);
-	});
-
 	app.get('*', function (req, res) {
-	  console.log('node env', ("production"));
-	  if (true) {
+	  if (process.env.NODE_ENV === 'production') {
 	    return res.render('indexProd');
 	  }
 	  return res.render('index');
@@ -478,7 +474,7 @@
 	  newPin.pin.url = url;
 	  newPin.save(function (err) {
 	    if (err) {
-	      console.log(err.message);
+	      console.error(err.message);
 	      return res.json({ error: true, message: 'new pin db error' });
 	    }
 	    return res.json({
@@ -508,7 +504,7 @@
 	  _Pin2.default.find(query).exec().then(function (doc) {
 	    return res.json({ pins: doc });
 	  }).catch(function (err) {
-	    console.log(err);
+	    console.error(err);
 	    return res.json({ error: true, message: 'db error' });
 	  });
 	}
@@ -555,7 +551,7 @@
 	      throw new Error('cannot like pins');
 	    }
 	  }).catch(function (err) {
-	    console.log(err);
+	    console.error(err);
 	    return res.json({ error: true, message: 'db error' });
 	  });
 	}
@@ -588,7 +584,7 @@
 	    }
 	    throw new Error('does not exist');
 	  }).catch(function (err) {
-	    console.log(err);
+	    console.error(err);
 	    return res.json({ error: 'db error' });
 	  });
 	}

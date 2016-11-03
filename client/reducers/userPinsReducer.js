@@ -29,22 +29,18 @@ function userPinsReducer(state = initialUserPinsState, action) {
     case types.UPDATE_LIKED:
       newPins = state.pins.map(pin => {
         if (pin._id !== action.payload.pinId) {
-          console.log('not the correct pin');
           return pin;
         }
-        console.log('found pin!');
         // if liked remove like. if unliked add like
         exists = pin.likes.some(like => {
           return like.userId === action.payload.userId;
         });
         if (exists) {
-          console.log('need to remove userid');
           newLikes = pin.likes.filter(like => {
             return like.userId !== action.payload.userId;
           });
           return Object.assign({}, pin, {likes: newLikes});
         }
-        console.log('add like to pin');
         newLikes = pin.likes.concat({userId: action.payload.userId});
         return Object.assign({}, pin, {likes: newLikes});
         

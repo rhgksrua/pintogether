@@ -17,7 +17,5 @@ module.exports = function () {
     hostname: hostname,
     port: port,
   };
-  
-  console.log(config);
   return config;
 };

@@ -44,7 +44,6 @@ export const createPinPromise = (title, url, dispatch) => {
         return res.json();
       })
       .then(pin => {
-        console.log('returned pin from server', pin);
         // pin should be an object with title and pin and status
         if (pin.error) throw new Error('failed to create pin (db)');
         dispatch(reset('newPin'));

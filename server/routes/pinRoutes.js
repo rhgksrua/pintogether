@@ -44,7 +44,7 @@ function addPins(req, res) {
   newPin.pin.url = url;
   newPin.save(err => {
     if (err) {
-      console.log(err.message);
+      console.error(err.message);
       return res.json({ error: true, message: 'new pin db error' });
     }
     return res.json({ 
@@ -76,7 +76,7 @@ function getUserPins(req, res) {
       return res.json({pins: doc});
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       return res.json({error: true, message: 'db error'});
     });
 }
@@ -125,7 +125,7 @@ function pinLiked(req, res) {
       }
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       return res.json({error: true, message: 'db error'});
     });
 }
@@ -160,7 +160,7 @@ function removePin(req, res) {
       throw new Error('does not exist');
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       return res.json({error: 'db error'});
     });
 

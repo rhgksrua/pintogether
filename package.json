@@ -4,12 +4,16 @@
   "description": "pinterest clone",
   "main": "index.js",
   "scripts": {
+
     "prod:client": "webpack --config webpack.client.prod.config.js",
     "prod:client:watch": "webpack --watch --config webpack.client.prod.config.js",
+    "prod:server": "webpack --watch --config webpack.server.config.js",
+    "prod:watch": "npm run prod:client:watch & npm run prod:server & NODE_ENV=production nodemon server/build/server.bundle.js -V --watch server/build/server.bundle.js",
+
     "dev:client": "webpack --watch --config webpack.client.config.js",
     "dev:server": "webpack --watch --config webpack.server.config.js",
     "dev:watch": "npm run dev:client & npm run dev:server & nodemon server/build/server.bundle.js -V --watch server/build/server.bundle.js",
-    "prod:watch": "npm run prod:client:watch & npm run dev:server & nodemon server/build/server.bundle.js -V --watch server/build/server.bundle.js",
+
     "test": "karma start karma.conf.js & mocha -w server/build/server.test.bundle.js",
     "test:server": "mocha server/build/server.test.bundle.js",
     "test:client": "karma start karma.conf.js"
