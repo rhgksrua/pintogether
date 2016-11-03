@@ -4,23 +4,26 @@
   "description": "pinterest clone",
   "main": "index.js",
   "scripts": {
+    "prod:client": "webpack --config webpack.client.prod.config.js",
+    "prod:client:watch": "webpack --watch --config webpack.client.prod.config.js",
     "dev:client": "webpack --watch --config webpack.client.config.js",
     "dev:server": "webpack --watch --config webpack.server.config.js",
     "dev:watch": "npm run dev:client & npm run dev:server & nodemon server/build/server.bundle.js -V --watch server/build/server.bundle.js",
+    "prod:watch": "npm run prod:client:watch & npm run dev:server & nodemon server/build/server.bundle.js -V --watch server/build/server.bundle.js",
     "test": "karma start karma.conf.js & mocha -w server/build/server.test.bundle.js",
     "test:server": "mocha server/build/server.test.bundle.js",
     "test:client": "karma start karma.conf.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rhgksrua/react-redux-router-express-boilerplate.git"
+    "url": "git+https://github.com/rhgksrua/pintogether.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rhgksrua/react-redux-router-express-boilerplate/issues"
+    "url": "https://github.com/rhgksrua/pintogether/issues"
   },
-  "homepage": "https://github.com/rhgksrua/react-redux-router-express-boilerplate#readme",
+  "homepage": "https://github.com/rhgksrua/pintogether#readme",
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "bluebird": "^3.4.6",

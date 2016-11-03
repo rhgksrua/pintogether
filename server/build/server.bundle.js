@@ -180,6 +180,10 @@
 	});
 
 	app.get('*', function (req, res) {
+	  console.log('node env', ("production"));
+	  if (true) {
+	    return res.render('indexProd');
+	  }
 	  return res.render('index');
 	});
 

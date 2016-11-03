@@ -35,7 +35,8 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"development"'
+      // right now, production / development depends on the client
+      //'process.env.NODE_ENV': '"production"'
     })
   ]
 };

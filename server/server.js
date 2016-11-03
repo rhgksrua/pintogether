@@ -66,6 +66,10 @@ app.get('/test', (req, res) => {
 });
 
 app.get('*', (req, res) => {
+  console.log('node env', process.env.NODE_ENV);
+  if (process.env.NODE_ENV === 'production') {
+    return res.render('indexProd');
+  }
   return res.render('index');
 });
 
