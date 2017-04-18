@@ -11,18 +11,23 @@ import { removePin } from '../../actions/removePin';
 
 class PinGallery extends Component {
   render() {
+
     const { 
       pins,
       handleClick, 
       handleDeletePin,
-      userReducer: { id, username },
-      params
+      userReducer: { id, username, loggedIn },
+      params,
     } = this.props;
+
     const allPins = pins.map(el => {
+
       const likes = el.likes.length;
+
       const liked = el.likes.some(like => {
         return like.userId === id;
       });
+
       // owner's user page.  Let's users delete pins.
       const owner = (el.username === username) ? true : false;
       return (
@@ -37,6 +42,7 @@ class PinGallery extends Component {
           likes={likes}
           liked={liked ? true : false}
           owner={owner}
+          loggedIn={loggedIn}
         />
       );
     });

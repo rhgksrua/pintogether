@@ -23,8 +23,6 @@ if (process.env.NODE_ENV === 'production') {
   store = createStore(reducer, applyMiddleware(thunkMiddleware, promiseMiddleware(), loggerMiddleware));
 }
 
-//const store = createStore(reducer, applyMiddleware(thunkMiddleware, loggerMiddleware));
-
 class Store extends Component {
   render() {
     return (

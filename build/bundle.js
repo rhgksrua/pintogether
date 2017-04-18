@@ -21439,15 +21439,15 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	function errorHanlder(err, getState) {
-	  console.error(error);
-	  console.debug('current state', getState());
-	}
-
 	var loggerMiddleware = (0, _reduxLogger2.default)();
 
-	//const store = createStore(reducer, applyMiddleware(thunkMiddleware, loggerMiddleware));
-	var store = (0, _redux.createStore)(_reducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxPromiseMiddleware2.default)(), loggerMiddleware));
+	var store = void 0;
+
+	if (false) {
+	  store = (0, _redux.createStore)(_reducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxPromiseMiddleware2.default)()));
+	} else {
+	  store = (0, _redux.createStore)(_reducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxPromiseMiddleware2.default)(), loggerMiddleware));
+	}
 
 	var Store = function (_Component) {
 	  _inherits(Store, _Component);
@@ -35180,22 +35180,18 @@
 	    case types.UPDATE_LIKED:
 	      newPins = state.pins.map(function (pin) {
 	        if (pin._id !== action.payload.pinId) {
-	          console.log('not the correct pin');
 	          return pin;
 	        }
-	        console.log('found pin!');
 	        // if liked remove like. if unliked add like
 	        exists = pin.likes.some(function (like) {
 	          return like.userId === action.payload.userId;
 	        });
 	        if (exists) {
-	          console.log('need to remove userid');
 	          newLikes = pin.likes.filter(function (like) {
 	            return like.userId !== action.payload.userId;
 	          });
 	          return Object.assign({}, pin, { likes: newLikes });
 	        }
-	        console.log('add like to pin');
 	        newLikes = pin.likes.concat({ userId: action.payload.userId });
 	        return Object.assign({}, pin, { likes: newLikes });
 	      });
@@ -47374,8 +47370,15 @@
 	  _createClass(Pin, [{
 	    key: 'handleClick',
 	    value: function handleClick() {
-	      var pinKey = this.props.pinKey;
+	      var _props = this.props;
+	      var pinKey = _props.pinKey;
+	      var loggedIn = _props.loggedIn;
 
+	      if (!loggedIn) {
+	        // temporary message to alert users to log in if they want to like a post.
+	        alert('log in to like!');
+	        return;
+	      }
 	      this.props.handleClick(pinKey);
 	    }
 	  }, {
@@ -47403,13 +47406,13 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _props = this.props;
-	      var owner = _props.owner;
-	      var imageURL = _props.imageURL;
-	      var title = _props.title;
-	      var username = _props.username;
-	      var likes = _props.likes;
-	      var liked = _props.liked;
+	      var _props2 = this.props;
+	      var owner = _props2.owner;
+	      var imageURL = _props2.imageURL;
+	      var title = _props2.title;
+	      var username = _props2.username;
+	      var likes = _props2.likes;
+	      var liked = _props2.liked;
 	      var _state = this.state;
 	      var brokenImage = _state.brokenImage;
 	      var placeholder = _state.placeholder;
@@ -47423,7 +47426,8 @@
 	      var pinLikesProps = {
 	        liked: liked,
 	        likes: likes,
-	        handleClick: this.handleClick.bind(this)
+	        handleClick: this.handleClick.bind(this),
+	        owner: owner
 	      };
 	      return _react2.default.createElement(
 	        'div',
@@ -47687,13 +47691,18 @@
 	      var _props$userReducer = _props.userReducer;
 	      var id = _props$userReducer.id;
 	      var username = _props$userReducer.username;
+	      var loggedIn = _props$userReducer.loggedIn;
 	      var params = _props.params;
 
+
 	      var allPins = pins.map(function (el) {
+
 	        var likes = el.likes.length;
+
 	        var liked = el.likes.some(function (like) {
 	          return like.userId === id;
 	        });
+
 	        // owner's user page.  Let's users delete pins.
 	        var owner = el.username === username ? true : false;
 	        return _react2.default.createElement(_Pin2.default, {
@@ -47706,7 +47715,8 @@
 	          handleDeletePin: handleDeletePin,
 	          likes: likes,
 	          liked: liked ? true : false,
-	          owner: owner
+	          owner: owner,
+	          loggedIn: loggedIn
 	        });
 	      });
 	      return _react2.default.createElement(
@@ -48607,7 +48617,6 @@
 	      if (res.status >= 400) throw new Error('failed to create pin');
 	      return res.json();
 	    }).then(function (pin) {
-	      console.log('returned pin from server', pin);
 	      // pin should be an object with title and pin and status
 	      if (pin.error) throw new Error('failed to create pin (db)');
 	      dispatch((0, _reduxForm.reset)('newPin'));

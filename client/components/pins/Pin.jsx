@@ -20,7 +20,12 @@ class Pin extends Component {
     };
   }
   handleClick() {
-    const { pinKey } = this.props;
+    const { pinKey, loggedIn } = this.props;
+    if (!loggedIn) {
+      // temporary message to alert users to log in if they want to like a post.
+      alert('log in to like!');
+      return;
+    }
     this.props.handleClick(pinKey);
   }
   handleDeletePin() {
@@ -50,7 +55,8 @@ class Pin extends Component {
     const pinLikesProps = {
       liked,
       likes,
-      handleClick: this.handleClick.bind(this)
+      handleClick: this.handleClick.bind(this),
+      owner
     };
     return (
       <div className='pin'>
