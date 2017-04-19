@@ -4,6 +4,7 @@
   "description": "pinterest clone",
   "main": "index.js",
   "scripts": {
+    "start": "prod:watch",
     "prod:client": "webpack --config webpack.client.prod.config.js",
     "prod:client:watch": "webpack --watch --config webpack.client.prod.config.js",
     "prod:server": "webpack --watch --config webpack.server.config.js",
