@@ -1,1 +1,1 @@
-web: npm run dev:watch
+web: npm run prod:heroku
