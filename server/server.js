@@ -20,9 +20,8 @@ import pinRoutes  from './routes/pinRoutes';
 import userRoutes from './routes/userRoutes';
 
 dotenv.config({silent: true});
-console.log(process.env.MONGODB_URI);
 const MongoStore = connectMongo(session);
-const MONGO_URI = process.env.MONGODB_URI || 'localhost:27017/pintogether';
+const MONGO_URI = process.env.MONGODB_URI;// || 'localhost:27017/pintogether';
 
 mongoose.connect(MONGO_URI);
 
