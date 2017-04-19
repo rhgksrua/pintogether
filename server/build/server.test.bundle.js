@@ -153,7 +153,7 @@
 	// Routes
 
 	var MongoStore = (0, _connectMongo2.default)(_expressSession2.default);
-	var MONGO_URI = process.env.MONGO_URI || 'localhost:27017/pintogether';
+	var MONGO_URI = process.env.MONGODB_URI || 'localhost:27017/pintogether';
 
 	_mongoose2.default.connect(MONGO_URI);
 

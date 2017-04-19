@@ -21,7 +21,7 @@ import userRoutes from './routes/userRoutes';
 
 dotenv.config({silent: true});
 const MongoStore = connectMongo(session);
-const MONGO_URI = process.env.MONGODB_URI;// || 'localhost:27017/pintogether';
+const MONGO_URI = process.env.MONGODB_URI || 'localhost:27017/pintogether';
 
 mongoose.connect(MONGO_URI);
 
